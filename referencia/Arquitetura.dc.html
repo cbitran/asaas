@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Arquitetura de navegação</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>body{margin:0}</style>
+</helmet>
+<div style="width: 1440px; min-height: 1300px; box-sizing: border-box; padding: 64px; background: #F0F2F5; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; color: #1D2125; display: flex; flex-direction: column; gap: 32px">
+<div style="display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #0030C8">Entrega 1 · Arquitetura</span>
+<h1 style="margin: 0; font-size: 44px; font-weight: 800; letter-spacing: -0.02em">De 17 itens soltos para 6 grupos por tarefa</h1>
+<p style="margin: 0; font-size: 17px; line-height: 1.5; color: #37474F; max-width: 880px">Nenhuma função saiu. Os itens foram agrupados pela tarefa que o empreendedor está fazendo: receber, falar com clientes, mover dinheiro, cuidar do fiscal ou usar uma ferramenta.</p>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 16px">
+<sc-for list="{{grupos}}" as="g">
+<section style="background: #FFFFFF; border-radius: 24px; padding: 20px; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 8px 24px rgba(29,33,37,0.06)">
+<div style="display: flex; flex-direction: column; gap: 4px; padding-bottom: 12px; border-bottom: 2px solid #0038E5">
+<h2 style="margin: 0; font-size: 18px; font-weight: 800">{{g.nome}}</h2>
+<span style="font-size: 12px; color: #37474F">{{g.tarefa}}</span>
+</div>
+<sc-for list="{{g.itens}}" as="it">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 14px; font-weight: 700">{{it.nome}}</span>
+<sc-for list="{{it.subs}}" as="sb"><span style="font-size: 12px; color: #37474F; padding-left: 12px; border-left: 1px solid #CDCDCD">{{sb}}</span></sc-for>
+<sc-if value="{{it.origem}}" hint-placeholder-val="{{false}}"><span style="font-size: 11px; font-weight: 600; color: #8A5300">{{it.origem}}</span></sc-if>
+</div>
+</sc-for>
+</section>
+</sc-for>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px">
+<sc-for list="{{regras}}" as="r">
+<section style="background: #FFFFFF; border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 8px 24px rgba(29,33,37,0.06)">
+<h3 style="margin: 0; font-size: 18px; font-weight: 800">{{r.t}}</h3>
+<p style="margin: 0; font-size: 14px; line-height: 1.55; color: #37474F">{{r.d}}</p>
+</section>
+</sc-for>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1300}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      grupos: [
+        { nome: 'Início', tarefa: 'O que fazer agora', itens: [{ nome: 'Início', subs: ['Pendências', 'Próximos vencimentos', 'Ativação da conta'] }] },
+        { nome: 'Recebimentos', tarefa: 'Cobrar e acompanhar', itens: [
+          { nome: 'Cobranças', subs: ['Todas', 'Avulsas', 'Parcelamentos', 'Assinaturas', 'Grupos', 'Chargeback'] },
+          { nome: 'Links de pagamento', subs: [] },
+          { nome: 'Vendas físicas', subs: [] }
+        ] },
+        { nome: 'Clientes', tarefa: 'Quem paga e quem deve', itens: [
+          { nome: 'Clientes', subs: ['Clientes', 'Grupos'] },
+          { nome: 'Consulta Serasa', subs: [] },
+          { nome: 'Negativação', subs: [] }
+        ] },
+        { nome: 'Dinheiro', tarefa: 'Saldo, saídas e prazos', itens: [
+          { nome: 'Meu dinheiro', subs: ['Extrato', 'Transferências', 'Registro de recebíveis'] },
+          { nome: 'Pix', subs: ['Transferências', 'Minhas chaves', 'Meus limites', 'Pix recorrentes', 'Pix Automático', 'Contestações Pix'] },
+          { nome: 'Pague contas', subs: [] },
+          { nome: 'Cartão Asaas', subs: [] },
+          { nome: 'Antecipações', subs: ['3 subitens atuais'] }
+        ] },
+        { nome: 'Fiscal', tarefa: 'Notas e obrigações', itens: [{ nome: 'Notas fiscais', subs: ['Todas', 'Configurações'] }] },
+        { nome: 'Ferramentas', tarefa: 'Apoio e ajustes', itens: [
+          { nome: 'Simulador de vendas', subs: [], origem: 'Antes em Cobranças' },
+          { nome: 'Personalizar notificações', subs: [], origem: 'Antes em Cobranças' },
+          { nome: 'Open Finance', subs: [] },
+          { nome: 'Seguros', subs: [] },
+          { nome: 'Mais: Indicar amigo e Meus benefícios', subs: [], origem: 'Rodapé do menu, menor destaque' }
+        ] }
+      ],
+      regras: [
+        { t: 'Um CTA principal por tela', d: 'O botão principal fica no cabeçalho da página e muda conforme o contexto: Criar cobrança no Início e em Cobranças, Transferir via Pix no Pix, Transferir saldo no Extrato, Emitir nota em Notas fiscais. Ele deixa de aparecer na barra lateral, nos cartões e nos estados vazios.' },
+        { t: 'Badges dizem o que está pendente', d: 'O número vem com rótulo acessível (por exemplo, “3 cobranças vencidas”). No Início, o card Precisa da sua atenção explica cada pendência e leva direto à lista filtrada.' },
+        { t: 'Menu recolhível e busca global', d: 'O menu recolhe para 84 px, mostrando só ícones, com rótulo para leitores de tela. A busca global no topo encontra cobranças, clientes e telas (atalho ⌘K). No mobile, o menu vira gaveta e há uma barra com 5 atalhos.' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

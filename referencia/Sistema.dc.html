@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Sistema visual · tokens</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>body{margin:0}</style>
+</helmet>
+<div style="width: 1440px; min-height: 2000px; box-sizing: border-box; padding: 64px; background: #F0F2F5; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; color: #1D2125; display: flex; flex-direction: column; gap: 40px">
+<div style="display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #0030C8">Entrega 2 · Sistema visual</span>
+<h1 style="margin: 0; font-size: 44px; font-weight: 800; letter-spacing: -0.02em">Tokens</h1>
+<p style="margin: 0; font-size: 17px; line-height: 1.5; color: #37474F; max-width: 880px">A base é a paleta enviada. Quando uma cor original não passa em WCAG AA para texto (o verde #91C651 e o cinza #7A8696), o token de texto usa um tom mais escuro derivado dela, e a cor original fica para gráficos e preenchimentos.</p>
+</div>
+
+<section style="display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-size: 24px; font-weight: 800">Cores · claro e escuro</h2>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px">
+<sc-for list="{{temas}}" as="tm">
+<div style="background: {{tm.bg}}; border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 12px; color: {{tm.fg}}">
+<span style="font-size: 16px; font-weight: 800">{{tm.nome}}</span>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+<sc-for list="{{tm.cores}}" as="c">
+<div style="display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 14px; background: {{tm.chip}}">
+<span style="width: 40px; height: 40px; flex: none; border-radius: 10px; background: {{c.hex}}; border: 1px solid {{tm.line}}"></span>
+<span style="display: flex; flex-direction: column; gap: 1px; min-width: 0"><span style="font-size: 12px; font-weight: 700; font-family: ui-monospace, Menlo, monospace">{{c.nome}}</span><span style="font-size: 11px; opacity: 0.85">{{c.hex}} · {{c.uso}}</span></span>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-for>
+</div>
+</section>
+
+<div style="display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 16px">
+<section style="background: #FFFFFF; border-radius: 24px; padding: 28px; display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-size: 24px; font-weight: 800">Tipografia · Plus Jakarta Sans</h2>
+<sc-for list="{{tipos}}" as="tp">
+<div style="display: flex; align-items: baseline; gap: 20px; border-top: 1px solid #E3E6EA; padding-top: 12px">
+<span style="width: 170px; flex: none; font-size: 12px; font-weight: 700; font-family: ui-monospace, Menlo, monospace; color: #37474F">{{tp.token}}<br>{{tp.spec}}</span>
+<span style="font-size: {{tp.size}}; font-weight: {{tp.w}}; line-height: 1.2; letter-spacing: {{tp.ls}}">{{tp.ex}}</span>
+</div>
+</sc-for>
+</section>
+<div style="display: flex; flex-direction: column; gap: 16px">
+<section style="background: #FFFFFF; border-radius: 24px; padding: 28px; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 24px; font-weight: 800">Espaçamento · base 4</h2>
+<sc-for list="{{espacos}}" as="e">
+<div style="display: flex; align-items: center; gap: 14px"><span style="width: 90px; font-size: 12px; font-weight: 700; font-family: ui-monospace, Menlo, monospace">{{e.t}}</span><span style="height: 14px; width: {{e.v}}; background: #0038E5; border-radius: 4px"></span><span style="font-size: 12px; color: #37474F">{{e.v}}</span></div>
+</sc-for>
+</section>
+<section style="background: #FFFFFF; border-radius: 24px; padding: 28px; display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 24px; font-weight: 800">Raios e sombras</h2>
+<div style="display: flex; gap: 14px; flex-wrap: wrap">
+<sc-for list="{{raios}}" as="r"><div style="display: flex; flex-direction: column; align-items: center; gap: 6px"><span style="width: 64px; height: 64px; background: #E6EDFE; border: 2px solid #0038E5; border-radius: {{r.v}}"></span><span style="font-size: 11px; font-weight: 700; font-family: ui-monospace, Menlo, monospace">{{r.t}} · {{r.v}}</span></div></sc-for>
+</div>
+<div style="display: flex; gap: 20px; flex-wrap: wrap; padding: 12px; background: #F0F2F5; border-radius: 16px">
+<sc-for list="{{sombras}}" as="sh"><div style="display: flex; flex-direction: column; gap: 8px; align-items: center"><span style="width: 110px; height: 70px; background: #FFFFFF; border-radius: 16px; box-shadow: {{sh.v}}"></span><span style="font-size: 11px; font-weight: 700; font-family: ui-monospace, Menlo, monospace">{{sh.t}}</span></div></sc-for>
+</div>
+</section>
+</div>
+</div>
+
+<section style="background: #FFFFFF; border-radius: 24px; padding: 28px; display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-size: 24px; font-weight: 800">Estados de interação</h2>
+<div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px">
+<sc-for list="{{estados}}" as="es">
+<div style="display: flex; flex-direction: column; gap: 10px; padding: 16px; border-radius: 18px; background: #F8F9FA">
+<span style="display: flex; align-items: center; justify-content: center; min-height: 48px; border-radius: 14px; background: {{es.bg}}; color: {{es.fg}}; font-size: 14px; font-weight: 700; border: {{es.border}}; box-shadow: {{es.ring}}; opacity: {{es.op}}">{{es.label}}</span>
+<span style="font-size: 13px; font-weight: 800">{{es.nome}}</span>
+<span style="font-size: 12px; line-height: 1.45; color: #37474F">{{es.regra}}</span>
+</div>
+</sc-for>
+</div>
+</section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2000}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const claro = [
+      ['color.bg.ground', '#F0F2F5', 'fundo'], ['color.bg.surface', '#FFFFFF', 'cards'], ['color.bg.subtle', '#F8F9FA', 'linhas e blocos'], ['color.border', '#E3E6EA', 'divisores'],
+      ['color.text.primary', '#1D2125', 'texto 16:1'], ['color.text.secondary', '#37474F', 'apoio 9,9:1'], ['color.text.muted', '#5F6B7A', 'legenda 5,5:1'], ['color.brand.primary', '#0038E5', 'marca e seleção 7,8:1'],
+      ['color.brand.support', '#006FF0', 'gráficos e foco'], ['color.action.cta', '#1D2125', 'botão principal'], ['color.success.text', '#3F7A12', 'recebida 5,2:1'], ['color.success.fill', '#91C651', 'gráficos'],
+      ['color.danger', '#B02A37', 'vencida e erro 6,4:1'], ['color.warning.text', '#8A5300', 'chargeback'], ['color.info.text', '#0058C4', 'aguardando'], ['color.brand.tint', '#E6EDFE', 'fundo selecionado']
+    ];
+    const escuro = [
+      ['color.bg.ground', '#121417', 'fundo'], ['color.bg.surface', '#1D2125', 'cards'], ['color.bg.subtle', '#262B30', 'linhas e blocos'], ['color.border', '#323940', 'divisores'],
+      ['color.text.primary', '#F5F5F5', 'texto'], ['color.text.secondary', '#C1C1C1', 'apoio'], ['color.text.muted', '#A3ADB8', 'legenda'], ['color.brand.primary', '#1F5BF0', 'marca e CTA 5,4:1'],
+      ['color.brand.text', '#8DB4FF', 'links'], ['color.nav.bg', '#0A2A9E', 'menu lateral'], ['color.success.text', '#A6D86E', 'recebida'], ['color.success.fill', '#91C651', 'gráficos'],
+      ['color.danger', '#FF8A95', 'vencida e erro'], ['color.warning.text', '#F2B65A', 'chargeback'], ['color.info.text', '#7FB2FF', 'aguardando'], ['color.brand.tint', '#13254F', 'fundo selecionado']
+    ];
+    const map = (a) => a.map((c) => ({ nome: c[0], hex: c[1], uso: c[2] }));
+    return {
+      temas: [
+        { nome: 'Modo claro', bg: '#FFFFFF', fg: '#1D2125', chip: '#F8F9FA', line: '#E3E6EA', cores: map(claro) },
+        { nome: 'Modo escuro', bg: '#1D2125', fg: '#F5F5F5', chip: '#262B30', line: '#4A535C', cores: map(escuro) }
+      ],
+      tipos: [
+        { token: 'text.display', spec: '40/48 · 800', size: '40px', w: '800', ls: '-0.02em', ex: 'Olá, Paulo!' },
+        { token: 'text.h1', spec: '32/38 · 800', size: '32px', w: '800', ls: '-0.02em', ex: 'Cobranças' },
+        { token: 'text.h2', spec: '18/24 · 800', size: '18px', w: '800', ls: '0', ex: 'Precisa da sua atenção' },
+        { token: 'text.metric', spec: '24/30 · 800', size: '24px', w: '800', ls: '-0.02em', ex: 'R$ 12.480,35' },
+        { token: 'text.body', spec: '15/22 · 400', size: '15px', w: '400', ls: '0', ex: 'Crie, acompanhe e resolva pendências.' },
+        { token: 'text.label', spec: '13/18 · 700', size: '13px', w: '700', ls: '0', ex: 'Vencimento' },
+        { token: 'text.caption', spec: '12/16 · 500', size: '12px', w: '500', ls: '0', ex: '2 cobranças em aberto' }
+      ],
+      espacos: [['space.1', '4px'], ['space.2', '8px'], ['space.3', '12px'], ['space.4', '16px'], ['space.6', '24px'], ['space.8', '32px'], ['space.12', '48px'], ['space.16', '64px']].map((x) => ({ t: x[0], v: x[1] })),
+      raios: [['radius.sm', '10px'], ['radius.md', '14px'], ['radius.lg', '18px'], ['radius.card', '24px'], ['radius.panel', '28px'], ['radius.pill', '999px']].map((x) => ({ t: x[0], v: x[1] })),
+      sombras: [
+        { t: 'shadow.card', v: '0 1px 2px rgba(29,33,37,0.04), 0 8px 24px rgba(29,33,37,0.06)' },
+        { t: 'shadow.overlay', v: '0 24px 64px rgba(29,33,37,0.20)' },
+        { t: 'shadow.toast', v: '0 16px 40px rgba(29,33,37,0.35)' }
+      ],
+      estados: [
+        { nome: 'Padrão', label: 'Criar cobrança', bg: '#1D2125', fg: '#FFFFFF', border: '0', ring: 'none', op: '1', regra: 'Fundo action.cta, texto branco.' },
+        { nome: 'Hover', label: 'Criar cobrança', bg: '#373D44', fg: '#FFFFFF', border: '0', ring: 'none', op: '1', regra: 'Brilho 95% (clareia o escuro, escurece o claro).' },
+        { nome: 'Foco', label: 'Criar cobrança', bg: '#1D2125', fg: '#FFFFFF', border: '0', ring: '0 0 0 3px #FFFFFF, 0 0 0 6px #006FF0', op: '1', regra: 'Anel de 3 px #006FF0 com 2 px de afastamento, só pelo teclado.' },
+        { nome: 'Ativo / selecionado', label: 'Vencidas', bg: '#E6EDFE', fg: '#0030C8', border: '1.5px solid #0038E5', ring: 'none', op: '1', regra: 'Fundo brand.tint, borda brand.primary e aria-pressed.' },
+        { nome: 'Desabilitado', label: 'Emitir nota', bg: '#1D2125', fg: '#FFFFFF', border: '0', ring: 'none', op: '0.45', regra: 'Opacidade 45%, cursor bloqueado e texto que explica o motivo.' },
+        { nome: 'Erro', label: 'R$ 2,00', bg: '#FFFFFF', fg: '#B02A37', border: '1.5px solid #B02A37', ring: 'none', op: '1', regra: 'Borda danger, mensagem abaixo e aria-invalid.' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Comportamento dos estados e acessibilidade</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>body{margin:0}</style>
+</helmet>
+<div style="width: 1440px; min-height: 1800px; box-sizing: border-box; padding: 64px; background: #F0F2F5; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; color: #1D2125; display: flex; flex-direction: column; gap: 28px">
+<div style="display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #0030C8">Entregas 7 e 8 · Anotações</span>
+<h1 style="margin: 0; font-size: 44px; font-weight: 800; letter-spacing: -0.02em">Como cada estado se comporta</h1>
+<p style="margin: 0; font-size: 16px; color: #37474F; max-width: 900px">As telas com dados foram desenhadas sem validação em conta real. Os valores são fictícios e precisam ser revisados com dados de produção.</p>
+</div>
+<section style="background: #FFFFFF; border-radius: 24px; overflow: hidden">
+<table style="width: 100%; border-collapse: collapse; font-size: 14px">
+<thead><tr style="text-align: left; background: #F8F9FA; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: #37474F"><th scope="col" style="padding: 14px 20px; width: 170px">Tela</th><th scope="col" style="padding: 14px 16px">Vazio</th><th scope="col" style="padding: 14px 16px">Com dados</th><th scope="col" style="padding: 14px 20px">Interações e regras</th></tr></thead>
+<tbody>
+<sc-for list="{{linhas}}" as="l">
+<tr style="border-top: 1px solid #E3E6EA; vertical-align: top"><th scope="row" style="padding: 16px 20px; text-align: left; font-weight: 800">{{l.tela}}</th><td style="padding: 16px; line-height: 1.5; color: #37474F">{{l.vazio}}</td><td style="padding: 16px; line-height: 1.5; color: #37474F">{{l.dados}}</td><td style="padding: 16px 20px; line-height: 1.5; color: #37474F">{{l.regras}}</td></tr>
+</sc-for>
+</tbody>
+</table>
+</section>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px">
+<section style="background: #FFFFFF; border-radius: 24px; padding: 28px; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 22px; font-weight: 800">Acessibilidade</h2>
+<sc-for list="{{a11y}}" as="a"><p style="margin: 0; font-size: 14px; line-height: 1.55; color: #37474F"><strong style="color: #1D2125">{{a.t}}</strong> {{a.d}}</p></sc-for>
+</section>
+<section style="background: #FFFFFF; border-radius: 24px; padding: 28px; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 22px; font-weight: 800">Restrições aplicadas</h2>
+<sc-for list="{{regras}}" as="r"><p style="margin: 0; font-size: 14px; line-height: 1.55; color: #37474F"><strong style="color: #1D2125">{{r.t}}</strong> {{r.d}}</p></sc-for>
+</section>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1800}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      linhas: [
+        { tela: 'Início', vazio: 'Checklist com 3 de 5 etapas e os 3 passos da primeira cobrança. Métricas aparecem zeradas, com texto explicando.', dados: 'Métricas, pendências com ação direta, próximos vencimentos, recebido por forma de pagamento e convite contextual.', regras: 'O checklist some quando a conta está completa. O convite de antecipação só aparece se houver saldo de cartão e pode ser dispensado. Vencidas ficam em vermelho e nunca são escondidas.' },
+        { tela: 'Cobranças', vazio: 'Ilustração e explicação do que vai aparecer. O CTA fica só no cabeçalho.', dados: 'Abas por tipo, busca, filtro por status com contagem, drawer de filtros e tabela (cards no mobile).', regras: 'Filtro sem resultado mostra "Limpar filtros". A linha abre o drawer de detalhe. Cancelar e estornar exigem modal com o valor e o cliente.' },
+        { tela: 'Criar cobrança', vazio: 'Formulário com Pix como forma padrão e vencimento sugerido em 7 dias.', dados: 'Busca de cliente com cadastro inline, resumo com taxa e valor líquido em tempo real.', regras: 'A validação roda ao enviar: resumo de erros no topo, mensagem em cada campo e aria-invalid. O erro some ao editar o campo. Valor mínimo de R$ 5,00 e vencimento a partir de hoje.' },
+        { tela: 'Confirmação', vazio: 'Não se aplica.', dados: 'Status "Aguardando pagamento", QR Code, link com Copiar, envio por e-mail, PDF e andamento em 3 etapas.', regras: 'Copiar mostra um toast. "Ver cobrança" abre a lista já com o drawer daquela cobrança.' },
+        { tela: 'Pix', vazio: 'Orienta o primeiro passo: como receber (chave cadastrada) e quando o envio fica liberado.', dados: 'Atalhos Transferir e Copia e Cola, limite do dia com barra e lista de entradas e saídas.', regras: 'O drawer valida a chave, o saldo e o limite. A confirmação é obrigatória porque o Pix é irreversível.' },
+        { tela: 'Extrato', vazio: '"Nenhuma movimentação neste período", sem "tente novamente". Se houver dados fora do período, oferece ampliar para 15 dias.', dados: 'Três resumos, período (hoje, 7 dias, 15 dias ou personalizado) e lançamentos por dia com o saldo de cada dia.', regras: 'Exportar abre um menu com PDF, Excel, CSV, OFX e CNAB 240. "Solicitar cartão" saiu do topo e virou convite contextual.' },
+        { tela: 'Notas fiscais', vazio: 'Configuração em 4 passos com barra de progresso e opção "Pular e emitir depois".', dados: 'Lista com emitida, agendada e erro, com ação de corrigir.', regras: 'Sem a configuração, "Emitir nota" fica desabilitado e o motivo aparece num aviso com "Retomar configuração".' }
+      ],
+      a11y: [
+        { t: 'Contraste AA.', d: 'Texto ≥ 4,5:1 nos dois modos. As cores da paleta que não passam (#91C651 e #7A8696) ficam para gráficos e preenchimentos.' },
+        { t: 'Alvos de 44 px.', d: 'Botões, abas, chips, itens do menu e opções de lista têm 44 px ou mais. A barra inferior do mobile tem 56 px.' },
+        { t: 'Teclado.', d: 'Só elementos nativos: button, input, select, table e label. O foco tem anel azul de 3 px. Modais e drawers têm botão de fechar e retornam o foco.' },
+        { t: 'Rótulos.', d: 'Todo campo tem label (visível ou só para leitor de tela). Botões só com ícone têm aria-label. Os badges anunciam o que está pendente.' },
+        { t: 'Status.', d: 'Cor, ponto e texto juntos. Nada depende só da cor.' }
+      ],
+      regras: [
+        { t: 'Valores.', d: 'R$ com vírgula decimal e ponto de milhar em todas as telas.' },
+        { t: 'Dados fictícios.', d: 'Clientes, e-mails com domínio exemplo, taxas e QR Code são ilustrativos e marcados como tal.' },
+        { t: 'Risco visível.', d: 'Vencidas, chargeback e bloqueios aparecem no Início, na lista e no detalhe. Avisos de risco não podem ser dispensados.' },
+        { t: 'Ações irreversíveis.', d: 'Cancelar, estornar e enviar Pix passam por uma confirmação explícita com valor, destinatário e "não pode ser desfeita".' },
+        { t: 'Pesquisa e chat.', d: 'Não há pop-up nem balão sobre o conteúdo: a ajuda fica no topo. A pesquisa de satisfação deve aparecer depois de uma tarefa concluída, encaixada no layout.' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

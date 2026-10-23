@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Componentes e estados</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>body{margin:0}</style>
+</helmet>
+<div style="width: 1440px; min-height: 2400px; box-sizing: border-box; padding: 64px; background: #F0F2F5; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; color: #1D2125; display: flex; flex-direction: column; gap: 24px">
+<div style="display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #0030C8">Entrega 6 · Componentes</span>
+<h1 style="margin: 0; font-size: 44px; font-weight: 800; letter-spacing: -0.02em">Biblioteca base</h1>
+<p style="margin: 0; font-size: 17px; color: #37474F">Os mesmos componentes do protótipo. Todos os alvos de toque têm 44 px ou mais.</p>
+</div>
+
+<section style="background: #FFFFFF; border-radius: 24px; padding: 28px; display: flex; flex-direction: column; gap: 18px">
+<h2 style="margin: 0; font-size: 22px; font-weight: 800">Botões</h2>
+<div style="display: grid; grid-template-columns: 160px repeat(5, minmax(0, 1fr)); gap: 12px; align-items: center">
+<span></span>
+<sc-for list="{{colEstados}}" as="ce"><span style="font-size: 12px; font-weight: 700; color: #37474F; text-transform: uppercase; letter-spacing: 0.05em">{{ce}}</span></sc-for>
+<sc-for list="{{botoes}}" as="b">
+<span style="font-size: 14px; font-weight: 800">{{b.nome}}</span>
+<sc-for list="{{b.estados}}" as="e">
+<button type="button" style="min-height: 48px; padding: 0 16px; border-radius: 14px; font-size: 14px; font-weight: 700; background: {{e.bg}}; color: {{e.fg}}; border: {{e.border}}; box-shadow: {{e.ring}}; opacity: {{e.op}}">{{b.label}}</button>
+</sc-for>
+</sc-for>
+</div>
+</section>
+
+<section style="background: #FFFFFF; border-radius: 24px; padding: 28px; display: flex; flex-direction: column; gap: 18px">
+<h2 style="margin: 0; font-size: 22px; font-weight: 800">Campos e select</h2>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px">
+<sc-for list="{{campos}}" as="c">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="{{c.id}}" style="font-size: 13px; font-weight: 700">{{c.label}}</label>
+<input id="{{c.id}}" type="text" value="{{c.valor}}" placeholder="{{c.ph}}" disabled="{{c.dis}}" style="height: 48px; padding: 0 14px; border-radius: 14px; border: 1.5px solid {{c.border}}; box-shadow: {{c.ring}}; background: {{c.bg}}; color: #1D2125; font-size: 16px; box-sizing: border-box; opacity: {{c.op}}">
+<span style="font-size: 13px; font-weight: 600; color: {{c.msgFg}}">{{c.msg}}</span>
+</div>
+</sc-for>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="cmp-sel" style="font-size: 13px; font-weight: 700">Select · Regime tributário</label>
+<select id="cmp-sel" style="height: 48px; padding: 0 12px; border-radius: 14px; border: 1.5px solid #CDCDCD; background: #FFFFFF; color: #1D2125; font-size: 16px"><option>Simples Nacional</option><option>MEI</option><option>Lucro Presumido</option></select>
+<span style="font-size: 13px; color: #37474F">Lista nativa: teclado e leitor de tela já funcionam</span>
+</div>
+</div>
+</section>
+
+<div style="display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 24px">
+<section style="background: #FFFFFF; border-radius: 24px; padding: 28px; display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-size: 22px; font-weight: 800">Tabela e badges de status</h2>
+<table style="width: 100%; border-collapse: collapse; font-size: 14px">
+<thead><tr style="text-align: left; color: #5F6B7A; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em"><th scope="col" style="padding: 10px 8px">Cliente</th><th scope="col" style="padding: 10px 8px">Vencimento</th><th scope="col" style="padding: 10px 8px; text-align: right">Valor</th><th scope="col" style="padding: 10px 8px">Status</th></tr></thead>
+<tbody>
+<sc-for list="{{tabela}}" as="r">
+<tr style="border-top: 1px solid #E3E6EA"><td style="padding: 12px 8px; font-weight: 700">{{r.cli}}</td><td style="padding: 12px 8px; color: {{r.vFg}}">{{r.venc}}</td><td style="padding: 12px 8px; text-align: right; font-weight: 800">{{r.valor}}</td><td style="padding: 12px 8px"><span style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; background: {{r.bg}}; color: {{r.fg}}"><span style="width: 6px; height: 6px; border-radius: 50%; background: {{r.fg}}"></span>{{r.st}}</span></td></tr>
+</sc-for>
+</tbody>
+</table>
+<p style="margin: 0; font-size: 12px; color: #5F6B7A">O status nunca depende só da cor: tem ponto, texto e contraste de luminosidade. Dados fictícios.</p>
+</section>
+<section style="background: #FFFFFF; border-radius: 24px; padding: 28px; display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-size: 22px; font-weight: 800">Card de métrica</h2>
+<div style="border-radius: 24px; padding: 20px; border: 1px solid #E9ECEF; box-shadow: 0 8px 24px rgba(29,33,37,0.06); display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 13px; font-weight: 600; color: #37474F">Saldo disponível</span><span style="font-size: 24px; font-weight: 800">R$ 12.480,35</span><span style="font-size: 12px; color: #37474F">Atualizado às 09:42</span>
+</div>
+<div style="border-radius: 24px; padding: 20px; border: 1px solid #B02A37; display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 13px; font-weight: 600; color: #37474F">Vencidas · variante de risco</span><span style="font-size: 24px; font-weight: 800; color: #B02A37">R$ 1.340,00</span><span style="font-size: 12px; color: #B02A37">3 cobranças · ação necessária</span>
+</div>
+</section>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px">
+<section style="background: #FFFFFF; border-radius: 24px; padding: 28px; display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-size: 22px; font-weight: 800">Modal de confirmação</h2>
+<div style="background: rgba(29,33,37,0.45); border-radius: 20px; padding: 28px; display: flex; justify-content: center">
+<div role="alertdialog" aria-labelledby="cm-t" style="width: 100%; max-width: 420px; background: #FFFFFF; border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 14px">
+<h3 id="cm-t" style="margin: 0; font-size: 19px; font-weight: 800">Cancelar a cobrança de R$ 450,00?</h3>
+<p style="margin: 0; font-size: 14px; line-height: 1.5; color: #37474F">Ana Beatriz Lima deixa de conseguir pagar por este link. Esta ação não pode ser desfeita.</p>
+<div style="display: flex; gap: 10px"><button type="button" style="flex: 1; min-height: 48px; border-radius: 14px; border: 1px solid #E3E6EA; background: #FFFFFF; font-size: 14px; font-weight: 700">Voltar</button><button type="button" style="flex: 1; min-height: 48px; border-radius: 14px; border: 0; background: #B02A37; color: #FFFFFF; font-size: 14px; font-weight: 700">Sim, cancelar cobrança</button></div>
+</div>
+</div>
+<p style="margin: 0; font-size: 13px; color: #37474F">O botão de confirmar repete a ação e o foco começa em Voltar. Esc fecha.</p>
+</section>
+<section style="background: #FFFFFF; border-radius: 24px; padding: 28px; display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-size: 22px; font-weight: 800">Drawer</h2>
+<div style="background: rgba(29,33,37,0.45); border-radius: 20px; padding: 16px; display: flex; justify-content: flex-end; height: 260px; box-sizing: border-box">
+<div role="dialog" aria-labelledby="cd-t" style="width: 300px; background: #FFFFFF; border-radius: 20px; display: flex; flex-direction: column">
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; border-bottom: 1px solid #E3E6EA"><h3 id="cd-t" style="margin: 0; font-size: 15px; font-weight: 800">Detalhes da cobrança</h3><button type="button" aria-label="Fechar painel" style="width: 44px; height: 44px; border-radius: 12px; border: 1px solid #E3E6EA; background: #FFFFFF; font-size: 18px">×</button></div>
+<div style="flex: 1; padding: 16px; display: flex; flex-direction: column; gap: 6px"><span style="font-size: 22px; font-weight: 800">R$ 450,00</span><span style="font-size: 13px; color: #37474F">Ana Beatriz Lima · Ensaio fotográfico</span></div>
+<div style="padding: 12px 16px; border-top: 1px solid #E3E6EA"><button type="button" style="width: 100%; min-height: 44px; border-radius: 12px; border: 0; background: #1D2125; color: #FFFFFF; font-weight: 700">Reenviar cobrança</button></div>
+</div>
+</div>
+<p style="margin: 0; font-size: 13px; color: #37474F">480 px no desktop, tela cheia no mobile. Ações fixas no rodapé, destrutiva à esquerda.</p>
+</section>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px">
+<section style="background: #FFFFFF; border-radius: 24px; padding: 28px; display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-size: 22px; font-weight: 800">Toast</h2>
+<div role="status" style="align-self: flex-start; display: flex; align-items: center; gap: 10px; padding: 14px 18px; border-radius: 16px; background: #1D2125; color: #FFFFFF; font-size: 14px; font-weight: 600"><span style="color: #A6D86E">✓</span>Link copiado</div>
+<p style="margin: 0; font-size: 13px; line-height: 1.5; color: #37474F">Some em 3,2 s e é anunciado pelo aria-live. Nunca leva ação irreversível nem fica sobre o CTA.</p>
+</section>
+<section style="background: #FFFFFF; border-radius: 24px; padding: 28px; display: flex; flex-direction: column; gap: 14px; align-items: center; text-align: center">
+<h2 style="margin: 0; align-self: flex-start; font-size: 22px; font-weight: 800">Estado vazio</h2>
+<span style="width: 72px; height: 72px; border-radius: 24px; background: #E6EDFE"></span>
+<span style="font-size: 16px; font-weight: 800">Nenhuma movimentação neste período</span>
+<span style="font-size: 13px; color: #37474F">Diz o que vai aparecer e como chegar lá. Sem tom de erro e sem um CTA a mais.</span>
+</section>
+<section style="background: #FFFFFF; border-radius: 24px; padding: 28px; display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-size: 22px; font-weight: 800">Banner dispensável</h2>
+<div style="display: flex; align-items: center; gap: 10px; padding: 14px; border-radius: 18px; background: #E5F0FE"><span style="flex: 1; font-size: 13px; line-height: 1.45"><strong>Antecipação automática disponível.</strong> 1,15% a.m. à vista.</span><button type="button" aria-label="Dispensar aviso" style="width: 44px; height: 44px; border: 0; background: transparent; font-size: 18px">×</button></div>
+<p style="margin: 0; font-size: 13px; line-height: 1.5; color: #37474F">Aparece só onde faz sentido e, depois de dispensado, não volta. Avisos de risco não podem ser dispensados.</p>
+</section>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2400}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const ring = '0 0 0 3px #FFFFFF, 0 0 0 6px #006FF0';
+    const mk = (bg, fg, border, hoverBg) => [
+      { bg, fg, border, ring: 'none', op: '1' },
+      { bg: hoverBg, fg, border, ring: 'none', op: '1' },
+      { bg, fg, border, ring, op: '1' },
+      { bg: hoverBg, fg, border, ring: 'inset 0 2px 4px rgba(0,0,0,0.15)', op: '1' },
+      { bg, fg, border, ring: 'none', op: '0.45' }
+    ];
+    return {
+      colEstados: ['Padrão', 'Hover', 'Foco', 'Pressionado', 'Desabilitado'],
+      botoes: [
+        { nome: 'Primário', label: 'Criar cobrança', estados: mk('#1D2125', '#FFFFFF', '0', '#373D44') },
+        { nome: 'Marca', label: 'Copiar link', estados: mk('#0038E5', '#FFFFFF', '0', '#002FC2') },
+        { nome: 'Secundário', label: 'Exportar', estados: mk('#FFFFFF', '#1D2125', '1px solid #E3E6EA', '#F2F3F5') },
+        { nome: 'Destrutivo', label: 'Cancelar cobrança', estados: mk('#FFFFFF', '#B02A37', '1px solid #B02A37', '#FBE9EB') },
+        { nome: 'Texto', label: 'Pular e emitir depois', estados: mk('transparent', '#0030C8', '0', '#E6EDFE') }
+      ],
+      campos: [
+        { id: 'cmp-1', label: 'Padrão', valor: '', ph: 'Nome, CPF/CNPJ ou e-mail', border: '#CDCDCD', ring: 'none', bg: '#FFFFFF', msg: 'Texto de ajuda opcional', msgFg: '#37474F', dis: false, op: '1' },
+        { id: 'cmp-2', label: 'Foco', valor: 'Café Grão', ph: '', border: '#0038E5', ring: '0 0 0 3px rgba(0,111,240,0.40)', bg: '#FFFFFF', msg: 'Anel azul visível', msgFg: '#37474F', dis: false, op: '1' },
+        { id: 'cmp-3', label: 'Preenchido', valor: 'R$ 1.200,00', ph: '', border: '#CDCDCD', ring: 'none', bg: '#FFFFFF', msg: '', msgFg: '#37474F', dis: false, op: '1' },
+        { id: 'cmp-4', label: 'Erro', valor: '2,00', ph: '', border: '#B02A37', ring: 'none', bg: '#FFFFFF', msg: 'O valor mínimo é R$ 5,00.', msgFg: '#B02A37', dis: false, op: '1' },
+        { id: 'cmp-5', label: 'Sucesso', valor: 'financeiro@graonorte.exemplo', ph: '', border: '#3F7A12', ring: 'none', bg: '#FFFFFF', msg: 'E-mail válido', msgFg: '#3F7A12', dis: false, op: '1' },
+        { id: 'cmp-6', label: 'Desabilitado', valor: 'Configure antes de emitir', ph: '', border: '#E3E6EA', ring: 'none', bg: '#F8F9FA', msg: 'Motivo sempre explicado', msgFg: '#37474F', dis: true, op: '0.6' }
+      ],
+      tabela: [
+        { cli: 'Ana Beatriz Lima', venc: 'Venceu em 12/10/2026', vFg: '#B02A37', valor: 'R$ 450,00', st: 'Vencida', bg: '#FBE9EB', fg: '#B02A37' },
+        { cli: 'Café Grão Norte Ltda.', venc: '28/10/2026', vFg: '#37474F', valor: 'R$ 1.200,00', st: 'Aguardando', bg: '#E5F0FE', fg: '#0058C4' },
+        { cli: 'Studio Pilar ME', venc: '20/10/2026', vFg: '#37474F', valor: 'R$ 3.500,00', st: 'Recebida', bg: '#EEF7E4', fg: '#3F7A12' },
+        { cli: 'Studio Pilar ME', venc: '02/10/2026', vFg: '#37474F', valor: 'R$ 150,00', st: 'Chargeback', bg: '#FFF2DC', fg: '#8A5300' },
+        { cli: 'Marcos Vieira', venc: '10/10/2026', vFg: '#37474F', valor: 'R$ 320,00', st: 'Cancelada', bg: '#EEEEEE', fg: '#37474F' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

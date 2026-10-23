@@ -1,0 +1,1247 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="light">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Asaas · Conta digital PJ completa e sem mensalidade</title>
+<meta name="description" content="Conta digital PJ completa e sem mensalidade." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<!-- Design system do painel: fonte única de cores, tipografia, raios, sombras e movimento -->
+<link rel="stylesheet" href="/tokens/tokens.css" />
+<style>
+/* ---------- tokens só da landing (derivados da paleta do painel) ---------- */
+:root{
+  --sky: linear-gradient(180deg,#D9E4FF 0%,#EAF0FF 38%,var(--color-bg-ground) 100%);
+  --glass: rgba(255,255,255,.72);
+  --glass-border: rgba(255,255,255,.9);
+  --blob-a: rgba(0,56,229,.22);
+  --blob-b: rgba(145,198,81,.28);
+  --blob-c: rgba(0,111,240,.20);
+  --orbit: rgba(0,56,229,.22);
+  --deep: #0A1F7A;
+  --phone-bezel: #15181C;
+  --header-h: 72px;
+}
+[data-theme='dark']{
+  --sky: linear-gradient(180deg,#0B1A4A 0%,#0F1730 40%,var(--color-bg-ground) 100%);
+  --glass: rgba(29,33,37,.72);
+  --glass-border: rgba(255,255,255,.08);
+  --blob-a: rgba(31,91,240,.30);
+  --blob-b: rgba(145,198,81,.14);
+  --blob-c: rgba(0,111,240,.22);
+  --orbit: rgba(141,180,255,.22);
+  --deep: #081648;
+  --phone-bezel: #050607;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--color-bg-ground);color:var(--color-text-primary);font:var(--text-body);overflow-x:hidden;transition:background-color .3s ease,color .3s ease}
+a{color:var(--color-brand-text)}
+button,input{font-family:inherit}
+img,svg{display:block}
+i[data-i]{display:inline-flex;font-style:normal;flex:none}
+:focus-visible{outline:3px solid var(--color-focus);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.wrap{width:100%;max-width:var(--content-max);margin:0 auto;padding:0 24px}
+section{position:relative}
+
+/* ---------- botões (mesmos do painel) ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:0 24px;border-radius:var(--radius-pill);border:0;font:700 15px/1 var(--font-family);text-decoration:none;cursor:pointer;white-space:nowrap;transition:filter var(--dur-fast) ease,transform var(--dur-fast) ease,box-shadow var(--dur-fast) ease,background-color var(--dur-fast) ease}
+.btn:hover{filter:brightness(.93);transform:translateY(-1px)}
+.btn:active{transform:translateY(0);filter:brightness(.88)}
+.btn-cta{background:var(--color-action-cta);color:var(--color-action-on-cta)}
+.btn-primary{background:var(--color-brand-primary);color:#fff;box-shadow:0 10px 24px rgba(0,56,229,.28)}
+.btn-ghost{background:var(--color-bg-surface);color:var(--color-text-primary);box-shadow:inset 0 0 0 1px var(--color-border)}
+.btn-white{background:#fff;color:#0030C8}
+.btn-sm{min-height:44px;padding:0 18px;font-size:14px}
+.link-arrow{display:inline-flex;align-items:center;gap:6px;font:700 14px/20px var(--font-family);color:var(--color-brand-text);text-decoration:none;min-height:44px}
+.link-arrow i{transition:transform var(--dur-fast) ease}
+.link-arrow:hover i{transform:translateX(4px)}
+.icon-btn{width:44px;height:44px;border-radius:14px;border:0;background:transparent;color:var(--color-text-primary);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:background-color var(--dur-fast) ease}
+.icon-btn:hover{background:var(--color-bg-sunken)}
+
+/* ---------- chips e rótulos ---------- */
+.eyebrow{display:inline-flex;align-items:center;max-width:100%;gap:8px;padding:6px 12px 6px 6px;border-radius:var(--radius-pill);background:var(--color-brand-tint);color:var(--color-brand-text);font:var(--text-label)}
+.eyebrow b{white-space:nowrap;flex:none;display:inline-flex;align-items:center;justify-content:center;height:24px;padding:0 10px;border-radius:999px;background:var(--color-brand-primary);color:#fff;font-weight:700;font-size:12px}
+.chip{display:inline-flex;align-items:center;gap:8px;min-height:36px;padding:0 14px;border-radius:var(--radius-pill);background:var(--color-bg-surface);box-shadow:inset 0 0 0 1px var(--color-border);font:600 13px/18px var(--font-family);color:var(--color-text-secondary)}
+.chip i{color:var(--color-brand-primary)}
+.tone{width:44px;height:44px;border-radius:var(--radius-md);display:inline-flex;align-items:center;justify-content:center;background:var(--color-brand-tint);color:var(--color-brand-primary);flex:none}
+.tone.ok{background:var(--color-success-bg);color:var(--color-success-text)}
+.tone.bad{background:var(--color-danger-bg);color:var(--color-danger)}
+.tone.warn{background:var(--color-warning-bg);color:var(--color-warning-text)}
+
+h1,h2,h3,p{margin:0}
+.h2{font:800 clamp(30px,4.2vw,48px)/1.08 var(--font-family);letter-spacing:-.03em;text-wrap:balance}
+.lead{font:400 18px/28px var(--font-family);color:var(--color-text-secondary);text-wrap:pretty}
+.muted{color:var(--color-text-muted)}
+.sec{padding:120px 0}
+.sec-head{display:flex;flex-direction:column;gap:16px;max-width:760px}
+.sec-head.center{align-items:center;text-align:center;margin:0 auto}
+
+/* ---------- revelação no scroll ---------- */
+.rv{opacity:0;transform:translateY(28px);transition:opacity .8s var(--ease-out),transform .8s var(--ease-out);transition-delay:var(--d,0ms)}
+.rv.in{opacity:1;transform:none}
+
+/* ---------- barra de progresso ---------- */
+.progress{position:fixed;top:0;left:0;height:3px;width:100%;transform-origin:0 50%;transform:scaleX(0);background:linear-gradient(90deg,var(--color-brand-primary),var(--color-brand-support),#91C651);z-index:60}
+
+/* ---------- topo ---------- */
+.top{position:fixed;top:12px;left:0;right:0;z-index:50;padding:0 16px;pointer-events:none}
+.top-in{pointer-events:auto;max-width:calc(var(--content-max) + 16px);margin:0 auto;height:var(--header-h);display:flex;align-items:center;gap:8px;padding:0 12px 0 16px;border-radius:24px;background:var(--glass);backdrop-filter:saturate(1.6) blur(18px);-webkit-backdrop-filter:saturate(1.6) blur(18px);box-shadow:inset 0 0 0 1px var(--glass-border);transition:box-shadow .3s ease,height .3s ease,background-color .3s ease}
+.top.scrolled .top-in{height:64px;box-shadow:inset 0 0 0 1px var(--glass-border),0 12px 40px rgba(29,33,37,.12)}
+.brand{display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:var(--color-text-primary);min-height:44px;margin-right:12px}
+.brand-mark{width:40px;height:40px;border-radius:12px;background:var(--color-brand-primary);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(0,56,229,.35)}
+.brand-name{font:800 20px/1 var(--font-family);letter-spacing:-.02em}
+.logo{display:block;color:var(--color-brand-primary)}
+[data-theme='dark'] .logo{color:#fff}
+.brand-tag{font:600 11px/1 var(--font-family);color:var(--color-text-muted);margin-top:3px}
+.nav{display:flex;align-items:center;gap:2px;flex:1}
+.nav a,.nav button.nl{display:inline-flex;align-items:center;gap:4px;min-height:44px;padding:0 14px;border-radius:14px;border:0;background:transparent;color:var(--color-text-secondary);font:600 14px/1 var(--font-family);text-decoration:none;cursor:pointer;transition:background-color var(--dur-fast) ease,color var(--dur-fast) ease}
+.nav a:hover,.nav button.nl:hover,.nav button.nl[aria-expanded=true]{background:rgba(0,56,229,.08);color:var(--color-brand-text)}
+.nav .chev{transition:transform 220ms ease}
+.nav button[aria-expanded=true] .chev{transform:rotate(180deg)}
+.top-actions{display:flex;align-items:center;gap:6px}
+.burger{display:none}
+
+/* mega menu Soluções */
+.mega{position:absolute;top:calc(var(--header-h) + 10px);left:50%;width:min(760px,calc(100vw - 32px));transform:translateX(-50%);background:var(--color-bg-surface);border-radius:var(--radius-card);box-shadow:var(--shadow-overlay),inset 0 0 0 1px var(--color-card-border);padding:20px;display:none;grid-template-columns:1fr 1fr 1fr;gap:4px;pointer-events:auto}
+.mega.open{display:grid;animation:popIn 220ms var(--ease-out) both;transform-origin:top center}
+@keyframes popIn{from{opacity:0;transform:translateX(-50%) translateY(-8px) scale(.98)}to{opacity:1;transform:translateX(-50%) translateY(0) scale(1)}}
+.mega a{display:flex;align-items:center;gap:12px;padding:10px;border-radius:var(--radius-md);text-decoration:none;color:var(--color-text-primary);font:700 14px/18px var(--font-family);transition:background-color var(--dur-fast) ease}
+.mega a:hover{background:var(--color-bg-subtle)}
+.mega a .tone{width:40px;height:40px;border-radius:12px;transition:transform var(--dur-fast) ease}
+.mega a:hover .tone{transform:scale(1.08)}
+.mega small{display:block;font:500 12px/16px var(--font-family);color:var(--color-text-muted);margin-top:2px}
+
+/* ---------- HERO ---------- */
+.hero{position:relative;padding:calc(var(--header-h) + 88px) 0 96px;background:var(--sky);overflow:hidden;isolation:isolate}
+.blob{position:absolute;border-radius:50%;filter:blur(60px);z-index:-1;will-change:transform}
+.blob.a{width:520px;height:520px;opacity:.7;background:var(--blob-a);top:-120px;right:-80px;animation:drift 18s ease-in-out infinite}
+.blob.b{width:380px;height:380px;opacity:.6;background:var(--blob-b);bottom:40px;left:-120px;animation:drift 22s ease-in-out infinite reverse}
+.blob.c{width:300px;height:300px;background:var(--blob-c);top:40%;left:42%;animation:drift 26s ease-in-out infinite}
+@keyframes drift{0%,100%{translate:0 0}33%{translate:40px -30px}66%{translate:-30px 40px}}
+.dots{position:absolute;inset:0;z-index:-1;background-image:radial-gradient(rgba(0,56,229,.14) 1px,transparent 1px);background-size:28px 28px;mask-image:radial-gradient(ellipse at 70% 40%,#000 0%,transparent 65%);-webkit-mask-image:radial-gradient(ellipse at 70% 40%,#000 0%,transparent 65%)}
+.hero-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:40px;align-items:center}
+.hero-copy{display:flex;flex-direction:column;gap:28px;position:relative;z-index:2}
+.hero h1{font:800 clamp(38px,4.8vw,62px)/1.04 var(--font-family);letter-spacing:-.035em;text-wrap:balance}
+.hero h1 .w{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.08em;margin-bottom:-.08em}
+.hero h1 .w>span{display:inline-block;transform:translateY(110%);animation:wordUp .9s var(--ease-out) forwards;animation-delay:calc(var(--i)*70ms + 120ms)}
+@keyframes wordUp{to{transform:translateY(0)}}
+.hl{position:relative;color:var(--color-brand-primary);white-space:nowrap}
+[data-theme='dark'] .hl{color:var(--color-brand-text)}
+.hl svg{position:absolute;left:-2%;bottom:-.12em;width:104%;height:.38em;overflow:visible}
+.hl path{fill:none;stroke:#91C651;stroke-width:6;stroke-linecap:round;stroke-dasharray:420;stroke-dashoffset:420;animation:draw 1.1s var(--ease-out) 1.1s forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.hero .lead{max-width:540px;opacity:0;animation:fadeUp .9s var(--ease-out) .7s forwards}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.signup{display:flex;flex-direction:column;gap:10px;max-width:540px;opacity:0;animation:fadeUp .9s var(--ease-out) .85s forwards}
+.signup-row{display:flex;align-items:center;gap:6px;padding:6px;border-radius:var(--radius-pill);background:var(--color-bg-surface);box-shadow:var(--shadow-card),inset 0 0 0 1px var(--color-card-border);transition:box-shadow var(--dur-fast) ease}
+.signup-row:focus-within{box-shadow:var(--shadow-card),0 0 0 3px rgba(0,111,240,.40)}
+.signup-row label{display:flex;align-items:center;gap:10px;flex:1;min-width:0;padding-left:20px;color:var(--color-text-muted)}
+.signup-row input{flex:1;min-width:0;height:48px;border:0;background:transparent;color:var(--color-text-primary);font:500 15px/22px var(--font-family);outline:none}
+.signup-row input::placeholder{color:inherit;opacity:.7}
+.signup-row[aria-invalid=true]{box-shadow:var(--shadow-card),0 0 0 2px var(--color-danger)}
+.signup .err{font:600 13px/18px var(--font-family);color:var(--color-danger);min-height:0;display:none;align-items:center;gap:6px;padding-left:16px}
+.signup .err.show{display:flex}
+.signup .note{font:var(--text-caption);color:var(--color-text-muted);padding-left:16px}
+.signup .note a{color:inherit;text-decoration:underline}
+.proof{display:flex;align-items:baseline;gap:8px;font:500 14px/20px var(--font-family);color:var(--color-text-muted);opacity:0;animation:fadeUp .9s var(--ease-out) 1s forwards}
+.avatars{display:flex}
+.avatars span{text-shadow:0 1px 2px rgba(0,0,0,.25);width:40px;height:40px;border-radius:50%;margin-left:-10px;display:flex;align-items:center;justify-content:center;font:800 13px/1 var(--font-family);color:#fff;box-shadow:0 0 0 3px var(--color-bg-ground)}
+.avatars span:first-child{margin-left:0}
+.proof strong{font:800 18px/1 var(--font-family);letter-spacing:-.02em;color:var(--color-text-primary)}
+.proof strong i{color:var(--color-success-fill)}
+.proof small{font:var(--text-caption);color:var(--color-text-muted)}
+
+/* palco do hero */
+.stage{position:relative;height:640px;display:flex;align-items:center;justify-content:center}
+.stage .layer{position:absolute;will-change:transform}
+.orbit{position:absolute;left:50%;top:50%;border-radius:50%;border:1.5px dashed var(--orbit);animation:spin 60s linear infinite}
+.orbit.o1{width:520px;height:520px;margin:-260px 0 0 -260px;opacity:.8}
+.orbit.o2{width:420px;height:420px;margin:-210px 0 0 -210px;animation-duration:44s;animation-direction:reverse}
+@keyframes spin{to{rotate:360deg}}
+.sat{position:absolute;left:50%;top:50%;width:56px;height:56px;margin:-28px 0 0 -28px;transform:rotate(var(--a)) translateX(calc(var(--r) * var(--rs,1))) rotate(calc(var(--a) * -1))}
+.sat span{width:56px;height:56px;border-radius:50%;background:var(--color-bg-surface);box-shadow:0 10px 30px rgba(0,56,229,.18),inset 0 0 0 1px var(--color-card-border);display:flex;align-items:center;justify-content:center;color:var(--color-brand-primary);animation:spin 60s linear infinite reverse}
+.orbit.o2 .sat span{animation-duration:44s;animation-direction:normal}
+.sat.small{width:14px;height:14px;margin:-7px 0 0 -7px}
+.sat.small span{width:14px;height:14px;background:var(--color-brand-primary);box-shadow:0 0 0 6px rgba(0,56,229,.12)}
+.sat.green span{background:#91C651;box-shadow:0 0 0 6px rgba(145,198,81,.18)}
+
+/* telefone (componente compartilhado) */
+.phone{position:relative;width:300px;height:620px;border-radius:50px;background:var(--phone-bezel);padding:11px;box-shadow:0 50px 100px rgba(10,31,122,.30),0 20px 40px rgba(29,33,37,.18),inset 0 0 0 2px #2A2F35}
+.phone::before{content:"";position:absolute;top:22px;left:50%;width:96px;height:28px;margin-left:-48px;border-radius:20px;background:#000;z-index:5}
+.screen{position:relative;width:100%;height:100%;border-radius:40px;overflow:hidden;background:var(--color-bg-ground);color:var(--color-text-primary)}
+.sb{display:flex;justify-content:space-between;align-items:center;padding:16px 26px 0;height:46px;font:700 13px/1 var(--font-family)}
+.sb .sig{display:flex;gap:4px;align-items:center}
+.sb .sig i{width:16px;height:9px;border-radius:2px;background:currentColor;display:block}
+.sc-pad{padding:10px 16px 0;display:flex;flex-direction:column;gap:10px}
+.m-hi{display:flex;align-items:center;justify-content:space-between}
+.m-hi b{display:block;font:800 17px/22px var(--font-family);letter-spacing:-.01em}
+.m-hi small{font:500 11px/14px var(--font-family);color:var(--color-text-muted)}
+.m-av{width:36px;height:36px;border-radius:12px;background:var(--color-brand-tint);color:var(--color-brand-text);display:flex;align-items:center;justify-content:center;font:800 12px/1 var(--font-family)}
+.m-bal{border-radius:22px;background:var(--color-nav-bg);color:#fff;padding:16px;position:relative;overflow:hidden}
+.m-bal::after{content:"";position:absolute;right:-40px;top:-40px;width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,.12)}
+.m-bal small{font:600 11px/14px var(--font-family);color:var(--color-nav-muted);display:flex;align-items:center;gap:6px}
+.m-bal strong{display:block;font:800 26px/32px var(--font-family);letter-spacing:-.02em;margin:4px 0 2px}
+.m-bal em{font:500 10px/14px var(--font-family);font-style:normal;color:var(--color-nav-muted)}
+.m-acts{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.m-acts div{display:flex;flex-direction:column;align-items:center;gap:5px;font:600 10px/12px var(--font-family);color:var(--color-text-secondary)}
+.m-acts span{width:48px;height:48px;border-radius:16px;background:var(--color-bg-surface);box-shadow:var(--shadow-card);display:flex;align-items:center;justify-content:center;color:var(--color-brand-primary)}
+.m-card{background:var(--color-bg-surface);border-radius:20px;box-shadow:var(--shadow-card);padding:12px}
+.m-card h4{margin:0 0 8px;font:800 12px/16px var(--font-family)}
+.m-row{display:flex;align-items:center;gap:10px;padding:7px 0}
+.m-row+.m-row{border-top:1px solid var(--color-border)}
+.m-row .tone{width:32px;height:32px;border-radius:10px}
+.m-row>div{min-width:0}.m-row b{display:block;font:700 11px/14px var(--font-family);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.m-row small{display:block;font:500 10px/13px var(--font-family);color:var(--color-text-muted)}
+.m-row .v{margin-left:auto;font:800 11px/14px var(--font-family);white-space:nowrap}
+.m-row .v.ok{color:var(--color-success-text)} .m-row .v.bad{color:var(--color-danger)}
+.m-tab{position:absolute;left:10px;right:10px;bottom:10px;height:58px;border-radius:22px;background:var(--color-bg-surface);box-shadow:0 -4px 20px rgba(29,33,37,.08);display:grid;grid-template-columns:repeat(5,1fr);align-items:center}
+.m-tab div{display:flex;flex-direction:column;align-items:center;gap:3px;font:600 9px/11px var(--font-family);color:var(--color-text-muted)}
+.m-tab div.on{color:var(--color-brand-primary)}
+
+/* cartões flutuantes */
+.float{background:var(--glass);backdrop-filter:blur(16px) saturate(1.5);-webkit-backdrop-filter:blur(16px) saturate(1.5);border-radius:var(--radius-lg);box-shadow:0 20px 50px rgba(10,31,122,.16),inset 0 0 0 1px var(--glass-border);padding:14px 16px;display:flex;align-items:center;gap:12px;color:var(--color-text-primary);animation:bob 6s ease-in-out infinite}
+.float b{display:block;font:800 14px/18px var(--font-family)}
+.float small{display:block;font:500 12px/16px var(--font-family);color:var(--color-text-muted)}
+.float .tone{width:40px;height:40px;border-radius:12px}
+@keyframes bob{0%,100%{translate:0 0}50%{translate:0 -10px}}
+.acard{width:260px;height:164px;border-radius:22px;padding:20px;color:#fff;background:radial-gradient(120% 140% at 0% 0%,#1F5BF0 0%,#0A2A9E 45%,#061A66 100%);box-shadow:0 30px 60px rgba(6,26,102,.45),inset 0 1px 0 rgba(255,255,255,.2);display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;animation:bob 7s ease-in-out infinite;animation-delay:-2s}
+.acard::before{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.18) 45%,transparent 60%);transform:translateX(-100%);animation:sheen 5s ease-in-out infinite}
+@keyframes sheen{0%,60%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.acard .row{display:flex;justify-content:space-between;align-items:center}
+.acard .chipc{width:40px;height:30px;border-radius:7px;background:linear-gradient(135deg,#E9D9A6,#B99A4E);opacity:.95}
+.acard .num{font:600 15px/1 var(--font-family);letter-spacing:.14em;opacity:.9}
+.acard .lbl{font:600 10px/1 var(--font-family);letter-spacing:.08em;text-transform:uppercase;opacity:.7}
+.acard .circles{display:flex}
+.acard .circles span{width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.85)}
+.acard .circles span+span{margin-left:-10px;background:rgba(145,198,81,.9)}
+
+/* rolagem sugerida */
+.scroll-cue{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;font:var(--text-caption);color:var(--color-text-muted)}
+.scroll-cue span{width:24px;height:38px;border-radius:999px;box-shadow:inset 0 0 0 2px var(--color-border-strong);position:relative}
+.scroll-cue span::after{content:"";position:absolute;left:50%;top:8px;width:4px;height:8px;margin-left:-2px;border-radius:4px;background:var(--color-brand-primary);animation:cue 1.8s ease-in-out infinite}
+@keyframes cue{0%{opacity:0;transform:translateY(0)}30%{opacity:1}100%{opacity:0;transform:translateY(12px)}}
+
+/* ---------- SEM × COM ---------- */
+.vs-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:56px;align-items:center}
+.seg{display:inline-flex;padding:5px;border-radius:var(--radius-pill);background:var(--color-bg-sunken);position:relative}
+.seg button{position:relative;z-index:1;min-height:44px;padding:0 22px;border:0;background:transparent;border-radius:999px;font:700 14px/1 var(--font-family);color:var(--color-text-secondary);cursor:pointer;transition:color .3s ease}
+.seg button[aria-selected=true]{color:var(--color-text-primary)}
+.seg .pill{position:absolute;top:5px;bottom:5px;left:5px;border-radius:999px;background:var(--color-bg-surface);box-shadow:var(--shadow-card);transition:transform .45s var(--ease-out),width .45s var(--ease-out)}
+.vs-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+.vs-list li{display:flex;align-items:center;gap:14px;padding:14px;border-radius:var(--radius-lg);background:var(--color-bg-surface);box-shadow:var(--shadow-card);font:700 15px/20px var(--font-family);animation:fadeUp .5s var(--ease-out) both}
+.vs-list li:nth-child(2){animation-delay:80ms}.vs-list li:nth-child(3){animation-delay:160ms}
+.diagram{position:relative;aspect-ratio:6/5;border-radius:var(--radius-panel);background:var(--color-bg-surface);box-shadow:var(--shadow-card),inset 0 0 0 1px var(--color-card-border);overflow:hidden}
+.diagram::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,var(--color-danger-bg),transparent 70%);transition:opacity .6s ease}
+.diagram.com::before{background:radial-gradient(circle at 50% 50%,var(--color-brand-tint),transparent 70%)}
+.diagram svg.lines{position:absolute;inset:0;width:100%;height:100%}
+.diagram .ln{fill:none;stroke:var(--color-danger);stroke-width:2;stroke-dasharray:4 8;opacity:.55;transition:stroke .5s ease,opacity .5s ease}
+.diagram.com .ln{stroke:var(--color-brand-primary);stroke-dasharray:8 10;opacity:.9;animation:flow 1.2s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-36}}
+.node{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;width:180px;transition:transform .6s var(--ease-out)}
+.node .tone{width:56px;height:56px;border-radius:18px;box-shadow:var(--shadow-card);transition:background-color .5s ease,color .5s ease}
+.node p{font:700 13px/17px var(--font-family);color:var(--color-text-secondary);min-height:34px}
+.diagram:not(.com) .node.n1{animation:jitter 2.6s ease-in-out infinite}
+.diagram:not(.com) .node.n2{animation:jitter 3.1s ease-in-out infinite reverse}
+.diagram:not(.com) .node.n3{animation:jitter 2.2s ease-in-out infinite}
+@keyframes jitter{0%,100%{translate:0 0}25%{translate:3px -2px}50%{translate:-2px 3px}75%{translate:2px 2px}}
+.core{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:112px;height:112px;border-radius:32px;background:var(--color-bg-sunken);color:var(--color-text-muted);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font:800 12px/1 var(--font-family);box-shadow:var(--shadow-card);transition:background-color .5s ease,color .5s ease,transform .5s var(--ease-out)}
+.diagram.com .core{background:var(--color-brand-primary);color:#fff;transform:translate(-50%,-50%) scale(1.06);box-shadow:0 20px 50px rgba(0,56,229,.35)}
+.diagram.com .core::after{content:"";position:absolute;inset:-14px;border-radius:40px;border:2px solid var(--color-brand-primary);opacity:0;animation:ring 2s ease-out infinite}
+@keyframes ring{0%{opacity:.6;transform:scale(.9)}100%{opacity:0;transform:scale(1.25)}}
+.swap{transition:opacity .25s ease}
+.swap.out{opacity:0}
+
+/* ---------- BENTO ---------- */
+.bento{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:56px;grid-auto-flow:row dense}
+.card{position:relative;background:var(--color-bg-surface);border-radius:var(--radius-card);box-shadow:var(--shadow-card),inset 0 0 0 1px var(--color-card-border);padding:28px;display:flex;flex-direction:column;gap:14px;overflow:hidden;transition:transform var(--dur-base) var(--ease-out),box-shadow var(--dur-base) ease}
+.card::before{content:"";position:absolute;inset:0;background:radial-gradient(400px circle at var(--mx,50%) var(--my,50%),rgba(0,56,229,.09),transparent 45%);opacity:0;transition:opacity .3s ease;pointer-events:none}
+.card:hover{transform:translateY(-3px);box-shadow:0 14px 32px rgba(29,33,37,.14),inset 0 0 0 1px var(--color-card-border)}
+.card:hover::before{opacity:1}
+.card h3{font:800 20px/26px var(--font-family);letter-spacing:-.015em}
+.card p{color:var(--color-text-secondary)}
+.card.span2{grid-column:span 2}
+.card .vis{margin-top:auto;padding-top:8px}
+.card .tone{transition:transform .3s var(--ease-out)}
+.card:hover .tone{transform:rotate(-6deg) scale(1.08)}
+.gauge{position:relative;width:200px;height:110px;margin-bottom:24px}
+.gauge svg{width:200px;height:110px}
+.gauge .trk{fill:none;stroke:var(--color-bg-sunken);stroke-width:14;stroke-linecap:round}
+.gauge .val{fill:none;stroke:url(#gg);stroke-width:14;stroke-linecap:round;stroke-dasharray:283;stroke-dashoffset:283;transition:stroke-dashoffset 1.6s var(--ease-out)}
+.in .gauge .val{stroke-dashoffset:62}
+.gauge b{position:absolute;left:0;right:0;bottom:4px;text-align:center;font:800 28px/1 var(--font-family)}
+.gauge small{position:absolute;left:-20px;right:-20px;bottom:-24px;white-space:nowrap;text-align:center;font:var(--text-caption);color:var(--color-success-text)}
+.bars{display:flex;align-items:flex-end;gap:10px;height:120px}
+.bars span{flex:1;border-radius:10px 10px 4px 4px;background:var(--color-brand-tint);height:0;transition:height 1.2s var(--ease-out);transition-delay:calc(var(--k)*90ms)}
+.bars span.hi{background:linear-gradient(180deg,var(--color-brand-support),var(--color-brand-primary))}
+.in .bars span{height:var(--h)}
+.code-mini{border-radius:var(--radius-md);background:#121417;color:#C9D6FF;font:500 12px/20px ui-monospace,SFMono-Regular,Menlo,monospace;padding:14px 16px;overflow:hidden}
+.code-mini .k{color:#91C651}.code-mini .s{color:#8DB4FF}.code-mini .c{color:#5F6B7A}
+
+/* ---------- AUTOMAÇÃO (scroll narrativo) ---------- */
+.auto{background:var(--color-bg-surface);border-radius:48px;margin:0 16px;box-shadow:inset 0 0 0 1px var(--color-card-border)}
+.auto-tabs{position:sticky;top:calc(var(--header-h) + 24px);z-index:20;display:flex;justify-content:center;margin:40px 0 24px;pointer-events:none}
+.auto-tabs .seg{pointer-events:auto;background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 10px 30px rgba(29,33,37,.10),inset 0 0 0 1px var(--glass-border)}
+.auto-tabs .seg button{display:inline-flex;align-items:center;gap:8px}
+.auto-tabs .seg .pill{background:var(--color-brand-primary);box-shadow:0 8px 20px rgba(0,56,229,.3)}
+.auto-tabs .seg button[aria-selected=true]{color:#fff}
+.auto-grid{display:grid;grid-template-columns:1fr 380px;gap:64px;align-items:start}
+.chapter{padding:48px 0 80px;scroll-margin-top:160px;display:flex;flex-direction:column;gap:28px}
+.chapter .num{font:800 13px/1 var(--font-family);color:var(--color-brand-text);letter-spacing:.08em;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.chapter .num::before{content:"";width:28px;height:2px;background:currentColor}
+.chapter h3.big{font:800 clamp(28px,3.4vw,40px)/1.1 var(--font-family);letter-spacing:-.03em}
+.chapter h4{margin:0;font:800 18px/24px var(--font-family)}
+.methods{display:flex;flex-wrap:wrap;gap:8px}
+.mini-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.mini{border-radius:var(--radius-lg);background:var(--color-bg-subtle);padding:20px;display:flex;flex-direction:column;gap:10px;transition:transform var(--dur-base) var(--ease-out),box-shadow var(--dur-base) ease,background-color .2s}
+.mini:hover{transform:translateY(-3px);background:var(--color-bg-surface);box-shadow:0 14px 32px rgba(29,33,37,.12),inset 0 0 0 1px var(--color-card-border)}
+.mini b{font:800 16px/22px var(--font-family)}
+.mini p{font:400 14px/21px var(--font-family);color:var(--color-text-secondary)}
+.mini .link-arrow{margin-top:auto}
+.quote{border-radius:var(--radius-card);padding:28px;background:linear-gradient(135deg,var(--color-brand-primary),#0A2A9E);color:#fff;display:flex;flex-direction:column;gap:18px;position:relative;overflow:hidden}
+.quote::after{content:"“";position:absolute;right:20px;top:-30px;font:800 180px/1 var(--font-family);color:rgba(255,255,255,.12)}
+.quote p{font:700 20px/30px var(--font-family);letter-spacing:-.01em;position:relative}
+.quote .who{display:flex;align-items:center;gap:12px}
+.quote .who span{width:44px;height:44px;border-radius:14px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font:800 14px/1 var(--font-family)}
+.quote .who b{display:block;font:700 14px/18px var(--font-family)}
+.quote .who small{color:var(--color-nav-muted);font:500 12px/16px var(--font-family)}
+.quote .link-arrow{color:#fff;margin-left:auto}
+.timeline{list-style:none;margin:0;padding:0;position:relative;display:flex;flex-direction:column;gap:4px}
+.timeline::before{content:"";position:absolute;left:21px;top:20px;bottom:20px;width:2px;background:var(--color-border)}
+.timeline li{display:flex;align-items:center;gap:14px;padding:8px 0;position:relative}
+.timeline li .tone{width:44px;height:44px;border-radius:50%;box-shadow:0 0 0 4px var(--color-bg-surface)}
+.timeline li b{display:block;font:700 15px/20px var(--font-family)}
+.timeline li small{color:var(--color-text-muted);font:500 13px/18px var(--font-family)}
+.checks{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.checks li{display:flex;gap:10px;align-items:flex-start;font:600 14px/20px var(--font-family);color:var(--color-text-secondary)}
+.checks li i{color:var(--color-success-text);margin-top:1px}
+.foot{font:var(--text-caption);color:var(--color-text-muted)}
+.sticky-phone{position:sticky;top:calc(var(--header-h) + 110px);height:640px;display:flex;align-items:flex-start;justify-content:center;padding-top:10px}
+.sticky-phone .halo{position:absolute;inset:40px -20px;border-radius:50%;background:radial-gradient(circle,rgba(0,56,229,.18),transparent 65%);filter:blur(20px)}
+.scr{position:absolute;inset:0;padding-top:46px;opacity:0;transform:translateY(24px) scale(.98);transition:opacity .5s var(--ease-out),transform .6s var(--ease-out);pointer-events:none}
+.scr.on{opacity:1;transform:none}
+.scr .sb{position:absolute;top:0;left:0;right:0}
+/* tela A: formas de pagamento */
+.pm{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;background:var(--color-bg-surface);box-shadow:var(--shadow-card);font:700 12px/16px var(--font-family);transition:box-shadow .3s ease}
+.pm .tone{width:30px;height:30px;border-radius:9px}
+.pm .rad{margin-left:auto;width:18px;height:18px;border-radius:50%;box-shadow:inset 0 0 0 2px var(--color-border-strong)}
+.pm.sel{box-shadow:0 0 0 2px var(--color-brand-primary),var(--shadow-card)}
+.pm.sel .rad{box-shadow:inset 0 0 0 6px var(--color-brand-primary)}
+.toast-in{position:absolute;left:14px;right:14px;top:56px;padding:12px;border-radius:18px;background:#1D2125;color:#fff;display:flex;gap:10px;align-items:center;box-shadow:var(--shadow-toast);transform:translateY(-140%);opacity:0}
+.scr.on .toast-in{animation:toastLoop 5s var(--ease-out) 1s infinite}
+@keyframes toastLoop{0%{transform:translateY(-140%);opacity:0}12%,70%{transform:translateY(0);opacity:1}82%,100%{transform:translateY(-140%);opacity:0}}
+.toast-in .tone{width:34px;height:34px;border-radius:10px;background:rgba(145,198,81,.2);color:#A6D86E}
+.toast-in b{display:block;font:700 12px/16px var(--font-family)}
+.toast-in small{font:500 11px/14px var(--font-family);color:#C1C1C1}
+/* tela B: régua */
+.bub{max-width:88%;padding:10px 12px;border-radius:16px 16px 16px 4px;background:var(--color-bg-surface);box-shadow:var(--shadow-card);font:600 11px/15px var(--font-family);opacity:0;transform:translateY(10px) scale(.96);transition:opacity .4s var(--ease-out),transform .4s var(--ease-out)}
+.bub small{display:block;font:500 9px/12px var(--font-family);color:var(--color-text-muted);margin-top:3px}
+.bub.paid{background:var(--color-success-bg);color:var(--color-success-text)}
+.bub.late{background:var(--color-danger-bg);color:var(--color-danger)}
+.scr.on .bub{opacity:1;transform:none}
+.scr.on .bub:nth-child(2){transition-delay:.35s}.scr.on .bub:nth-child(3){transition-delay:.7s}.scr.on .bub:nth-child(4){transition-delay:1.05s}.scr.on .bub:nth-child(5){transition-delay:1.4s}
+.chan{display:flex;gap:6px;flex-wrap:wrap}
+.chan span{padding:5px 9px;border-radius:999px;background:var(--color-brand-tint);color:var(--color-brand-text);font:700 10px/12px var(--font-family)}
+
+/* ---------- API (escuro) ---------- */
+.api{background:#0B0F1A;color:#F5F5F5;border-radius:48px;margin:120px 16px 0;overflow:hidden;position:relative;isolation:isolate}
+.api::before{content:"";position:absolute;width:700px;height:700px;right:-200px;top:-200px;border-radius:50%;background:radial-gradient(circle,rgba(31,91,240,.45),transparent 65%);z-index:-1}
+.api::after{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:48px 48px;mask-image:linear-gradient(180deg,#000,transparent);-webkit-mask-image:linear-gradient(180deg,#000,transparent);z-index:-1}
+.api .eyebrow{background:rgba(141,180,255,.14);color:#8DB4FF}
+.api .lead{color:#C1C1C1}
+.api-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:56px;align-items:center}
+.api .chip{background:rgba(255,255,255,.06);box-shadow:inset 0 0 0 1px rgba(255,255,255,.1);color:#F5F5F5}
+.api .chip i{color:#8DB4FF}
+.term{border-radius:var(--radius-card);background:rgba(18,20,23,.85);box-shadow:0 40px 80px rgba(0,0,0,.5),inset 0 0 0 1px rgba(255,255,255,.08);overflow:hidden}
+.term-top{display:flex;align-items:center;gap:8px;padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.08);font:600 12px/1 var(--font-family);color:#A3ADB8}
+.term-top span{width:11px;height:11px;border-radius:50%;background:#323940}
+.term-top em{font-style:normal;margin-left:10px}
+.term pre{margin:0;padding:22px 22px 26px;min-height:330px;font:500 13.5px/24px ui-monospace,SFMono-Regular,Menlo,monospace;color:#C9D6FF;white-space:pre-wrap}
+.term .k{color:#91C651}.term .s{color:#8DB4FF}.term .n{color:#F2B65A}.term .c{color:#5F6B7A}
+.caret{display:inline-block;width:8px;height:17px;background:#8DB4FF;vertical-align:-3px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.hook{display:flex;align-items:center;gap:10px;margin-top:16px;padding:12px 16px;border-radius:16px;background:rgba(145,198,81,.12);color:#A6D86E;font:700 13px/18px var(--font-family);opacity:0;transform:translateY(10px);transition:all .5s var(--ease-out)}
+.hook.show{opacity:1;transform:none}
+
+/* ---------- SEGURANÇA / NÚMEROS ---------- */
+.giant{position:absolute;left:0;top:40px;font:800 clamp(200px,30vw,420px)/1 var(--font-family);letter-spacing:-.06em;color:transparent;-webkit-text-stroke:2px var(--color-border);white-space:nowrap;z-index:-1;pointer-events:none;user-select:none}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:56px}
+.stat{padding:32px;border-radius:var(--radius-card);background:var(--color-bg-surface);box-shadow:var(--shadow-card),inset 0 0 0 1px var(--color-card-border)}
+.stat strong{display:flex;align-items:baseline;gap:4px;font:800 clamp(40px,4.6vw,60px)/1 var(--font-family);letter-spacing:-.04em;color:var(--color-brand-primary)}
+[data-theme='dark'] .stat strong{color:var(--color-brand-text)}
+.stat strong small{font-size:.45em;letter-spacing:-.01em}
+.stat p{margin-top:10px;font:700 15px/20px var(--font-family);color:var(--color-text-secondary)}
+.trust{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
+.trust .card{flex-direction:row;align-items:flex-start;gap:16px;padding:24px}
+.trust .card p{font:600 15px/22px var(--font-family);color:var(--color-text-primary)}
+.trust .card .tag{display:inline-flex;margin-top:10px;padding:4px 10px;border-radius:999px;background:var(--color-bg-subtle);font:var(--text-label);color:var(--color-text-muted)}
+
+/* logos em marquee */
+.logos{margin-top:72px;display:flex;flex-direction:column;gap:28px}
+.logos h3{font:var(--text-label);text-transform:uppercase;letter-spacing:.1em;color:var(--color-text-muted);text-align:center}
+.marquee{overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
+.track{display:flex;gap:12px;width:max-content;animation:marq 40s linear infinite}
+.marquee.rev .track{animation-direction:reverse;animation-duration:46s}
+.marquee:hover .track{animation-play-state:paused}
+@keyframes marq{to{transform:translateX(calc(-50% - 6px))}}
+.logo-pill{display:flex;align-items:center;gap:10px;height:64px;padding:0 28px;border-radius:20px;background:var(--color-bg-surface);box-shadow:inset 0 0 0 1px var(--color-card-border);font:800 18px/1 var(--font-family);letter-spacing:-.02em;color:var(--color-text-secondary);white-space:nowrap;filter:grayscale(1);opacity:.85;transition:opacity .2s,color .2s}
+.logo-pill:hover{opacity:1;color:var(--color-brand-text)}
+.logo-pill i{color:var(--color-text-muted)}
+
+/* ---------- APP ---------- */
+.app{border-radius:48px;margin:0 16px;background:radial-gradient(120% 120% at 100% 0%,#1F5BF0 0%,#0038E5 40%,var(--deep) 100%);color:#fff;overflow:hidden;position:relative;isolation:isolate}
+.app .cloud{position:absolute;border-radius:50%;background:rgba(255,255,255,.14);filter:blur(40px);z-index:-1}
+.app-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;min-height:620px}
+.app .lead{color:#C9D6FF}
+.app .eyebrow{background:rgba(255,255,255,.14);color:#fff}
+.app .eyebrow b{background:#fff;color:#0030C8}
+.stores{display:flex;gap:12px;flex-wrap:wrap}
+.store{display:inline-flex;align-items:center;gap:12px;min-height:56px;padding:0 20px;border-radius:18px;background:#0B0F1A;color:#fff;text-decoration:none;transition:transform var(--dur-fast) ease}
+.store:hover{transform:translateY(-2px)}
+.store small{display:block;font:500 11px/14px var(--font-family);color:#A3ADB8}
+.store b{display:block;font:800 16px/20px var(--font-family)}
+.app-stage{position:relative;height:620px}
+.app-stage .layer{position:absolute;will-change:transform}
+
+/* ---------- FAQ ---------- */
+.faq-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:56px;align-items:start}
+.faq-side{position:sticky;top:calc(var(--header-h) + 40px);display:flex;flex-direction:column;gap:20px}
+.contact{border-radius:var(--radius-card);background:var(--color-bg-surface);box-shadow:var(--shadow-card),inset 0 0 0 1px var(--color-card-border);padding:24px;display:flex;flex-direction:column;gap:14px}
+.contact a{text-decoration:none;color:var(--color-text-primary);display:flex;align-items:center;gap:12px;min-height:44px}
+.contact b{display:block;font:800 16px/20px var(--font-family)}
+.contact small{display:block;font:var(--text-caption);color:var(--color-text-muted)}
+.acc{display:flex;flex-direction:column;gap:10px}
+.qa{border-radius:var(--radius-lg);background:var(--color-bg-surface);box-shadow:var(--shadow-card),inset 0 0 0 1px var(--color-card-border);transition:box-shadow .3s ease}
+.qa.open{box-shadow:0 14px 32px rgba(29,33,37,.12),inset 0 0 0 2px var(--color-brand-primary)}
+.qa h3{margin:0}
+.qa button{width:100%;min-height:64px;display:flex;align-items:center;gap:16px;padding:16px 20px;border:0;background:transparent;text-align:left;font:800 17px/24px var(--font-family);color:var(--color-text-primary);cursor:pointer;border-radius:var(--radius-lg)}
+.qa button .pm-ic{margin-left:auto;width:36px;height:36px;border-radius:12px;background:var(--color-bg-subtle);display:flex;align-items:center;justify-content:center;flex:none;transition:transform .35s var(--ease-out),background-color .2s,color .2s}
+.qa.open button .pm-ic{transform:rotate(45deg);background:var(--color-brand-primary);color:#fff}
+.qa .ans{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s var(--ease-out)}
+.qa.open .ans{grid-template-rows:1fr}
+.qa .ans>div{overflow:hidden}
+.qa .ans p{padding:0 20px 22px;color:var(--color-text-secondary);font:400 15px/24px var(--font-family)}
+
+/* ---------- CTA FINAL ---------- */
+.final{border-radius:48px;margin:0 16px;padding:100px 24px;text-align:center;background:var(--sky);position:relative;overflow:hidden;isolation:isolate;box-shadow:inset 0 0 0 1px var(--color-card-border)}
+.final .h2{font-size:clamp(36px,5.4vw,68px)}
+.final .signup{margin:0 auto;opacity:1;animation:none;width:100%}
+
+/* ---------- RODAPÉ ---------- */
+footer{padding:80px 0 40px}
+.f-grid{display:grid;grid-template-columns:1.3fr repeat(4,1fr);gap:32px}
+.f-col h3{font:var(--text-label);text-transform:uppercase;letter-spacing:.08em;color:var(--color-text-muted);margin-bottom:14px}
+.f-col ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.f-col a{display:inline-flex;align-items:center;min-height:32px;color:var(--color-text-secondary);text-decoration:none;font:500 14px/20px var(--font-family);transition:color .15s}
+.f-col a:hover{color:var(--color-brand-text)}
+.f-contact b{display:block;font:800 18px/24px var(--font-family);margin-top:12px}
+.f-contact small{display:block;font:var(--text-caption);color:var(--color-text-muted)}
+.f-legal{margin-top:56px;padding-top:24px;border-top:1px solid var(--color-border);display:flex;flex-direction:column;gap:6px;font:var(--text-caption);color:var(--color-text-muted)}
+.f-legal .concept{display:inline-flex;align-self:flex-start;margin-top:8px;padding:4px 10px;border-radius:999px;background:var(--color-warning-bg);color:var(--color-warning-text);font:var(--text-label)}
+
+/* ---------- toast e bottom sheet (do painel) ---------- */
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,calc(100% + 48px));visibility:hidden;z-index:80;display:flex;align-items:center;gap:10px;padding:14px 20px;border-radius:var(--radius-pill);background:#1D2125;color:#fff;font:700 14px/20px var(--font-family);box-shadow:var(--shadow-toast);transition:transform .45s var(--ease-out)}
+.toast.show{transform:translate(-50%,0);visibility:visible}
+.toast i{color:#A6D86E}
+.overlay{position:fixed;inset:0;background:var(--color-overlay);z-index:70;display:none}
+.overlay.show{display:block;animation:fadeIn .24s ease-out both}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:71;max-height:86vh;overflow:auto;background:var(--color-nav-bg);color:#fff;border-radius:28px 28px 0 0;padding:12px 16px 24px;display:none}
+.sheet.show{display:block;animation:sheetUp 380ms var(--ease-out) both}
+@keyframes sheetUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.sheet .grab{width:44px;height:5px;border-radius:999px;background:rgba(255,255,255,.5);margin:0 auto 12px}
+.sheet .sh-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.sheet .sh-head button{width:44px;height:44px;border:0;border-radius:14px;background:rgba(255,255,255,.14);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.sheet .grp{font:700 11px/1 var(--font-family);letter-spacing:.08em;text-transform:uppercase;color:var(--color-nav-muted);padding:16px 8px 8px}
+.sheet a{display:flex;align-items:center;gap:12px;min-height:48px;padding:0 12px;border-radius:14px;color:#fff;text-decoration:none;font:600 15px/1 var(--font-family)}
+.sheet a:hover{background:rgba(255,255,255,.16)}
+.sheet .sh-cta{display:grid;gap:10px;margin-top:18px}
+.sheet .sh-cta .btn{width:100%}
+
+/* ---------- responsivo (mesmos breakpoints do painel) ---------- */
+@media (max-width:1099px){
+  .nav{display:none}
+  .burger{display:inline-flex}
+  .top-actions .hide-t{display:none}
+  .top-in{justify-content:space-between}
+  .hero-grid,.vs-grid,.api-grid,.app-grid,.faq-grid{grid-template-columns:1fr}
+  .stage{height:600px;width:100%;max-width:520px;margin:0 auto}
+  .auto-grid{grid-template-columns:1fr 320px;gap:32px}
+  .mini-grid{grid-template-columns:1fr}
+  .bento{grid-template-columns:repeat(2,1fr)}
+  .card.span2{grid-column:span 2}
+  .f-grid{grid-template-columns:1fr 1fr 1fr}
+  .f-grid .f-contact{grid-column:1/-1}
+  .faq-side{position:static}
+  .app-stage{height:560px}
+}
+@media (max-width:759px){
+  :root{--header-h:64px}
+  .wrap{padding:0 16px}
+  .top{top:8px;padding:0 8px}
+  .top-actions .hide-m{display:none}
+  .brand-tag{display:none}
+  .sec{padding:80px 0}
+  .hero{padding-top:calc(var(--header-h) + 48px)}
+  .signup-row{flex-direction:column;align-items:stretch;border-radius:24px;padding:8px}
+  .signup-row label{padding:0 8px}
+  .signup-row .btn{width:100%}
+  .stage{height:500px;transform:scale(.8);transform-origin:50% 0;margin:16px -40px -80px}
+  .eyebrow{font-size:12px;line-height:16px;border-radius:16px}
+  .hero .eyebrow .long{display:none}
+  .hero .eyebrow span.short{display:inline}
+  .orbit.o1{width:440px;height:440px;margin:-220px 0 0 -220px;--rs:.846}
+  .hide-xs{display:none !important}
+  .bento{grid-template-columns:1fr}
+  .card.span2{grid-column:auto}
+  .auto,.api,.app,.final{border-radius:32px;margin-left:8px;margin-right:8px}
+  .auto-grid{grid-template-columns:1fr}
+  .sticky-phone{display:none}
+  .mob-phone{display:flex !important;justify-content:center;margin:8px 0}
+  .auto-tabs .seg button{padding:0 14px;font-size:13px}
+  .auto-tabs .seg button .lbl-l{display:none}
+  .checks{grid-template-columns:1fr}
+  .stats,.trust{grid-template-columns:1fr}
+  .app-stage{height:520px;transform:scale(.85);margin:-30px 0}
+  .f-grid{grid-template-columns:1fr 1fr}
+  .diagram{aspect-ratio:4/5}
+  .node{width:120px}
+  .scroll-cue{display:none}
+}
+
+/* fotos (gente de verdade, sem logos) */
+.photo-hero{right:0;top:16px;width:400px;height:560px;border-radius:var(--radius-panel);overflow:hidden;box-shadow:0 40px 80px rgba(10,31,122,.18)}
+.photo-hero img{width:100%;height:100%;object-fit:cover;object-position:60% 30%;display:block}
+.hero-phone{left:0;top:70px}
+.hero-phone .phone{transform:scale(.9);transform-origin:top left}
+.photo-wide{margin:0;position:relative;border-radius:var(--radius-card);overflow:hidden;aspect-ratio:16/10;background:var(--color-bg-sunken)}
+.photo-wide img{position:absolute;inset:-8% 0;width:100%;height:116%;object-fit:cover;display:block;will-change:transform}
+.photo-wide .float{position:absolute;left:16px;bottom:16px;animation:none}
+.app-stage{align-self:stretch;height:auto;min-height:620px}
+.app-photo{position:absolute;right:-24px;bottom:0;height:100%;width:auto;max-width:none;display:block;-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 28%,#000 86%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0%,#000 28%,#000 86%,transparent 100%)}
+@media (max-width:1099px){.app-stage{min-height:460px}.app-photo{right:50%;transform:translateX(50%);height:460px;-webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 25%);mask-image:linear-gradient(180deg,transparent 0%,#000 25%)}}
+@media (max-width:759px){.stage{transform:none !important;height:auto !important;margin:8px 0 0 !important;display:block}.hero-phone{display:none}.stage .photo-hero{position:relative;right:auto;top:auto;width:100%;height:440px}.stage .hide-xs{display:block !important;right:12px !important;bottom:16px !important;left:auto !important;top:auto !important}.app-stage{transform:none;margin:0;min-height:400px}.app-photo{height:400px}}
+
+/* órbitas do hero: giram em volta da foto, por trás dela */
+.stage .hero-orbit{left:56%;top:50%;z-index:0}
+.stage .hero-orbit.o1{width:780px;height:780px;margin:-390px 0 0 -390px}
+.stage .hero-orbit.o2{width:620px;height:620px;margin:-310px 0 0 -310px}
+.stage .photo-hero{z-index:1}
+
+@media (max-width:759px){.stage .hero-orbit{display:none}}
+.mob-phone{display:none}
+.hero .eyebrow .short{display:none}
+.hide-l{display:none}
+@media (max-width:759px){.hide-l{display:inline}}
+.mob-phone .phone{transform:scale(.9)}
+.mob-phone .scr{position:absolute}
+
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  .rv{opacity:1;transform:none}
+  .hero h1 .w>span,.hero .lead,.signup,.proof{animation:none;transform:none;opacity:1}
+  .hl path{stroke-dashoffset:0;animation:none}
+  .track{animation:none}
+}
+</style>
+</head>
+<body>
+<div class="progress" aria-hidden="true"></div>
+
+<!-- ================= TOPO ================= -->
+<header class="top" id="top">
+  <div class="top-in">
+    <a class="brand" href="#inicio" aria-label="Asaas, ir para o início"><span class="logo"><svg width="112" height="19" viewBox="0 0 100 17" fill="none" aria-hidden="true"><path d="M67.0144 10.2322L71.1732 2.8531L75.291 10.2116C74.1232 9.6817 72.6687 9.41646 71.0912 9.41646C69.6159 9.41646 68.2023 9.68169 67.0144 10.2316M45.6871 10.2322L49.8459 2.8531L53.9638 10.2116C52.796 9.6817 51.3414 9.41646 49.764 9.41646C48.2887 9.41646 46.8751 9.68169 45.6871 10.2316M5.98205 10.2322L10.1409 2.69007L14.2997 10.2122C13.1319 9.68231 11.6566 9.41707 10.0791 9.41707C8.60379 9.41707 7.17003 9.6823 5.98144 10.2322M99.9988 12.067C99.9988 15.1653 97.1508 17 92.0498 17C88.4034 17 85.3096 16.3272 82.1339 14.3294L83.1788 12.4746C86.1497 14.3501 88.6901 15.0022 92.0296 15.0022C95.7378 15.0022 97.684 13.9218 97.684 12.0262C97.684 10.4975 96.2704 9.86542 93.4842 9.5801L88.5672 9.091C84.9819 8.74425 82.7081 7.37853 82.7081 4.87157C82.7081 1.89558 85.9247 0 91.0257 0C94.2014 0 96.721 0.61138 99.2412 2.18089L98.2171 4.11723C96.2092 2.79227 93.8535 2.07869 90.7597 2.07869C87.1542 2.07869 85.0235 3.21993 85.0235 4.79005C85.0235 6.27805 86.56 6.84867 88.7934 7.07314L93.8131 7.56225C97.8491 7.94976 100 9.397 100 12.067M81.3758 16.6332L72.2181 0.386904H70.1491L61.0115 16.6332H63.47L64.4739 14.7784C65.6417 12.6175 67.6698 11.4763 71.0912 11.4763C74.5127 11.4763 76.6637 12.5975 77.8522 14.799L78.8354 16.6338H81.3758V16.6332ZM60.0486 16.6332L50.8908 0.386904H48.8218L39.6843 16.6332H42.1428L43.1467 14.7784C44.3145 12.6175 46.3425 11.4763 49.764 11.4763C53.1854 11.4763 55.3364 12.5975 56.525 14.799L57.5081 16.6338H60.0486V16.6332ZM38.9873 12.067C38.9873 15.1653 36.1393 17 31.0383 17C27.3918 17 24.2981 16.3272 21.1224 14.3294L22.1673 12.4746C25.1382 14.3501 27.6786 15.0022 31.0181 15.0022C34.7263 15.0022 36.6725 13.9218 36.6725 12.0262C36.6725 10.4975 35.2589 9.86542 32.4727 9.5801L27.5557 9.091C23.9704 8.74425 21.6966 7.37853 21.6966 4.87157C21.6966 1.89558 24.9132 0 30.0142 0C33.1898 0 35.7095 0.61138 38.2297 2.18089L37.2056 4.11723C35.1977 2.79227 32.842 2.07869 29.7482 2.07869C26.1427 2.07869 24.012 3.21993 24.012 4.79005C24.012 6.27805 25.5484 6.84867 27.7819 7.07314L32.8016 7.56225C36.8375 7.94976 38.9885 9.397 38.9885 12.067M8.05167 2.30256L0 16.6326H2.45848L3.46243 14.7777C4.63023 12.6376 6.6381 11.4757 10.0797 11.4757C13.5214 11.4757 15.6729 12.6376 16.8407 14.7984L17.8239 16.6332H20.3643L11.8009 1.42655C11.3912 0.692898 10.8177 0.386904 9.87491 0.386904H2.97085L4.02493 1.45879C4.66691 2.09755 5.1707 2.30256 6.0652 2.30256H8.05167Z" fill="currentColor"/></svg></span></a>
+    <nav class="nav" aria-label="Principal">
+      <button class="nl" type="button" id="solBtn" aria-expanded="false" aria-controls="mega">Soluções <i data-i="chevD" data-s="16" class="chev"></i></button>
+      <a href="#precos">Preços</a>
+      <a href="#seguranca">Sobre nós</a>
+      <a href="#api">Desenvolvedores</a>
+      <a href="#faq">2ª Via</a>
+    </nav>
+    <div class="top-actions">
+      <button class="icon-btn" type="button" id="themeBtn" aria-label="Usar tema escuro"></button>
+      <a class="btn btn-ghost btn-sm hide-m" href="painel/">Acessar minha conta</a>
+      <a class="btn btn-cta btn-sm hide-t" href="#cadastro">Criar conta grátis</a>
+      <button class="icon-btn burger" type="button" id="burger" aria-label="Abrir menu" aria-expanded="false" aria-controls="sheet"><i data-i="menu" data-s="22"></i></button>
+    </div>
+  </div>
+  <div class="mega" id="mega" role="menu" aria-label="Soluções"></div>
+</header>
+
+<main id="inicio">
+<!-- ================= HERO ================= -->
+<section class="hero" id="cadastro" aria-labelledby="h1">
+  <div class="blob a" data-speed="0.2"></div><div class="blob b" data-speed="-0.1"></div>
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <h1 id="h1" data-split>Conta digital PJ completa e <span class="hl">sem mensalidade<svg viewBox="0 0 400 20" preserveAspectRatio="none" aria-hidden="true"><path d="M4 14 C 90 4, 220 4, 396 12"/></svg></span></h1>
+      <p class="lead">Ofereça diferentes formas de pagamento, gerencie cobranças, emita notas, antecipe recebíveis e pague fornecedores. Tudo em um só lugar.</p>
+      <form class="signup" novalidate data-form>
+        <h2 class="sr">Cadastre-se agora!</h2>
+        <div class="signup-row">
+          <label><span class="sr">Seu e-mail</span><input type="email" name="email" placeholder="Seu melhor e-mail" autocomplete="email" required /></label>
+          <button class="btn btn-cta" type="submit">Criar conta grátis</button>
+        </div>
+        <p class="err" role="alert"><i data-i="alert" data-s="16"></i><span>Informe um e-mail válido para continuar.</span></p>
+        <p class="note">Ao clicar você aceita receber nossas comunicações, conforme <a href="#">Política de Privacidade</a></p>
+      </form>
+      <p class="proof"><strong>+3,8 mi</strong><span>de contas criadas</span></p>
+    </div>
+
+    <div class="stage" id="stage" aria-hidden="true">
+      <div class="orbit o1 hero-orbit" data-depth="4">
+        <div class="sat" style="--a:20deg;--r:390px"><span><i data-i="pix" data-s="24"></i></span></div>
+        <div class="sat" style="--a:140deg;--r:390px"><span><i data-i="card" data-s="22"></i></span></div>
+        <div class="sat" style="--a:260deg;--r:390px"><span><i data-i="barcode" data-s="22"></i></span></div>
+        <div class="sat small" style="--a:80deg;--r:390px"><span></span></div>
+        <div class="sat small green" style="--a:200deg;--r:390px"><span></span></div>
+      </div>
+      <div class="orbit o2 hero-orbit" data-depth="8">
+        <div class="sat" style="--a:60deg;--r:310px"><span><i data-i="bell" data-s="22"></i></span></div>
+        <div class="sat" style="--a:240deg;--r:310px"><span><i data-i="link" data-s="22"></i></span></div>
+        <div class="sat small green" style="--a:150deg;--r:310px"><span></span></div>
+      </div>
+      <div class="layer photo-hero" data-depth="5" data-speed="-0.04"><img src="/img/empreendedora-atelie.webp" alt="" width="900" height="1200" /></div>
+      <div class="layer hero-phone" data-depth="14" data-speed="-0.12" style="z-index:2">
+        <div class="phone"><div class="screen">
+          <div class="sb"><span>9:41</span><span class="sig"><i></i></span></div>
+          <div class="sc-pad" style="gap:14px;padding-top:14px">
+            <div class="m-hi"><div><small>Ateliê Souza</small><b>Olá, Paulo!</b></div><span class="m-av">PS</span></div>
+            <div class="m-bal"><small>Saldo disponível</small><strong>R$ 12.480,35</strong><em>Atualizado às 09:42</em></div>
+            <div class="m-acts"><div><span><i data-i="receipt" data-s="20"></i></span>Cobrar</div><div><span><i data-i="pix" data-s="20"></i></span>Pix</div><div><span><i data-i="link" data-s="20"></i></span>Link</div><div><span><i data-i="list" data-s="20"></i></span>Extrato</div></div>
+            <div class="m-card">
+              <div class="m-row"><span class="tone ok"><i data-i="check" data-s="16"></i></span><div><b>Recebido em outubro</b><small>3 cobranças pagas</small></div><span class="v ok">R$ 4.900,00</span></div>
+            </div>
+          </div>
+          <div class="m-tab"><div class="on"><i data-i="home" data-s="20"></i>Início</div><div><i data-i="receipt" data-s="20"></i>Cobranças</div><div><i data-i="pix" data-s="20"></i>Pix</div><div><i data-i="list" data-s="20"></i>Extrato</div><div><i data-i="menu" data-s="20"></i>Menu</div></div>
+        </div></div>
+      </div>
+
+      <div class="layer hide-xs" data-depth="22" data-speed="-0.18" style="right:-16px;bottom:110px;z-index:3"><div class="float"><span class="tone ok"><i data-i="check" data-s="20"></i></span><div><b>Pix recebido</b><small>R$ 1.200,00 · em 10 segundos</small></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SEM × COM ================= -->
+<section class="sec" aria-labelledby="h-vs">
+  <div class="wrap vs-grid">
+    <div style="display:flex;flex-direction:column;gap:24px">
+      <div class="sec-head rv">
+        <span class="eyebrow" style="align-self:flex-start"><b>Tudo junto</b> Uma conta, todas as operações</span>
+        <h2 class="h2" id="h-vs">Aqui sua empresa tem tudo que precisa em um só lugar</h2>
+      </div>
+      <div class="seg rv" role="tablist" aria-label="Comparar" id="vsSeg" style="align-self:flex-start;--d:100ms">
+        <span class="pill" aria-hidden="true"></span>
+        <button type="button" role="tab" aria-selected="true" data-v="sem">Sem o Asaas</button>
+        <button type="button" role="tab" aria-selected="false" data-v="com">Com o Asaas</button>
+      </div>
+      <ul class="vs-list rv" id="vsList" style="--d:160ms" aria-live="polite"></ul>
+      <a class="btn btn-cta rv" href="#cadastro" style="align-self:flex-start;--d:220ms">Criar conta grátis <i data-i="arrowR" data-s="18"></i></a>
+    </div>
+    <div class="diagram rv" id="diagram" style="--d:120ms" role="img" aria-label="Diagrama: sem o Asaas a gestão é manual, cara e dependente de bancos; com o Asaas tudo se conecta em um só lugar.">
+      <svg class="lines" viewBox="0 0 600 500" preserveAspectRatio="none" aria-hidden="true">
+        <path class="ln" d="M300 250 C 220 220, 160 160, 120 110"/>
+        <path class="ln" d="M300 250 C 380 220, 440 160, 480 110"/>
+        <path class="ln" d="M300 250 C 300 320, 300 360, 300 410"/>
+      </svg>
+      <div class="node n1" style="left:20%;top:22%"><span class="tone bad"><i data-i="x" data-s="24"></i></span><p class="swap"></p></div>
+      <div class="node n2" style="left:80%;top:22%"><span class="tone bad"><i data-i="x" data-s="24"></i></span><p class="swap"></p></div>
+      <div class="node n3" style="left:50%;top:82%"><span class="tone bad"><i data-i="x" data-s="24"></i></span><p class="swap"></p></div>
+      <div class="core"><i data-i="bank" data-s="30"></i><span class="swap">Sua empresa</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= BENTO ================= -->
+<section class="sec" style="padding-top:40px" id="precos" aria-labelledby="h-tudo">
+  <div class="wrap">
+    <div class="sec-head center rv">
+      <span class="eyebrow"><b>Sem mensalidade</b> Pague só pelo que usar</span>
+      <h2 class="h2" id="h-tudo">Faça tudo com a sua conta digital PJ, tudo mesmo</h2>
+    </div>
+    <div class="bento">
+      <article class="card span2 rv" style="flex-direction:row;gap:28px;align-items:center;flex-wrap:wrap">
+        <div style="flex:1;min-width:240px;display:flex;flex-direction:column;gap:14px">
+          <span class="tone"><i data-i="search" data-s="22"></i></span>
+          <h3>Venda parcelado sem medo de levar calote</h3>
+          <p>Consulte informações cadastrais, pendências financeiras e o score de crédito de seu cliente antes de fechar a venda.</p>
+        </div>
+        <div class="vis gauge" aria-hidden="true">
+          <svg viewBox="0 0 200 110"><defs><linearGradient id="gg" x1="0" x2="1"><stop offset="0" stop-color="#B02A37"/><stop offset=".5" stop-color="#F2B65A"/><stop offset="1" stop-color="#91C651"/></linearGradient></defs><path class="trk" d="M10 100 A90 90 0 0 1 190 100"/><path class="val" d="M10 100 A90 90 0 0 1 190 100"/></svg>
+          <b data-count="780" data-dec="0">0</b><small>Score de crédito · bom pagador</small>
+        </div>
+      </article>
+      <article class="card rv" style="--d:80ms"><span class="tone bad"><i data-i="shield" data-s="22"></i></span><h3>Negative os devedores no Serasa</h3><p>Recupere o dinheiro das cobranças vencidas com a negativação no Serasa. É uma opção muito mais prática e barata que o protesto de boletos.</p></article>
+      <article class="card rv"><span class="tone ok"><i data-i="bell" data-s="22"></i></span><h3>Reduza cerca de 80% da inadimplência</h3><p>Envie notificações automáticas antes e depois do vencimento. Você escolhe os canais: WhatsApp, e-mail, SMS ou robô de voz.</p>
+        <div class="vis methods"><span class="chip"><i data-i="chat" data-s="16"></i>WhatsApp</span><span class="chip"><i data-i="mail" data-s="16"></i>E-mail</span><span class="chip"><i data-i="sms" data-s="16"></i>SMS</span><span class="chip"><i data-i="volume" data-s="16"></i>Robô de voz</span></div></article>
+      <article class="card rv" style="--d:80ms"><span class="tone"><i data-i="card" data-s="22"></i></span><h3>Ofereça várias formas de pagamento</h3><p>Personalize as condições de cobrança e venda mais com Pix, cartão de crédito e débito, link de pagamento, e boleto bancário</p>
+        <div class="vis methods"><span class="chip"><i data-i="pix" data-s="16"></i>Pix</span><span class="chip"><i data-i="card" data-s="16"></i>Cartão</span><span class="chip"><i data-i="barcode" data-s="16"></i>Boleto</span><span class="chip"><i data-i="link" data-s="16"></i>Link</span></div></article>
+      <article class="card rv" style="--d:160ms"><span class="tone"><i data-i="wallet" data-s="22"></i></span><h3>Gerencie seu dinheiro como e quando quiser</h3><p>Desfrute os benefícios de uma conta digital completa para sua empresa, com movimentações gratuitas todo mês e cartão de crédito sem anuidade.</p></article>
+      <article class="card span2 rv" style="flex-direction:row;gap:28px;align-items:flex-end;flex-wrap:wrap">
+        <div style="flex:1;min-width:240px;display:flex;flex-direction:column;gap:14px">
+          <span class="tone ok"><i data-i="trend" data-s="22"></i></span>
+          <h3>Tenha um fluxo de caixa saudável</h3>
+          <p>Ganhe mais liquidez nas vendas a prazo ao antecipar recebíveis de boleto e cartão de crédito. É mais barato do que fazer um empréstimo.</p>
+        </div>
+        <div class="vis bars" style="flex:1;min-width:220px" aria-hidden="true"><span style="--h:30%;--k:0"></span><span style="--h:45%;--k:1"></span><span style="--h:38%;--k:2"></span><span style="--h:60%;--k:3"></span><span style="--h:52%;--k:4"></span><span class="hi" style="--h:92%;--k:5"></span></div>
+      </article>
+      <article class="card rv" style="--d:80ms"><span class="tone warn"><i data-i="file" data-s="22"></i></span><h3>Pare de perder tempo com burocracia</h3><p>Com a automação de <a href="#">notas fiscais</a>, você cadastra os dados da sua empresa apenas uma vez e se livra da papelada para sempre.</p></article>
+      <article class="card rv"><span class="tone"><i data-i="grid" data-s="22"></i></span><h3>Centralize as operações da sua empresa</h3><p>Gerencie os recebíveis, acompanhe as vendas e controle o estoque em um único lugar. Nosso ERP não tem limite de usuários e é 100% online.</p></article>
+      <article class="card span2 rv" style="--d:80ms;flex-direction:row;gap:28px;align-items:center;flex-wrap:wrap">
+        <div style="flex:1;min-width:240px;display:flex;flex-direction:column;gap:14px">
+          <span class="tone"><i data-i="code" data-s="22"></i></span>
+          <h3>Escale seu processo de cobrança</h3>
+          <p>Conecte seu sistema, site ou aplicativo ao Asaas de forma rápida e fácil. A integração está disponível por meio de API e soluções plug and play.</p>
+        </div>
+        <div class="vis code-mini" style="flex:1;min-width:240px" aria-hidden="true"><span class="c">// criar cobrança</span><br><span class="k">POST</span> /v3/payments<br>{ <span class="s">"billingType"</span>: <span class="s">"PIX"</span>, <span class="s">"value"</span>: 1200 }<br><span class="k">→ 200</span> <span class="s">PENDING</span></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= AUTOMAÇÃO ================= -->
+<section class="auto sec" id="automacao" aria-labelledby="h-auto">
+  <div class="wrap">
+    <div class="sec-head center rv">
+      <span class="eyebrow"><b>De ponta a ponta</b> Da cobrança ao saque</span>
+      <h2 class="h2" id="h-auto">Automatize seu processo de cobranças de ponta a ponta</h2>
+    </div>
+    <div class="auto-tabs">
+      <div class="seg" role="tablist" aria-label="Etapas" id="autoSeg">
+        <span class="pill" aria-hidden="true"></span>
+        <button type="button" role="tab" aria-selected="true" data-c="0"><i data-i="receipt" data-s="18"></i><span><span class="lbl-l">Receba de seus clientes</span><span class="lbl-s hide-l">Receba</span></span></button>
+        <button type="button" role="tab" aria-selected="false" data-c="1"><i data-i="bell" data-s="18"></i><span><span class="lbl-l">Reduza a inadimplência</span><span class="lbl-s hide-l">Reduza</span></span></button>
+        <button type="button" role="tab" aria-selected="false" data-c="2"><i data-i="send" data-s="18"></i><span><span class="lbl-l">Saque e transfira dinheiro</span><span class="lbl-s hide-l">Saque</span></span></button>
+      </div>
+    </div>
+
+    <div class="auto-grid">
+      <div>
+        <!-- 1 -->
+        <article class="chapter" id="ch0" data-c="0">
+          <span class="num rv">01 · Receba de seus clientes</span>
+          <h3 class="big rv">5 em 1: todas as opções de pagamento em um só lugar</h3>
+          <div class="methods rv"><span class="chip"><i data-i="pix" data-s="16"></i>Pix</span><span class="chip"><i data-i="card" data-s="16"></i>Cartão de crédito</span><span class="chip"><i data-i="link" data-s="16"></i>Link de pagamento</span><span class="chip"><i data-i="barcode" data-s="16"></i>Boleto bancário</span><span class="chip"><i data-i="card" data-s="16"></i>Cartão de débito</span></div>
+          <figure class="photo-wide rv"><img src="/img/freelancer-celular.webp" alt="Profissional autônoma sorrindo ao conferir um pagamento no celular" width="1280" height="960" loading="lazy" data-speed="0.06" /><figcaption class="float"><span class="tone ok"><i data-i="check" data-s="20"></i></span><div><b>Pagamento confirmado</b><small>Pix · em até 10 segundos</small></div></figcaption></figure>
+          <div class="mob-phone" data-mob="0"></div>
+          <div class="mini-grid">
+            <div class="mini rv"><span class="tone"><i data-i="pix" data-s="20"></i></span><b>Receba num Pix(car) de olhos</b><p>O dinheiro cai na conta da sua empresa em até 10 segundos. Disponível 24 horas por dia, 7 dias por semana.</p><a class="link-arrow" href="#">Experimentar o Pix <i data-i="arrowR" data-s="16"></i></a></div>
+            <div class="mini rv" style="--d:80ms"><span class="tone"><i data-i="card" data-s="20"></i></span><b>Aceite pagamentos via cartão</b><p>Seja no crédito ou no débito, em vendas à vista, parceladas ou recorrentes: temos soluções para todo tipo de negócio, online e presencial.</p><a class="link-arrow" href="#">Quero conhecer <i data-i="arrowR" data-s="16"></i></a></div>
+            <div class="mini rv" style="--d:160ms"><span class="tone"><i data-i="link" data-s="20"></i></span><b>Venda de qualquer lugar</b><p>Expanda sua área de atuação com o link de pagamento. Compartilhe em seu site ou redes sociais e venda mais sem sair de casa.</p><a class="link-arrow" href="#">Vender com link de pagamento <i data-i="arrowR" data-s="16"></i></a></div>
+          </div>
+          <figure class="quote rv" style="margin:0">
+            <blockquote style="margin:0"><p>"Outros gateways dificultavam a aprovação dos pagamentos, ou seja, a gente tentava vender e não conseguia."</p></blockquote>
+            <figcaption class="who"><span>SC</span><div><b>Salmeron Cardoso Jr.</b><small>Diretor do CEAB</small></div><a class="link-arrow" href="#">Ler case completo <i data-i="arrowR" data-s="16"></i></a></figcaption>
+          </figure>
+        </article>
+        <!-- 2 -->
+        <article class="chapter" id="ch1" data-c="1">
+          <span class="num rv">02 · Reduza a inadimplência</span>
+          <h3 class="big rv">Enviar notificações de cobrança reduz 80% da inadimplência</h3>
+          <p class="lead rv">Calote não existe no nosso dicionário. Automatize o envio de lembretes de pagamento, antes e depois do vencimento.</p>
+          <div class="rv" style="display:flex;flex-direction:column;gap:12px"><h4>Escolha como quer notificar seus clientes:</h4>
+            <div class="methods"><span class="chip"><i data-i="chat" data-s="16"></i>Whatsapp</span><span class="chip"><i data-i="sms" data-s="16"></i>SMS</span><span class="chip"><i data-i="mail" data-s="16"></i>Email</span><span class="chip"><i data-i="volume" data-s="16"></i>Robô de voz</span></div></div>
+          <div class="mob-phone" data-mob="1"></div>
+          <ol class="timeline rv">
+            <li><span class="tone"><i data-i="receipt" data-s="18"></i></span><div><b>Você recebeu uma nova cobrança</b><small>Aviso de cobrança emitida ao seu cliente</small></div></li>
+            <li><span class="tone"><i data-i="clock" data-s="18"></i></span><div><b>Sua cobrança vence em 5 dias!</b><small>Lembrete dias antes do vencimento</small></div></li>
+            <li><span class="tone warn"><i data-i="bell" data-s="18"></i></span><div><b>Sua cobrança vence hoje</b><small>Lembrete no dia do vencimento</small></div></li>
+            <li><span class="tone bad"><i data-i="alert" data-s="18"></i></span><div><b>Sua cobrança está atrasada há 3 dias!</b><small>Lembrete dias depois do vencimento</small></div></li>
+            <li><span class="tone ok"><i data-i="check" data-s="18"></i></span><div><b>O pagamento foi recebido!</b><small>Aviso da confirmação do pagamento</small></div></li>
+          </ol>
+          <div class="rv" style="display:flex;flex-direction:column;gap:14px"><h4>Você ainda pode personalizar os conteúdos das notificações de e-mail e SMS de um jeito único</h4>
+            <ul class="checks"><li><i data-i="check" data-s="18"></i>Destaque seu negócio com conteúdos profissionais e persuasivos</li><li><i data-i="check" data-s="18"></i>Humanize a comunicação utilizando o tom de voz da sua marca</li><li><i data-i="check" data-s="18"></i>Fortaleça a conexão com seus clientes</li><li><i data-i="check" data-s="18"></i>Aumente as chances de receber pagamentos em dia</li></ul></div>
+          <figure class="quote rv" style="margin:0">
+            <blockquote style="margin:0"><p>"O forte do Asaas é justamente o pós-cobranças."</p></blockquote>
+            <figcaption class="who"><span>JF</span><div><b>Joarez Faust</b><small>Gerente de Operações na ProJuris</small></div><a class="link-arrow" href="#">Ler case completo <i data-i="arrowR" data-s="16"></i></a></figcaption>
+          </figure>
+        </article>
+        <!-- 3 -->
+        <article class="chapter" id="ch2" data-c="2">
+          <span class="num rv">03 · Saque e transfira dinheiro</span>
+          <h3 class="big rv">Tenha liberdade para usar seu dinheiro como quiser</h3>
+          <p class="lead rv">Você no controle do seu dinheiro de verdade. Sem filas, sem deslocamentos, sem estresse.</p>
+          <figure class="photo-wide rv"><img src="/img/cafe-cartao.webp" alt="Dono de cafeteria sorrindo enquanto paga com cartão na maquininha" width="1280" height="960" loading="lazy" data-speed="0.06" /><figcaption class="float"><span class="tone"><i data-i="card" data-s="20"></i></span><div><b>Cartão Asaas</b><small>Sem anuidade · saque no Banco24Horas</small></div></figcaption></figure>
+          <div class="mob-phone" data-mob="2"></div>
+          <div class="mini-grid">
+            <div class="mini rv"><span class="tone"><i data-i="card" data-s="20"></i></span><b>Cartão Asaas sem anuidade</b><p>Perfeito para quem gosta de praticidade, pois o saldo da sua Conta Asaas é vinculado ao cartão. Com ele, você pode fazer compras online e offline, além de sacar dinheiro nos caixas da rede Banco24Horas.</p></div>
+            <div class="mini rv" style="--d:80ms"><span class="tone ok"><i data-i="pix" data-s="20"></i></span><b>Pix</b><p>Adeus, prazo de compensação! É só escanear o QR code ou colar o link que tá pago! Simples assim. A confirmação é imediata e de graça para sua empresa.*</p></div>
+            <div class="mini rv" style="--d:160ms"><span class="tone warn"><i data-i="barcode" data-s="20"></i></span><b>Pagamentos e transferências</b><p>Seu fornecedor não aceita pagamento por Pix? No Asaas, você também pode pagar boletos, impostos e contas de consumo, além de fazer transferências. As 30 primeiras transações são de graça!</p></div>
+          </div>
+          <p class="foot rv">* Válido em pagamentos por QR code dinâmico.</p>
+          <a class="btn btn-primary rv" href="#cadastro" style="align-self:flex-start">Criar Conta Asaas <i data-i="arrowR" data-s="18"></i></a>
+        </article>
+      </div>
+
+      <!-- telefone fixo que troca de tela conforme o capítulo -->
+      <div class="sticky-phone" aria-hidden="true">
+        <div class="halo"></div>
+        <div class="phone" id="autoPhone"><div class="screen">
+          <div class="sb"><span>9:41</span><span class="sig"><i></i></span></div>
+          <!-- A -->
+          <div class="scr on" data-s="0"><div class="sc-pad">
+            <div class="m-hi"><div><small>Nova cobrança</small><b>R$ 1.200,00</b></div><span class="m-av">CG</span></div>
+            <div class="m-card" style="padding:10px 12px"><div class="m-row" style="padding:0"><span class="tone"><i data-i="users" data-s="16"></i></span><div><b>Café Grão Norte Ltda.</b><small>Vence em 30/10/2026</small></div></div></div>
+            <h4 style="margin:4px 0 0;font:800 12px/16px var(--font-family)">Como seu cliente quer pagar?</h4>
+            <div class="pm sel"><span class="tone ok"><i data-i="pix" data-s="16"></i></span>Pix<span class="rad"></span></div>
+            <div class="pm"><span class="tone"><i data-i="card" data-s="16"></i></span>Cartão de crédito<span class="rad"></span></div>
+            <div class="pm"><span class="tone"><i data-i="card" data-s="16"></i></span>Cartão de débito<span class="rad"></span></div>
+            <div class="pm"><span class="tone warn"><i data-i="barcode" data-s="16"></i></span>Boleto bancário<span class="rad"></span></div>
+            <div class="pm"><span class="tone"><i data-i="link" data-s="16"></i></span>Link de pagamento<span class="rad"></span></div>
+            <span class="btn btn-cta" style="min-height:44px;font-size:13px;margin-top:4px">Criar cobrança</span>
+          </div>
+          <div class="toast-in"><span class="tone"><i data-i="check" data-s="18"></i></span><div><b>Pix recebido · R$ 1.200,00</b><small>Café Grão Norte · agora</small></div></div></div>
+          <!-- B -->
+          <div class="scr" data-s="1"><div class="sc-pad">
+            <div class="m-hi"><div><small>Régua de cobrança</small><b>Júlia Castro</b></div><span class="m-av">JC</span></div>
+            <div class="chan"><span>WhatsApp</span><span>SMS</span><span>E-mail</span><span>Robô de voz</span></div>
+            <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px">
+              <div class="bub">Você recebeu uma nova cobrança de R$ 200,00<small>WhatsApp · 13/10</small></div>
+              <div class="bub">Sua cobrança vence em 5 dias!<small>SMS · 13/10</small></div>
+              <div class="bub">Sua cobrança vence hoje<small>E-mail · 18/10</small></div>
+              <div class="bub late">Sua cobrança está atrasada há 3 dias!<small>Robô de voz · 21/10</small></div>
+              <div class="bub paid">O pagamento foi recebido!<small>WhatsApp · 22/10</small></div>
+            </div>
+          </div></div>
+          <!-- C -->
+          <div class="scr" data-s="2"><div class="sc-pad">
+            <div class="m-hi"><div><small>Meu dinheiro</small><b>Saldo R$ 12.480,35</b></div><span class="m-av">PS</span></div>
+            <div class="acard" style="width:100%;height:160px;padding:16px;animation:none"><div class="row"><svg width="70" height="12" viewBox="0 0 100 17" fill="none" aria-hidden="true"><path d="M67.0144 10.2322L71.1732 2.8531L75.291 10.2116C74.1232 9.6817 72.6687 9.41646 71.0912 9.41646C69.6159 9.41646 68.2023 9.68169 67.0144 10.2316M45.6871 10.2322L49.8459 2.8531L53.9638 10.2116C52.796 9.6817 51.3414 9.41646 49.764 9.41646C48.2887 9.41646 46.8751 9.68169 45.6871 10.2316M5.98205 10.2322L10.1409 2.69007L14.2997 10.2122C13.1319 9.68231 11.6566 9.41707 10.0791 9.41707C8.60379 9.41707 7.17003 9.6823 5.98144 10.2322M99.9988 12.067C99.9988 15.1653 97.1508 17 92.0498 17C88.4034 17 85.3096 16.3272 82.1339 14.3294L83.1788 12.4746C86.1497 14.3501 88.6901 15.0022 92.0296 15.0022C95.7378 15.0022 97.684 13.9218 97.684 12.0262C97.684 10.4975 96.2704 9.86542 93.4842 9.5801L88.5672 9.091C84.9819 8.74425 82.7081 7.37853 82.7081 4.87157C82.7081 1.89558 85.9247 0 91.0257 0C94.2014 0 96.721 0.61138 99.2412 2.18089L98.2171 4.11723C96.2092 2.79227 93.8535 2.07869 90.7597 2.07869C87.1542 2.07869 85.0235 3.21993 85.0235 4.79005C85.0235 6.27805 86.56 6.84867 88.7934 7.07314L93.8131 7.56225C97.8491 7.94976 100 9.397 100 12.067M81.3758 16.6332L72.2181 0.386904H70.1491L61.0115 16.6332H63.47L64.4739 14.7784C65.6417 12.6175 67.6698 11.4763 71.0912 11.4763C74.5127 11.4763 76.6637 12.5975 77.8522 14.799L78.8354 16.6338H81.3758V16.6332ZM60.0486 16.6332L50.8908 0.386904H48.8218L39.6843 16.6332H42.1428L43.1467 14.7784C44.3145 12.6175 46.3425 11.4763 49.764 11.4763C53.1854 11.4763 55.3364 12.5975 56.525 14.799L57.5081 16.6338H60.0486V16.6332ZM38.9873 12.067C38.9873 15.1653 36.1393 17 31.0383 17C27.3918 17 24.2981 16.3272 21.1224 14.3294L22.1673 12.4746C25.1382 14.3501 27.6786 15.0022 31.0181 15.0022C34.7263 15.0022 36.6725 13.9218 36.6725 12.0262C36.6725 10.4975 35.2589 9.86542 32.4727 9.5801L27.5557 9.091C23.9704 8.74425 21.6966 7.37853 21.6966 4.87157C21.6966 1.89558 24.9132 0 30.0142 0C33.1898 0 35.7095 0.61138 38.2297 2.18089L37.2056 4.11723C35.1977 2.79227 32.842 2.07869 29.7482 2.07869C26.1427 2.07869 24.012 3.21993 24.012 4.79005C24.012 6.27805 25.5484 6.84867 27.7819 7.07314L32.8016 7.56225C36.8375 7.94976 38.9885 9.397 38.9885 12.067M8.05167 2.30256L0 16.6326H2.45848L3.46243 14.7777C4.63023 12.6376 6.6381 11.4757 10.0797 11.4757C13.5214 11.4757 15.6729 12.6376 16.8407 14.7984L17.8239 16.6332H20.3643L11.8009 1.42655C11.3912 0.692898 10.8177 0.386904 9.87491 0.386904H2.97085L4.02493 1.45879C4.66691 2.09755 5.1707 2.30256 6.0652 2.30256H8.05167Z" fill="#fff"/></svg><i data-i="wifi" data-s="18"></i></div><div class="chipc" style="width:34px;height:26px"></div><div class="row"><span class="lbl">Sem anuidade</span><div class="circles"><span></span><span></span></div></div></div>
+            <div class="m-acts"><div><span><i data-i="pix" data-s="20"></i></span>Transferir</div><div><span><i data-i="barcode" data-s="20"></i></span>Pagar contas</div><div><span><i data-i="cash" data-s="20"></i></span>Sacar</div><div><span><i data-i="list" data-s="20"></i></span>Extrato</div></div>
+            <div class="m-card"><h4>Últimos lançamentos</h4>
+              <div class="m-row"><span class="tone"><i data-i="send" data-s="16"></i></span><div><b>Pix enviado</b><small>Fornecedor · grátis</small></div><span class="v bad">− R$ 780,00</span></div>
+              <div class="m-row"><span class="tone warn"><i data-i="barcode" data-s="16"></i></span><div><b>Conta de energia</b><small>Pagamento de boleto</small></div><span class="v bad">− R$ 312,40</span></div>
+              <div class="m-row"><span class="tone ok"><i data-i="check" data-s="16"></i></span><div><b>Pix recebido</b><small>Café Grão Norte</small></div><span class="v ok">+ R$ 1.200,00</span></div>
+            </div>
+            <div class="chan" style="justify-content:center"><span style="background:var(--color-success-bg);color:var(--color-success-text)">30 primeiras transações grátis</span></div>
+          </div></div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= API ================= -->
+<section class="api sec" id="api" aria-labelledby="h-api">
+  <div class="wrap api-grid">
+    <div style="display:flex;flex-direction:column;gap:22px">
+      <span class="eyebrow rv" style="align-self:flex-start"><b>API</b> Integração API do Asaas: completa e fácil de integrar</span>
+      <h2 class="h2 rv" id="h-api">Sua empresa cresceu?<br><span style="color:#8DB4FF">A gente te ajuda a escalar os pagamentos</span></h2>
+      <p class="lead rv">Use nossas soluções de recebimento e saída de dinheiro, antecipação, notificações e notas fiscais direto no seu sistema ou app.</p>
+      <div class="methods rv"><span class="chip"><i data-i="split" data-s="16"></i>Split de pagamento</span><span class="chip"><i data-i="bank" data-s="16"></i>Infraestrutura BaaS</span><span class="chip"><i data-i="hook" data-s="16"></i>Webhooks</span></div>
+      <a class="btn btn-white rv" href="#" style="align-self:flex-start">Ver mais <i data-i="arrowR" data-s="18"></i></a>
+    </div>
+    <div class="rv" style="--d:120ms" data-speed="-0.06">
+      <div class="term" aria-label="Exemplo ilustrativo de chamada à API">
+        <div class="term-top"><span></span><span></span><span></span><em>api.exemplo.com.br · sandbox</em></div>
+        <pre id="code"><span class="caret"></span></pre>
+      </div>
+      <div class="hook" id="hook"><i data-i="hook" data-s="18"></i>Webhook recebido · PAYMENT_RECEIVED · R$ 1.200,00</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SEGURANÇA ================= -->
+<section class="sec" id="seguranca" aria-labelledby="h-seg" style="overflow:hidden;isolation:isolate">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="eyebrow" style="align-self:flex-start"><b>Segurança</b> Regulado e auditado</span>
+      <h2 class="h2" id="h-seg">Seu dinheiro está seguro com o Asaas</h2>
+    </div>
+    <div class="stats">
+      <div class="stat rv"><strong>+<span data-count="3.8" data-dec="1">0</span><small>mi</small></strong><p>de contas criadas</p></div>
+      <div class="stat rv" style="--d:100ms"><strong>+R$&nbsp;<span data-count="171.3" data-dec="1">0</span><small>bi</small></strong><p>movimentados</p></div>
+      <div class="stat rv" style="--d:200ms"><strong>+<span data-count="549.3" data-dec="1">0</span><small>mi</small></strong><p>de cobranças pagas</p></div>
+    </div>
+    <div class="trust">
+      <article class="card rv"><span class="tone"><i data-i="bank" data-s="22"></i></span><div><p>Somos uma instituição de pagamento e SCFI autorizada pelo Banco Central do Brasil.</p><span class="tag">Banco Central do Brasil</span></div></article>
+      <article class="card rv" style="--d:100ms"><span class="tone ok"><i data-i="hash" data-s="22"></i></span><div><p>Nosso código bancário é o 461. Assim, você tem seus dados de agência e conta sem complicação.</p><span class="tag">Código 461</span></div></article>
+      <article class="card rv" style="--d:200ms"><span class="tone warn"><i data-i="lock" data-s="22"></i></span><div><p>Seguimos o padrão PCI-DSS, garantindo mais segurança nas suas transações.</p><span class="tag">PCI-DSS</span></div></article>
+    </div>
+
+    <div class="logos">
+      <div><h3>Investidores</h3></div>
+      <div class="marquee"><div class="track" id="inv"></div></div>
+      <div style="margin-top:12px"><h3>Alguns clientes</h3></div>
+      <div class="marquee rev"><div class="track" id="cli"></div></div>
+      <a class="btn btn-cta rv" href="#cadastro" style="align-self:center;margin-top:12px">Começar agora <i data-i="arrowR" data-s="18"></i></a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= APP ================= -->
+<section class="app" aria-labelledby="h-app">
+  <div class="cloud" style="width:420px;height:200px;left:-60px;top:40px" data-speed="0.12"></div>
+  <div class="cloud" style="width:520px;height:240px;right:-120px;bottom:-60px" data-speed="-0.1"></div>
+  <div class="wrap app-grid">
+    <div style="display:flex;flex-direction:column;gap:22px;padding:72px 0">
+      <span class="eyebrow rv" style="align-self:flex-start"><b>App</b> iOS e Android</span>
+      <h2 class="h2 rv" id="h-app">Use o Asaas no seu celular</h2>
+      <p class="lead rv">Emita cobranças e acompanhe seus pagamentos em poucos cliques.</p>
+      <div class="stores rv">
+        <a class="store" href="#"><i data-i="phone" data-s="26"></i><span><small>Baixar na</small><b>App Store</b></span></a>
+        <a class="store" href="#"><i data-i="play" data-s="26"></i><span><small>Disponível no</small><b>Google Play</b></span></a>
+      </div>
+    </div>
+    <div class="app-stage" aria-hidden="true" id="appStage"><img class="app-photo" src="/img/campanha-celular-cartao.webp" alt="" width="896" height="864" loading="lazy" /></div>
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section class="sec" id="faq" aria-labelledby="h-faq">
+  <div class="wrap faq-grid">
+    <div class="faq-side">
+      <span class="eyebrow rv" style="align-self:flex-start"><b>FAQ</b> Perguntas frequentes</span>
+      <h2 class="h2 rv" id="h-faq">Alguma dúvida?</h2>
+      <p class="lead rv">Você tem alguma dúvida que não foi respondida aqui? Acesse nossa <a href="#">Central de Ajuda</a></p>
+      <div class="contact rv">
+        <a href="tel:08000090037"><span class="tone"><i data-i="phone" data-s="20"></i></span><span><b>0800 009 0037</b><small>Somente Pessoa Jurídica</small></span></a>
+        <a href="mailto:contato@asaas.com.br"><span class="tone"><i data-i="mail" data-s="20"></i></span><span><b>contato@asaas.com.br</b><small>Canais de atendimento</small></span></a>
+      </div>
+    </div>
+    <div class="acc" id="acc"></div>
+  </div>
+</section>
+
+<!-- ================= CTA FINAL ================= -->
+<section class="final" aria-labelledby="h-final">
+  <div class="blob a" style="top:-200px;right:-160px"></div><div class="blob b" style="left:-140px;bottom:-140px"></div>
+  <div class="wrap" style="display:flex;flex-direction:column;align-items:center;gap:22px;max-width:760px">
+    <span class="eyebrow rv"><b>Grátis</b> Sem mensalidade</span>
+    <h2 class="h2 rv" id="h-final">Cadastre-se agora!</h2>
+    <p class="lead rv">Ofereça diferentes formas de pagamento, gerencie cobranças, emita notas, antecipe recebíveis e pague fornecedores. Tudo em um só lugar.</p>
+    <form class="signup rv" novalidate data-form>
+      <div class="signup-row">
+        <label><i data-i="mail" data-s="20"></i><span class="sr">Seu e-mail</span><input type="email" name="email" placeholder="Seu melhor e-mail" autocomplete="email" required /></label>
+        <button class="btn btn-cta" type="submit">Criar conta grátis <i data-i="arrowR" data-s="18"></i></button>
+      </div>
+      <p class="err" role="alert"><i data-i="alert" data-s="16"></i><span>Informe um e-mail válido para continuar.</span></p>
+      <p class="note" style="text-align:center;padding:0">Ao clicar você aceita receber nossas comunicações, conforme <a href="#">Política de Privacidade</a></p>
+    </form>
+  </div>
+</section>
+</main>
+
+<!-- ================= RODAPÉ ================= -->
+<footer>
+  <div class="wrap">
+    <div class="f-grid">
+      <div class="f-col f-contact">
+        <a class="brand" href="#inicio" aria-label="Asaas, voltar ao topo"><span class="logo"><svg width="112" height="19" viewBox="0 0 100 17" fill="none" aria-hidden="true"><path d="M67.0144 10.2322L71.1732 2.8531L75.291 10.2116C74.1232 9.6817 72.6687 9.41646 71.0912 9.41646C69.6159 9.41646 68.2023 9.68169 67.0144 10.2316M45.6871 10.2322L49.8459 2.8531L53.9638 10.2116C52.796 9.6817 51.3414 9.41646 49.764 9.41646C48.2887 9.41646 46.8751 9.68169 45.6871 10.2316M5.98205 10.2322L10.1409 2.69007L14.2997 10.2122C13.1319 9.68231 11.6566 9.41707 10.0791 9.41707C8.60379 9.41707 7.17003 9.6823 5.98144 10.2322M99.9988 12.067C99.9988 15.1653 97.1508 17 92.0498 17C88.4034 17 85.3096 16.3272 82.1339 14.3294L83.1788 12.4746C86.1497 14.3501 88.6901 15.0022 92.0296 15.0022C95.7378 15.0022 97.684 13.9218 97.684 12.0262C97.684 10.4975 96.2704 9.86542 93.4842 9.5801L88.5672 9.091C84.9819 8.74425 82.7081 7.37853 82.7081 4.87157C82.7081 1.89558 85.9247 0 91.0257 0C94.2014 0 96.721 0.61138 99.2412 2.18089L98.2171 4.11723C96.2092 2.79227 93.8535 2.07869 90.7597 2.07869C87.1542 2.07869 85.0235 3.21993 85.0235 4.79005C85.0235 6.27805 86.56 6.84867 88.7934 7.07314L93.8131 7.56225C97.8491 7.94976 100 9.397 100 12.067M81.3758 16.6332L72.2181 0.386904H70.1491L61.0115 16.6332H63.47L64.4739 14.7784C65.6417 12.6175 67.6698 11.4763 71.0912 11.4763C74.5127 11.4763 76.6637 12.5975 77.8522 14.799L78.8354 16.6338H81.3758V16.6332ZM60.0486 16.6332L50.8908 0.386904H48.8218L39.6843 16.6332H42.1428L43.1467 14.7784C44.3145 12.6175 46.3425 11.4763 49.764 11.4763C53.1854 11.4763 55.3364 12.5975 56.525 14.799L57.5081 16.6338H60.0486V16.6332ZM38.9873 12.067C38.9873 15.1653 36.1393 17 31.0383 17C27.3918 17 24.2981 16.3272 21.1224 14.3294L22.1673 12.4746C25.1382 14.3501 27.6786 15.0022 31.0181 15.0022C34.7263 15.0022 36.6725 13.9218 36.6725 12.0262C36.6725 10.4975 35.2589 9.86542 32.4727 9.5801L27.5557 9.091C23.9704 8.74425 21.6966 7.37853 21.6966 4.87157C21.6966 1.89558 24.9132 0 30.0142 0C33.1898 0 35.7095 0.61138 38.2297 2.18089L37.2056 4.11723C35.1977 2.79227 32.842 2.07869 29.7482 2.07869C26.1427 2.07869 24.012 3.21993 24.012 4.79005C24.012 6.27805 25.5484 6.84867 27.7819 7.07314L32.8016 7.56225C36.8375 7.94976 38.9885 9.397 38.9885 12.067M8.05167 2.30256L0 16.6326H2.45848L3.46243 14.7777C4.63023 12.6376 6.6381 11.4757 10.0797 11.4757C13.5214 11.4757 15.6729 12.6376 16.8407 14.7984L17.8239 16.6332H20.3643L11.8009 1.42655C11.3912 0.692898 10.8177 0.386904 9.87491 0.386904H2.97085L4.02493 1.45879C4.66691 2.09755 5.1707 2.30256 6.0652 2.30256H8.05167Z" fill="currentColor"/></svg></span></a>
+        <h3 style="margin-top:20px">Canais de atendimento</h3>
+        <b>0800 009 0037</b><small>(somente Pessoa Jurídica)</small>
+        <b>0800 009 0037</b><small>(somente mensagens)</small>
+        <b style="font-size:15px">contato@asaas.com.br</b>
+      </div>
+      <div class="f-col"><h3>Ajuda</h3><ul><li><a href="#">Central de ajuda</a></li><li><a href="#">Ouvidoria</a></li><li><a href="#">Alerta de fraude</a></li></ul>
+        <h3 style="margin-top:24px">Imprensa</h3><ul><li><a href="#">imprensa@asaas.com.br</a></li></ul></div>
+      <div class="f-col"><h3>Soluções</h3><ul id="fSol"></ul></div>
+      <div class="f-col"><h3>Asaas</h3><ul><li><a href="#">Preços e taxas</a></li><li><a href="#">Sobre nós</a></li><li><a href="#">Blog</a></li><li><a href="#">Carreiras</a></li><li><a href="#">2ª Via</a></li><li><a href="#">Seja um parceiro</a></li><li><a href="#">Flapp Store</a></li></ul></div>
+      <div class="f-col"><h3>Transparência</h3><ul><li><a href="#">Termos de uso</a></li><li><a href="#">Política de privacidade</a></li><li><a href="#">Políticas de segurança</a></li><li><a href="#">Documentos</a></li><li><a href="#">Canal de denúncias</a></li><li><a href="#">Reportar Vulnerabilidade</a></li></ul></div>
+    </div>
+    <div class="f-legal">
+      <span>© Copyright 2026 ASAAS Gestão Financeira Instituição de Pagamento S.A. CNPJ: 19.540.550/0001-21 | Todos os direitos reservados.</span>
+      <span>Av. Rolf Wiest, 277, Sl. 820 - Bom Retiro, Joinville - SC, 89223-005. Caixa Postal: 6543 - CEP: 89227-971</span>
+    </div>
+  </div>
+</footer>
+
+<!-- menu mobile (bottom sheet, igual ao painel) -->
+<div class="overlay" id="overlay"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Menu">
+  <div class="grab" aria-hidden="true"></div>
+  <div class="sh-head"><span aria-label="Asaas"><svg width="96" height="16" viewBox="0 0 100 17" fill="none" aria-hidden="true"><path d="M67.0144 10.2322L71.1732 2.8531L75.291 10.2116C74.1232 9.6817 72.6687 9.41646 71.0912 9.41646C69.6159 9.41646 68.2023 9.68169 67.0144 10.2316M45.6871 10.2322L49.8459 2.8531L53.9638 10.2116C52.796 9.6817 51.3414 9.41646 49.764 9.41646C48.2887 9.41646 46.8751 9.68169 45.6871 10.2316M5.98205 10.2322L10.1409 2.69007L14.2997 10.2122C13.1319 9.68231 11.6566 9.41707 10.0791 9.41707C8.60379 9.41707 7.17003 9.6823 5.98144 10.2322M99.9988 12.067C99.9988 15.1653 97.1508 17 92.0498 17C88.4034 17 85.3096 16.3272 82.1339 14.3294L83.1788 12.4746C86.1497 14.3501 88.6901 15.0022 92.0296 15.0022C95.7378 15.0022 97.684 13.9218 97.684 12.0262C97.684 10.4975 96.2704 9.86542 93.4842 9.5801L88.5672 9.091C84.9819 8.74425 82.7081 7.37853 82.7081 4.87157C82.7081 1.89558 85.9247 0 91.0257 0C94.2014 0 96.721 0.61138 99.2412 2.18089L98.2171 4.11723C96.2092 2.79227 93.8535 2.07869 90.7597 2.07869C87.1542 2.07869 85.0235 3.21993 85.0235 4.79005C85.0235 6.27805 86.56 6.84867 88.7934 7.07314L93.8131 7.56225C97.8491 7.94976 100 9.397 100 12.067M81.3758 16.6332L72.2181 0.386904H70.1491L61.0115 16.6332H63.47L64.4739 14.7784C65.6417 12.6175 67.6698 11.4763 71.0912 11.4763C74.5127 11.4763 76.6637 12.5975 77.8522 14.799L78.8354 16.6338H81.3758V16.6332ZM60.0486 16.6332L50.8908 0.386904H48.8218L39.6843 16.6332H42.1428L43.1467 14.7784C44.3145 12.6175 46.3425 11.4763 49.764 11.4763C53.1854 11.4763 55.3364 12.5975 56.525 14.799L57.5081 16.6338H60.0486V16.6332ZM38.9873 12.067C38.9873 15.1653 36.1393 17 31.0383 17C27.3918 17 24.2981 16.3272 21.1224 14.3294L22.1673 12.4746C25.1382 14.3501 27.6786 15.0022 31.0181 15.0022C34.7263 15.0022 36.6725 13.9218 36.6725 12.0262C36.6725 10.4975 35.2589 9.86542 32.4727 9.5801L27.5557 9.091C23.9704 8.74425 21.6966 7.37853 21.6966 4.87157C21.6966 1.89558 24.9132 0 30.0142 0C33.1898 0 35.7095 0.61138 38.2297 2.18089L37.2056 4.11723C35.1977 2.79227 32.842 2.07869 29.7482 2.07869C26.1427 2.07869 24.012 3.21993 24.012 4.79005C24.012 6.27805 25.5484 6.84867 27.7819 7.07314L32.8016 7.56225C36.8375 7.94976 38.9885 9.397 38.9885 12.067M8.05167 2.30256L0 16.6326H2.45848L3.46243 14.7777C4.63023 12.6376 6.6381 11.4757 10.0797 11.4757C13.5214 11.4757 15.6729 12.6376 16.8407 14.7984L17.8239 16.6332H20.3643L11.8009 1.42655C11.3912 0.692898 10.8177 0.386904 9.87491 0.386904H2.97085L4.02493 1.45879C4.66691 2.09755 5.1707 2.30256 6.0652 2.30256H8.05167Z" fill="#fff"/></svg></span><button type="button" id="sheetClose" aria-label="Fechar menu"><i data-i="x" data-s="20"></i></button></div>
+  <div class="grp">Menu</div>
+  <a href="#precos">Preços</a><a href="#seguranca">Sobre nós</a><a href="#api">Desenvolvedores</a><a href="#faq">2ª Via</a>
+  <div class="grp">Soluções</div>
+  <div id="sheetSol"></div>
+  <div class="sh-cta"><a class="btn btn-white" href="#cadastro">Criar conta grátis</a><a class="btn" style="background:rgba(255,255,255,.14);color:#fff" href="painel/">Acessar minha conta</a></div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"><i data-i="check" data-s="18"></i><span></span></div>
+
+<script>
+(function(){
+  'use strict';
+  /* ---------- ícones (mesmos paths do painel: stroke 1.8, viewBox 24) ---------- */
+  var I = {
+    home:'M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z',
+    receipt:'M6 2h12v20l-3-2-3 2-3-2-3 2zM9 7h6M9 11h6M9 15h4',
+    link:'M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1',
+    pos:'M7 2h10a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1zM9 5h6v4H9zM9 13h.01M12 13h.01M15 13h.01M9 17h.01M12 17h.01M15 17h.01',
+    users:'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8',
+    search:'M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16zM21 21l-4.3-4.3',
+    shield:'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10zM12 8v4M12 16h.01',
+    wallet:'M3 7a2 2 0 0 1 2-2h14v4M3 7v11a2 2 0 0 0 2 2h16V9H5a2 2 0 0 1-2-2zM17 14h.01',
+    list:'M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01',
+    pix:'M12 2.5 21.5 12 12 21.5 2.5 12zM8.5 12 12 8.5l3.5 3.5-3.5 3.5z',
+    barcode:'M3 5v14M7 5v14M10 5v14M14 5v14M17 5v14M21 5v14',
+    card:'M2 7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2zM2 10h20M6 15h4',
+    clock:'M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zM12 6v6l4 2',
+    file:'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M8 13h8M8 17h5',
+    bank:'M3 21h18M5 21V10M19 21V10M9 21V10M15 21V10M2 10 12 3l10 7z',
+    bell:'M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0',
+    chevD:'M6 9l6 6 6-6', chevR:'M9 6l6 6-6 6',
+    x:'M18 6 6 18M6 6l12 12', check:'M20 6 9 17l-5-5',
+    alert:'M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z',
+    menu:'M4 6h16M4 12h16M4 18h16',
+    sun:'M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10zM12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4',
+    moon:'M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z',
+    send:'M22 2 11 13M22 2l-7 20-4-9-9-4z', mail:'M3 5h18v14H3zM3 6l9 7 9-7',
+    up:'M7 17 17 7M8 7h9v9',
+    cash:'M2 6h20v12H2zM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM6 12h.01M18 12h.01',
+    code:'M16 18l6-6-6-6M8 6l-6 6 6 6M14 4l-4 16',
+    grid:'M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z',
+    spark:'M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9zM19 15l.9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9z',
+    volume:'M11 5 6 9H2v6h4l5 4zM15.5 8.5a5 5 0 0 1 0 7M19 5a9 9 0 0 1 0 14',
+    arrowR:'M5 12h14M13 6l6 6-6 6',
+    chat:'M21 12a8 8 0 0 1-11.8 7L3 21l2-6A8 8 0 1 1 21 12z',
+    sms:'M4 4h16v12H8l-4 4zM8 9h8M8 12h5',
+    trend:'M3 17l6-6 4 4 8-8M15 7h6v6',
+    wifi:'M8.5 16.5a5 5 0 0 1 7 0M5 13a10 10 0 0 1 14 0M12 20h.01',
+    hash:'M4 9h16M4 15h16M10 3 8 21M16 3l-2 18',
+    lock:'M5 11h14v10H5zM8 11V7a4 4 0 0 1 8 0v4M12 15v2',
+    split:'M6 3v6a6 6 0 0 0 6 6h0a6 6 0 0 1 6 6M18 3v6a6 6 0 0 1-6 6M3 6l3-3 3 3M15 6l3-3 3 3',
+    hook:'M18 16.1A5 5 0 0 0 15.9 6L15 6a3 3 0 1 0-5.7 1.3L12 12M6 15a5 5 0 1 0 7 4.6V19h6M12 12l-3 5',
+    phone:'M7 2h10a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1zM11 18h2',
+    play:'M6 3l14 9-14 9z',
+    calc:'M5 2h14a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1zM8 6h8v4H8zM8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01'
+  };
+  function ic(n,s){s=s||20;return '<svg width="'+s+'" height="'+s+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="'+(I[n]||'')+'"/></svg>';}
+  function paint(root){(root||document).querySelectorAll('i[data-i]').forEach(function(el){if(!el.firstChild)el.innerHTML=ic(el.getAttribute('data-i'),+el.getAttribute('data-s')||20);});}
+
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- sem áudio aqui: a voz do assistente é só do painel ---------- */
+  (function(){
+    var bc=null; try{bc=new BroadcastChannel('asaas-voz');}catch(e){}
+    function calar(){ if(document.hidden) return; try{bc&&bc.postMessage('calar');}catch(e){} try{window.speechSynthesis&&window.speechSynthesis.cancel();}catch(e){} document.querySelectorAll('audio,video').forEach(function(m){try{m.pause();}catch(e){}}); }
+    calar();
+    document.addEventListener('visibilitychange',calar);
+    window.addEventListener('focus',calar);
+    setInterval(calar,1500);
+  })();
+  var $ = function(s,r){return (r||document).querySelector(s);};
+  var $$ = function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));};
+
+  /* ---------- dados do site original ---------- */
+  var SOL = [
+    ['pix','Pix','Receba em até 10 segundos'],['barcode','Boleto bancário','Cobranças registradas'],['card','Cobrança por cartão','Crédito e débito'],
+    ['pos','Asaas Tap','Venda presencial'],['link','Link de pagamento','Venda de qualquer lugar'],['file','Nota fiscal','Emissão automática'],
+    ['wallet','Conta digital','Banco 461, sem mensalidade'],['bell','Régua de Cobrança','Lembretes automáticos'],['trend','Antecipação de recebíveis','Mais liquidez'],
+    ['grid','ERP','Sem limite de usuários'],['code','API de pagamentos','REST, webhooks e split'],['cash','Meios de pagamento','5 em 1']
+  ];
+  var INV = ['23S','Parallax','Cventures','Spectra','Escala Capital','Quartzo Capital','Bond','SoftBank','Inovabra','Endeavor'];
+  var CLI = ['Würth','Cometa','Sebrae','Magazord','Next Fit','Tecnofit','Minerva Foods','Nuvemshop','Shopify','Rodobens','Mahle','Hostgator'];
+  var FAQ = [
+    ['Como faço para abrir uma conta no Asaas?','Na tela de cadastro, informe e-mail e senha para criar seu acesso no Asaas. Em seguida, você será direcionado para o processo de abertura da conta. Nessa etapa, queremos conhecer melhor você e seu negócio: isso ajuda a garantir a segurança da conta e de toda a plataforma. Por isso, solicitamos informações como CPF/CNPJ, data de nascimento, endereço e telefone. Também é necessário informar uma conta bancária e enviar uma foto do documento de identificação. Depois, é só aguardar o retorno, que leva no máximo 2 dias úteis.'],
+    ['Como emito uma cobrança?','Depois de ativar sua conta, acesse o Asaas e clique no botão "Criar cobrança", no canto superior esquerdo da tela. Depois, preencha as informações de cobrança e escolha se ela será avulsa ou parcelada. Na aba "Assinaturas", você pode criar cobranças recorrentes.'],
+    ['Como o Asaas notifica os meus clientes?','O Asaas envia lembretes automáticos da cobrança ao seu cliente por e-mail e SMS. Após o vencimento, você também pode ativar o robô de voz, que faz ligações automáticas para seu cliente.'],
+    ['Em quanto tempo recebo meu dinheiro?','Após o pagamento do boleto, o valor leva 1 dia útil para cair na sua Conta Asaas e ficar disponível para saque. Nas cobranças via cartão de crédito, o prazo é de 32 dias corridos após a data de confirmação de cada parcela. Já no débito, a compensação ocorre em até 3 dias úteis após a confirmação do pagamento. Com o saldo em conta, os prazos de transferência variam de acordo com as configurações do seu cadastro ou a forma que pretende sacar seu dinheiro.'],
+    ['Como integro o Asaas com meu sistema?','O Asaas oferece integração via API desenvolvida no padrão REST, permitindo a integração com qualquer site, sistema ERP ou e-commerce. Além disso, também temos plugins para Magento e WooCommerce e integrações com outras ferramentas através da Pluga. Conheça todas as integrações.'],
+    ['Por que os serviços do Asaas não são completamente gratuitos?','O modelo de negócio do Asaas funciona sem mensalidades para o uso da ferramenta, possibilitando que nossos clientes paguem apenas pelos serviços utilizados, de maneira transacional. Existe um princípio no mundo dos negócios que diz que, quando você não está pagando pelo produto ou serviço sendo fornecido, na realidade você é o produto sendo vendido para alguém. Nosso modelo é o mais transparente possível: cobramos de você a menor taxa possível pelos serviços. Mas, em contrapartida, não iremos vender você para terceiros, nem vender seus dados para pessoas interessadas em lhe vender outros produtos ou serviços em modelos de negócio indiretos.']
+  ];
+  var VS = {
+    sem:{tone:'bad',icon:'x',core:'Sua empresa',items:[['Pagar taxas altas','tone bad','x'],['Depender de bancos','tone bad','x'],['Fazer o gerenciamento manual de tudo','tone bad','x']]},
+    com:{tone:'',icon:'check',core:'Asaas',items:[['Vários meios de pagamento e recebimento','tone','check'],['Antecipação de vendas parceladas','tone','check'],['Gestão financeira em um só lugar','tone ok','check']]}
+  };
+
+  /* ---------- montagem ---------- */
+  $('#mega').innerHTML = SOL.map(function(s){return '<a role="menuitem" href="#"><span class="tone">'+ic(s[0],20)+'</span><span>'+s[1]+'<small>'+s[2]+'</small></span></a>';}).join('');
+  $('#sheetSol').innerHTML = SOL.map(function(s){return '<a href="#">'+ic(s[0],20)+s[1]+'</a>';}).join('');
+  $('#fSol').innerHTML = SOL.map(function(s){return '<li><a href="#">'+s[1]+'</a></li>';}).join('');
+  function pills(list,icon){var h=list.map(function(n){return '<span class="logo-pill">'+ic(icon,18)+n+'</span>';}).join('');return h+h;}
+  $('#inv').innerHTML = pills(INV,'trend');
+  $('#cli').innerHTML = pills(CLI,'spark');
+  $$('#inv .logo-pill, #cli .logo-pill').forEach(function(p,i,a){ if(i>=a.length/2) p.setAttribute('aria-hidden','true'); });
+  $('#acc').innerHTML = FAQ.map(function(q,i){return '<div class="qa rv'+(i===0?' open':'')+'" style="--d:'+(i*60)+'ms"><h3><button type="button" aria-expanded="'+(i===0)+'" aria-controls="ans'+i+'" id="q'+i+'">'+q[0]+'<span class="pm-ic">'+ic('x',16).replace('M18 6 6 18M6 6l12 12','M12 5v14M5 12h14')+'</span></button></h3><div class="ans" id="ans'+i+'" role="region" aria-labelledby="q'+i+'"><div><p>'+q[1]+'</p></div></div></div>';}).join('');
+
+  // telefones dos capítulos no mobile (clonados do telefone fixo)
+  (function(){
+    // telefones dentro dos capítulos no mobile
+    $$('.mob-phone').forEach(function(m){var c=$('#autoPhone').cloneNode(true);c.removeAttribute('id');var k=m.getAttribute('data-mob');$$('.scr',c).forEach(function(s){s.classList.toggle('on',s.getAttribute('data-s')===k);});m.appendChild(c);m.setAttribute('aria-hidden','true');});
+  })();
+
+  // título do hero: palavras sobem em cascata
+  (function(){
+    var h=$('[data-split]'); var idx=0;
+    function wrapText(node){
+      Array.prototype.slice.call(node.childNodes).forEach(function(n){
+        if(n.nodeType===3){
+          var frag=document.createDocumentFragment();
+          n.textContent.split(/(\s+)/).forEach(function(t){
+            if(!t) return;
+            if(/^\s+$/.test(t)){frag.appendChild(document.createTextNode(t));return;}
+            var w=document.createElement('span');w.className='w';var inner=document.createElement('span');inner.style.setProperty('--i',idx++);inner.textContent=t;w.appendChild(inner);frag.appendChild(w);
+          });
+          n.parentNode.replaceChild(frag,n);
+        } else if(n.nodeType===1 && n.tagName!=='svg' && n.tagName!=='SVG'){ wrapText(n); }
+      });
+    }
+    wrapText(h);
+  })();
+  paint();
+
+  /* ---------- tema (mesmo atributo do painel) ---------- */
+  var themeBtn=$('#themeBtn');
+  function setTheme(t){document.documentElement.setAttribute('data-theme',t);themeBtn.innerHTML=ic(t==='dark'?'sun':'moon',20);themeBtn.setAttribute('aria-label',t==='dark'?'Usar tema claro':'Usar tema escuro');try{localStorage.setItem('asaas-site-tema',t);}catch(e){}}
+  var saved=null;try{saved=localStorage.getItem('asaas-site-tema');}catch(e){}
+  setTheme(saved==='dark'?'dark':'light');
+  themeBtn.addEventListener('click',function(){setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');});
+
+  /* ---------- toast ---------- */
+  var toastT;
+  function toast(msg){var t=$('#toast');$('span',t).textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove('show');},3200);}
+
+  /* ---------- formulários de cadastro ---------- */
+  $$('[data-form]').forEach(function(f){
+    var inp=$('input',f),row=$('.signup-row',f),err=$('.err',f);
+    function bad(on){row.setAttribute('aria-invalid',on?'true':'false');inp.setAttribute('aria-invalid',on?'true':'false');err.classList.toggle('show',on);}
+    inp.addEventListener('input',function(){bad(false);});
+    f.addEventListener('submit',function(e){
+      e.preventDefault();
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(inp.value.trim())){bad(true);inp.focus();return;}
+      toast('Tudo certo! Abrindo o painel de demonstração…');
+      setTimeout(function(){location.href='painel/';},1400);
+    });
+  });
+
+  /* ---------- menu Soluções ---------- */
+  var solBtn=$('#solBtn'),mega=$('#mega');
+  function setMega(o){mega.classList.toggle('open',o);solBtn.setAttribute('aria-expanded',o);}
+  solBtn.addEventListener('click',function(e){e.stopPropagation();setMega(!mega.classList.contains('open'));});
+  document.addEventListener('click',function(e){if(!mega.contains(e.target))setMega(false);});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'){if(mega.classList.contains('open')){setMega(false);solBtn.focus();}closeSheet();}});
+
+  /* ---------- bottom sheet mobile ---------- */
+  var sheet=$('#sheet'),ov=$('#overlay'),burger=$('#burger');
+  function openSheet(){sheet.classList.add('show');ov.classList.add('show');burger.setAttribute('aria-expanded','true');$('#sheetClose').focus();}
+  function closeSheet(){if(!sheet.classList.contains('show'))return;sheet.classList.remove('show');ov.classList.remove('show');burger.setAttribute('aria-expanded','false');burger.focus();}
+  burger.addEventListener('click',openSheet);ov.addEventListener('click',closeSheet);$('#sheetClose').addEventListener('click',closeSheet);
+  $$('#sheet a').forEach(function(a){a.addEventListener('click',function(){sheet.classList.remove('show');ov.classList.remove('show');burger.setAttribute('aria-expanded','false');});});
+
+  /* ---------- revelação + contadores ---------- */
+  function countUp(el){
+    var to=parseFloat(el.getAttribute('data-count')),dec=+el.getAttribute('data-dec')||0,dur=1600,t0=null;
+    function fmt(v){return v.toLocaleString('pt-BR',{minimumFractionDigits:dec,maximumFractionDigits:dec});}
+    if(reduce){el.textContent=fmt(to);return;}
+    function step(ts){if(!t0)t0=ts;var p=Math.min(1,(ts-t0)/dur);var e=1-Math.pow(1-p,4);el.textContent=fmt(to*e);if(p<1)requestAnimationFrame(step);}
+    requestAnimationFrame(step);
+  }
+  var io=new IntersectionObserver(function(es){es.forEach(function(en){if(!en.isIntersecting)return;en.target.classList.add('in');$$('[data-count]',en.target).forEach(function(c){if(!c._done){c._done=1;countUp(c);}});io.unobserve(en.target);});},{threshold:.18,rootMargin:'0px 0px -6% 0px'});
+  $$('.rv, .stat, .card').forEach(function(el){io.observe(el);});
+
+  /* ---------- spotlight nos cards ---------- */
+  $$('.card').forEach(function(c){c.addEventListener('pointermove',function(e){var r=c.getBoundingClientRect();c.style.setProperty('--mx',(e.clientX-r.left)+'px');c.style.setProperty('--my',(e.clientY-r.top)+'px');});});
+
+  /* ---------- segmented controls ---------- */
+  function movePill(seg){var on=$('[aria-selected=true]',seg),p=$('.pill',seg);if(!on||!p)return;p.style.width=on.offsetWidth+'px';p.style.transform='translateX('+(on.offsetLeft-5)+'px)';}
+
+  /* ---------- sem × com ---------- */
+  var vsSeg=$('#vsSeg'),diagram=$('#diagram'),vsList=$('#vsList'),vsState='';
+  function setVS(k){
+    if(k===vsState)return;vsState=k;var d=VS[k];
+    $$('button',vsSeg).forEach(function(b){b.setAttribute('aria-selected',b.getAttribute('data-v')===k);});movePill(vsSeg);
+    diagram.classList.toggle('com',k==='com');
+    vsList.innerHTML=d.items.map(function(it){return '<li><span class="'+it[1]+'">'+ic(it[2],20)+'</span>'+it[0]+'</li>';}).join('');
+    var sw=$$('.swap',diagram);sw.forEach(function(s){s.classList.add('out');});
+    setTimeout(function(){
+      $$('.node',diagram).forEach(function(n,i){var t=$('.tone',n);t.className=d.items[i][1];t.innerHTML=ic(d.items[i][2],24);$('p',n).textContent=d.items[i][0];});
+      $('.core span',diagram).textContent=d.core;
+      $('.core i',diagram).innerHTML=k==='com'?'<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4 4.5 20M12 4l7.5 16M7.8 13.5h8.4"/></svg>':ic('bank',30);
+      sw.forEach(function(s){s.classList.remove('out');});
+    },reduce?0:250);
+  }
+  $$('button',vsSeg).forEach(function(b){b.addEventListener('click',function(){vsAuto=false;setVS(b.getAttribute('data-v'));});});
+  setVS('sem');
+  var vsAuto=true;
+  new IntersectionObserver(function(es,o){es.forEach(function(en){if(en.isIntersecting){o.disconnect();setTimeout(function(){if(vsAuto)setVS('com');},2400);}});},{threshold:.5}).observe(diagram);
+
+  /* ---------- capítulos da automação ---------- */
+  var autoSeg=$('#autoSeg'),curC=-1;
+  function setChapter(i){
+    if(i===curC)return;curC=i;
+    $$('button',autoSeg).forEach(function(b){b.setAttribute('aria-selected',+b.getAttribute('data-c')===i);});movePill(autoSeg);
+    $$('#autoPhone .scr').forEach(function(s){s.classList.toggle('on',+s.getAttribute('data-s')===i);});
+  }
+  $$('button',autoSeg).forEach(function(b){b.addEventListener('click',function(){var c=$('#ch'+b.getAttribute('data-c'));c.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});});});
+  var cio=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting)setChapter(+en.target.getAttribute('data-c'));});},{rootMargin:'-45% 0px -50% 0px'});
+  $$('.chapter').forEach(function(c){cio.observe(c);});
+  setChapter(0);
+
+  /* ---------- terminal da API (digitação) ---------- */
+  var CODE=[
+    ['c','// Criar uma cobrança via Pix com split\n'],
+    ['k','POST'],['',' /v3/payments\n{\n  '],
+    ['s','"customer"'],['',': '],['s','"cus_000005219613"'],['',',\n  '],
+    ['s','"billingType"'],['',': '],['s','"PIX"'],['',',\n  '],
+    ['s','"value"'],['',': '],['n','1200.00'],['',',\n  '],
+    ['s','"dueDate"'],['',': '],['s','"2026-10-30"'],['',',\n  '],
+    ['s','"split"'],['',': [{ '],['s','"walletId"'],['',': '],['s','"…"'],['',', '],['s','"percentualValue"'],['',': '],['n','10'],['',' }]\n}\n\n'],
+    ['k','→ 200 OK'],['','  status: '],['s','"PENDING"']
+  ];
+  var pre=$('#code'),typed=false;
+  function typeCode(){
+    if(typed)return;typed=true;
+    if(reduce){pre.innerHTML=CODE.map(function(p){return p[0]?'<span class="'+p[0]+'">'+p[1]+'</span>':p[1];}).join('');$('#hook').classList.add('show');return;}
+    var pi=0,ci=0,html='';
+    function tick(){
+      if(pi>=CODE.length){pre.innerHTML=html+'<span class="caret"></span>';setTimeout(function(){$('#hook').classList.add('show');},400);return;}
+      var p=CODE[pi];ci+=2;var part=p[1].slice(0,ci);
+      var cur=p[0]?'<span class="'+p[0]+'">'+part+'</span>':part;
+      pre.innerHTML=html+cur+'<span class="caret"></span>';
+      if(ci>=p[1].length){html+=p[0]?'<span class="'+p[0]+'">'+p[1]+'</span>':p[1];pi++;ci=0;}
+      setTimeout(tick,22);
+    }
+    tick();
+  }
+  new IntersectionObserver(function(es,o){es.forEach(function(en){if(en.isIntersecting){o.disconnect();typeCode();}});},{threshold:.4}).observe(pre);
+
+  /* ---------- FAQ ---------- */
+  $$('#acc .qa button').forEach(function(b){b.addEventListener('click',function(){var qa=b.closest('.qa'),open=!qa.classList.contains('open');$$('#acc .qa.open').forEach(function(o){if(o!==qa){o.classList.remove('open');$('button',o).setAttribute('aria-expanded','false');}});qa.classList.toggle('open',open);b.setAttribute('aria-expanded',open);});});
+
+  /* ---------- parallax (scroll + mouse) e topo ---------- */
+  var top=$('#top'),bar=$('.progress'),stage=$('#stage');
+  var depthEls=$$('#stage [data-depth]'),speedEls=$$('[data-speed]'),xEls=$$('[data-x]');
+  var mx=0,my=0,tx=0,ty=0;
+  if(!reduce && window.matchMedia('(pointer:fine)').matches){
+    $('.hero').addEventListener('pointermove',function(e){var r=stage.getBoundingClientRect();tx=((e.clientX-(r.left+r.width/2))/r.width);ty=((e.clientY-(r.top+r.height/2))/r.height);});
+    $('.hero').addEventListener('pointerleave',function(){tx=0;ty=0;});
+  }
+  function frame(){
+    var y=window.scrollY,vh=window.innerHeight,h=document.documentElement.scrollHeight-vh;
+    top.classList.toggle('scrolled',y>8);
+    bar.style.transform='scaleX('+(h>0?y/h:0)+')';
+    if(!reduce){
+      mx+=(tx-mx)*.08;my+=(ty-my)*.08;
+      speedEls.forEach(function(el){
+        var host=el.parentElement.getBoundingClientRect();
+        var off=(host.top+host.height/2-vh/2);
+        var inHero=!!el.closest('.hero');
+        var sp=parseFloat(el.getAttribute('data-speed'));
+        if(window.innerWidth<760 && el.closest('.stage,.app-stage')) sp=0;
+        var sy=inHero? y*sp : off*sp;
+        var d=parseFloat(el.getAttribute('data-depth')||0);
+        el.style.transform='translate3d('+(mx*d)+'px,'+(my*d+sy)+'px,0)';
+        el._done=1;
+      });
+      depthEls.forEach(function(el){if(el.hasAttribute('data-speed'))return;var d=parseFloat(el.getAttribute('data-depth'));el.style.translate=(mx*d)+'px '+(my*d)+'px';});
+      xEls.forEach(function(el){var r=el.parentElement.getBoundingClientRect();el.style.transform='translateX('+((r.top-vh)*parseFloat(el.getAttribute('data-x')))+'px)';});
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  function relayout(){movePill(vsSeg);movePill(autoSeg);}
+  window.addEventListener('resize',relayout);
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(relayout);
+  setTimeout(relayout,300);
+})();
+</script>
+</body>
+</html>
