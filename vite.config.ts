@@ -106,7 +106,8 @@ export default defineConfig(({ mode }) => ({
       input: {
         site: path.resolve(__dirname, 'index.html'),
         painel: path.resolve(__dirname, 'painel/index.html'),
-        designSystem: path.resolve(__dirname, 'design-system/index.html')
+        designSystem: path.resolve(__dirname, 'design-system/index.html'),
+        defesa: path.resolve(__dirname, 'defesa/index.html')
       }
     }
   }

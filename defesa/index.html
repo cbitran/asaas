@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Asaas · Defesa do redesenho (conceito)</title>
+<meta name="description" content="Por que mudamos, qual foi o caminho e o que vem depois: diagnóstico, comparação com concorrentes, voz do usuário, design system e visão de futuro. Simulação com dados fictícios.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../tokens/tokens.css">
+<style>
+*{box-sizing:border-box}
+html{scroll-snap-type:y proximity}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+body{margin:0;background:var(--color-bg-ground);color:var(--color-text-primary);font:var(--text-body);-webkit-font-smoothing:antialiased}
+h1,h2,h3,p,ul,ol{margin:0}
+ul,ol{padding-left:20px}
+a{color:var(--color-brand-text)}
+code{font:600 12px ui-monospace,Menlo,monospace;background:var(--color-bg-subtle);padding:1px 6px;border-radius:6px}
+:focus-visible{outline:3px solid var(--color-focus);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:absolute;left:8px;top:-60px;background:var(--color-action-cta);color:var(--color-action-on-cta);padding:10px 14px;border-radius:10px;z-index:20}
+.skip:focus{top:8px}
+
+/* barra */
+.bar{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;align-items:center;gap:10px;padding:10px 20px;background:color-mix(in srgb,var(--color-bg-ground) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--color-border)}
+.bar b{font:800 15px var(--font-family);letter-spacing:-.01em;margin-right:auto}
+.bar .cont{font:var(--text-label);color:var(--color-text-secondary);min-width:64px;text-align:center}
+.btn{min-height:var(--touch-min);padding:0 14px;border-radius:var(--radius-md);border:1px solid var(--color-border);background:var(--color-bg-surface);color:var(--color-text-primary);font:var(--text-label);cursor:pointer}
+.btn:hover{filter:brightness(.95)}
+.prog{position:fixed;top:0;left:0;height:3px;background:var(--color-brand-primary);width:0;z-index:11;transition:width .25s}
+.idx{position:fixed;top:64px;right:20px;z-index:12;background:var(--color-bg-surface);border:1px solid var(--color-border);border-radius:var(--radius-card);box-shadow:var(--shadow-overlay);padding:12px;max-height:70vh;overflow:auto;width:min(360px,calc(100vw - 40px))}
+.idx[hidden]{display:none}
+.idx a{display:flex;gap:10px;padding:10px;border-radius:var(--radius-md);text-decoration:none;color:var(--color-text-primary);font:var(--text-label)}
+.idx a:hover{background:var(--color-bg-subtle)}
+.idx a i{font-style:normal;color:var(--color-text-muted);min-width:22px}
+
+/* slides */
+.slide{min-height:100vh;scroll-snap-align:start;padding:84px 32px 52px;display:flex;flex-direction:column;justify-content:center;gap:20px;max-width:1240px;margin:0 auto;position:relative}
+.slide>*{max-width:100%}
+.kicker{font:700 12px var(--font-family);letter-spacing:.1em;text-transform:uppercase;color:var(--color-brand-text)}
+.slide h2{font:800 clamp(26px,3.4vw,40px)/1.1 var(--font-family);letter-spacing:-.02em;max-width:980px}
+.lead{font-size:clamp(16px,1.6vw,19px);line-height:1.55;color:var(--color-text-secondary);max-width:860px}
+.foot{margin-top:auto;padding-top:12px;font:var(--text-caption);color:var(--color-text-muted);display:flex;gap:12px;flex-wrap:wrap;justify-content:space-between}
+.sim{display:inline-flex;gap:6px;align-items:center;font:700 11px var(--font-family);padding:3px 10px;border-radius:999px;background:var(--color-warning-bg);color:var(--color-warning-text)}
+.card{background:var(--color-bg-surface);border:1px solid var(--color-card-border);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:18px 20px}
+.card h3{font:var(--text-h2);margin-bottom:8px}
+.card p,.card li{color:var(--color-text-secondary);font-size:14.5px;line-height:1.5}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(3,minmax(0,1fr))}.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media(max-width:980px){.g3,.g4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:640px){.g2,.g3,.g4{grid-template-columns:minmax(0,1fr)}.slide{padding:88px 18px 56px}.bar{padding:8px 12px}.bar b{display:none}}
+.slide.denso{padding:74px 32px 36px;gap:12px}.denso .antes>h3,.denso .depois>h3{margin-bottom:8px}.denso .foot{padding-top:2px}
+.mini .card{padding:10px 14px}.mini .card h3{font-size:15px;margin-bottom:4px}.mini .card p{font-size:13px;line-height:1.4}
+.tag{display:inline-flex;font:700 11px var(--font-family);padding:3px 9px;border-radius:999px;background:var(--color-brand-tint);color:var(--color-brand-text)}
+.tag.ok{background:var(--color-success-bg);color:var(--color-success-text)}.tag.risco{background:var(--color-danger-bg);color:var(--color-danger)}.tag.av{background:var(--color-warning-bg);color:var(--color-warning-text)}.tag.in{background:var(--color-info-bg);color:var(--color-info-text)}
+.big{font:800 clamp(30px,4vw,46px)/1 var(--font-family);letter-spacing:-.03em;margin-bottom:4px}
+.mut{color:var(--color-text-muted);font:var(--text-caption)}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:stretch}
+@media(max-width:860px){.cols{grid-template-columns:1fr}}
+.antes,.depois{border-radius:var(--radius-card);padding:16px 18px;border:1px solid var(--color-card-border)}
+.antes{background:var(--color-bg-subtle)}.depois{background:var(--color-brand-tint);border-color:var(--color-brand-primary)}
+.antes>h3,.depois>h3{font:800 13px var(--font-family);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.antes>h3{color:var(--color-text-secondary)}.depois>h3{color:var(--color-brand-text)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:600 12px var(--font-family);padding:6px 10px;border-radius:10px;background:var(--color-bg-surface);border:1px solid var(--color-border);color:var(--color-text-primary)}
+.grp{background:var(--color-bg-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:8px 10px}
+.gg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(max-width:640px){.gg{grid-template-columns:1fr}}
+.grp h4{margin:0 0 6px;font:800 12px var(--font-family);color:var(--color-brand-text)}
+.fluxo{display:flex;flex-direction:column;gap:3px;align-items:stretch}
+.etapa{background:var(--color-bg-surface);border:1px solid var(--color-border);border-radius:var(--radius-md);padding:7px 12px;font-size:13px}
+.etapa b{display:block;font-size:13px}.etapa span{color:var(--color-text-secondary);font-size:12.5px}
+.seta{text-align:center;color:var(--color-text-muted);font-size:12px;line-height:1}
+.etapa.forte{border:1.5px solid var(--color-brand-primary)}
+.blocos{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}
+.blocos div{background:var(--color-bg-subtle);border-radius:10px;padding:8px 10px;font-size:12.5px}
+.blocos div b{display:inline-flex;width:20px;height:20px;border-radius:50%;background:var(--color-brand-primary);color:#fff;font-size:11px;align-items:center;justify-content:center;margin-right:6px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{padding:9px 10px;border-bottom:1px solid var(--color-border);text-align:left;vertical-align:top}
+th{font:700 12px var(--font-family);color:var(--color-text-secondary);background:var(--color-bg-subtle)}
+td.dest,th.dest{background:var(--color-brand-tint);color:var(--color-text-primary)}
+.rol{overflow-x:auto;border-radius:var(--radius-lg);border:1px solid var(--color-border);background:var(--color-bg-surface)}
+.rol table{min-width:720px}
+.passo{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px;counter-reset:p}
+@media(max-width:980px){.passo{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:640px){.passo{grid-template-columns:minmax(0,1fr)}}
+.passo div{counter-increment:p;background:var(--color-bg-surface);border:1px solid var(--color-card-border);border-radius:var(--radius-lg);padding:14px;font-size:13.5px;position:relative}
+.passo div::before{content:counter(p);display:flex;width:26px;height:26px;border-radius:50%;background:var(--color-brand-primary);color:#fff;font:800 13px var(--font-family);align-items:center;justify-content:center;margin-bottom:8px}
+.passo div.fut{border-style:dashed}.passo div.fut::before{background:var(--color-text-muted)}
+.passo b{display:block;margin-bottom:4px}.passo span{color:var(--color-text-secondary);font-size:12.5px}
+.barra{display:grid;grid-template-columns:200px 1fr 56px;gap:10px;align-items:center;font-size:13px;padding:1px 0}
+@media(max-width:640px){.barra{grid-template-columns:120px 1fr 48px}}
+.barra i{display:block;height:14px;border-radius:7px;background:var(--color-text-muted);opacity:.55}
+.barra.ui i{background:var(--color-brand-primary);opacity:1}
+.barra b{text-align:right;font-variant-numeric:tabular-nums}
+.sw{display:flex;gap:6px;flex-wrap:wrap}.sw i{display:block;width:44px;height:44px;border-radius:12px;border:1px solid var(--color-border-strong)}
+.status{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font:700 12px var(--font-family)}
+.status::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.s1{background:var(--color-info-bg);color:var(--color-info-text)}.s2{background:var(--color-danger-bg);color:var(--color-danger)}.s3{background:var(--color-success-bg);color:var(--color-success-text)}.s4{background:var(--color-warning-bg);color:var(--color-warning-text)}
+.cta{display:inline-flex;align-items:center;min-height:var(--touch-min);padding:0 18px;border-radius:var(--radius-md);background:var(--color-action-cta);color:var(--color-action-on-cta);font:var(--text-label);text-decoration:none}
+.cta.sec{background:var(--color-bg-surface);color:var(--color-text-primary);border:1px solid var(--color-border)}
+.acoes{display:flex;gap:10px;flex-wrap:wrap}
+.hz{border-top:4px solid var(--color-brand-primary)}.hz.p{border-top-color:var(--color-info-text)}.hz.d{border-top-color:var(--color-text-muted)}
+.op{padding:12px;border-radius:var(--radius-lg);background:var(--color-bg-subtle);margin-top:8px;font-size:13px;color:var(--color-text-secondary)}
+.op b{display:block;color:var(--color-text-primary);font-size:13.5px;margin-bottom:2px}
+.m td,.m th{text-align:center;padding:7px 6px;font-size:12px}.m td:first-child,.m th:first-child{text-align:left}
+.v{color:var(--color-success-text);font-weight:800}.a{color:var(--color-warning-text);font-weight:800}.n{color:var(--color-text-muted)}
+.rev{opacity:0;transform:translateY(14px)}
+.slide.vis .rev{opacity:1;transform:none;transition:opacity .5s ease,transform .5s ease}
+.slide.vis .rev:nth-child(2){transition-delay:.05s}.slide.vis .rev:nth-child(3){transition-delay:.1s}.slide.vis .rev:nth-child(4){transition-delay:.15s}.slide.vis .rev:nth-child(5){transition-delay:.2s}
+@media(prefers-reduced-motion:reduce){.rev{opacity:1;transform:none}.prog{transition:none}}
+@media print{
+ html{scroll-snap-type:none}.bar,.prog,.idx,.skip{display:none!important}
+ .slide{min-height:auto;page-break-after:always;break-after:page;padding:24px 8px}.rev{opacity:1;transform:none}
+ body{background:#fff}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#s1">Pular para o conteúdo</a>
+<div class="prog" id="prog" aria-hidden="true"></div>
+<header class="bar">
+  <b>Asaas · Defesa do redesenho</b>
+  <span class="cont" id="cont" aria-live="polite">1 / 22</span>
+  <button class="btn" type="button" id="ant" aria-label="Slide anterior">←</button>
+  <button class="btn" type="button" id="prox" aria-label="Próximo slide">→</button>
+  <button class="btn" type="button" id="idxb" aria-expanded="false" aria-controls="idx">Índice</button>
+  <button class="btn" type="button" id="tema" aria-pressed="false">Escuro</button>
+  <button class="btn" type="button" id="tela" aria-pressed="false">Tela cheia</button>
+</header>
+<nav class="idx" id="idx" aria-label="Índice dos slides" hidden></nav>
+
+<main id="conteudo">
+
+<!-- 1 CAPA -->
+<section class="slide" id="s1" data-t="Capa">
+  <p class="kicker rev">Estudo de caso · conceito de design</p>
+  <h2 class="rev" style="font-size:clamp(34px,6vw,68px)">Redesenho do painel Asaas: do diagnóstico ao protótipo</h2>
+  <p class="lead rev">Por que mudamos, qual foi o caminho percorrido e o que pensamos para o futuro. Esta apresentação mostra a análise por trás do visual, e não só o resultado.</p>
+  <div class="acoes rev"><a class="cta" href="../painel/">Abrir o protótipo do painel</a><a class="cta sec" href="../">Ver a landing</a><a class="cta sec" href="../design-system/">Ver o design system</a></div>
+  <p class="rev"><span class="sim">Simulação · todos os valores, nomes e datas do protótipo são fictícios</span> <span class="mut">&nbsp;Consultas e fontes: 23/10/2026</span></p>
+</section>
+
+<!-- 2 RESUMO -->
+<section class="slide" id="s2" data-t="Em uma página">
+  <p class="kicker">Em uma página</p>
+  <h2>Não fizemos só desenho: observamos, comparamos e ouvimos antes de decidir</h2>
+  <div class="grid g4">
+    <div class="card rev"><div class="big">17 → grupos</div><h3>Menu</h3><p>Itens soltos no primeiro nível viraram grupos por tarefa. Nenhuma função foi removida.</p></div>
+    <div class="card rev"><div class="big">4 → 1</div><h3>Criar cobrança</h3><p>De 4 etapas em sequência (segundo a Central de Ajuda) para um formulário, com o valor líquido à vista.</p></div>
+    <div class="card rev"><div class="big">11</div><h3>Achados no original</h3><p>Cada um com a heurística que fere e a decisão que tomamos.</p></div>
+    <div class="card rev"><div class="big">5</div><h3>Fluxos comparados</h3><p>Asaas original, Cora, Inter, iugu e Mercado Pago, pelas páginas oficiais de ajuda.</p></div>
+  </div>
+  <p class="lead">O que ainda falta: <b>testar com pessoas</b>. Contamos etapas e calculamos contraste; não medimos tempo nem erros.</p>
+  <div class="foot"><span>Detalhes em docs/ no repositório</span><span class="sim">Simulação</span></div>
+</section>
+
+<!-- 3 CAMINHO -->
+<section class="slide" id="s3" data-t="O caminho">
+  <p class="kicker">Método</p>
+  <h2>O caminho: sete passos, do que vimos ao que falta validar</h2>
+  <div class="passo">
+    <div class="rev"><b>Observar</b><span>Painel original, só leitura, em 23/10/2026</span></div>
+    <div class="rev"><b>Diagnosticar</b><span>10 heurísticas de Nielsen e leitura semiótica</span></div>
+    <div class="rev"><b>Comparar</b><span>Fluxo de criar cobrança em 5 produtos</span></div>
+    <div class="rev"><b>Ouvir</b><span>Reclame Aqui e lojas de aplicativos</span></div>
+    <div class="rev"><b>Decidir</b><span>Princípios e decisões de redesenho</span></div>
+    <div class="rev"><b>Prototipar</b><span>Landing, painel e design system</span></div>
+    <div class="rev fut"><b>Validar</b><span>Teste com 5 a 8 pessoas (a fazer)</span></div>
+  </div>
+  <div class="foot"><span>docs/01-metodo-e-evidencias.md</span><span class="sim">Simulação</span></div>
+</section>
+
+<!-- 4 EVIDÊNCIAS -->
+<section class="slide" id="s4" data-t="Evidências e limites">
+  <p class="kicker">Rigor</p>
+  <h2>Cada informação tem origem, e dizemos o que não sabemos</h2>
+  <div class="grid g3">
+    <div class="card rev"><span class="tag ok">Observado ou lido</span><h3 style="margin-top:10px">Confirmado</h3><p>Telas do painel original vistas em leitura. Páginas oficiais abertas e lidas por inteiro (Cora, Inter, App Store, Reclame Aqui). Contraste calculado por fórmula.</p></div>
+    <div class="card rev"><span class="tag av">Resumo de busca</span><h3 style="margin-top:10px">Não confirmado</h3><p>Três páginas de ajuda (Asaas, iugu, Mercado Pago) bloquearam a leitura direta. Esses pontos aparecem marcados e devem ser conferidos antes de decidir.</p></div>
+    <div class="card rev"><span class="tag risco">Limites</span><h3 style="margin-top:10px">Ainda não sabemos</h3><p>O original foi visto numa conta vazia. Não há teste com usuários. O protótipo é simulação. Nenhum ganho de tempo foi medido.</p></div>
+  </div>
+  <div class="foot"><span>Fontes teóricas: Nielsen Norman Group (rev. 30/01/2024), Stanford Encyclopedia of Philosophy (rev. 2022), W3C WCAG 2.2</span><span class="sim">Simulação</span></div>
+</section>
+
+<!-- 5 PRINCÍPIOS -->
+<section class="slide" id="s5" data-t="Princípios">
+  <p class="kicker">Decisões</p>
+  <h2>Seis princípios guiaram todas as telas</h2>
+  <div class="grid g3">
+    <div class="card rev"><h3>1 · Prioridade antes de promoção</h3><p>O que precisa de atenção vem antes de qualquer oferta.</p></div>
+    <div class="card rev"><h3>2 · Um caminho principal por tela</h3><p>Um botão principal, sempre no mesmo lugar e no mesmo estilo.</p></div>
+    <div class="card rev"><h3>3 · Dizer o que está acontecendo</h3><p>Status visível e valor líquido antes de confirmar.</p></div>
+    <div class="card rev"><h3>4 · Confirmar o que não tem volta</h3><p>Cancelar, estornar e enviar Pix pedem confirmação clara.</p></div>
+    <div class="card rev"><h3>5 · Nada depende só da cor</h3><p>Status com ponto, texto e cor, e alvos de toque de 44 px.</p></div>
+    <div class="card rev"><h3>6 · Nenhuma função removida</h3><p>Reorganizamos e priorizamos. Não tiramos recursos.</p></div>
+  </div>
+  <div class="foot"><span>docs/02-diagnostico-original.md</span><span class="sim">Simulação</span></div>
+</section>
+
+<!-- 6 DIAGNÓSTICO 1 -->
+<section class="slide" id="s6" data-t="Diagnóstico (1)">
+  <p class="kicker">Diagnóstico do original (1 de 2)</p>
+  <h2>O que encontramos, qual critério fere e o que decidimos</h2>
+  <div class="grid g3">
+    <div class="card rev"><span class="tag">H6 · H4</span><h3 style="margin-top:8px">Menu com 17 itens soltos</h3><p><b>Observado:</b> sem agrupamento; dois itens do submenu de Cobranças não são cobranças.</p><p><b>Decisão:</b> grupos por tarefa; os dois itens foram para Ferramentas.</p></div>
+    <div class="card rev"><span class="tag">H4</span><h3 style="margin-top:8px">Botão principal repetido</h3><p><b>Observado:</b> "Criar cobrança" no menu (azul) e no cartão de conta aprovada (verde), além do estado vazio.</p><p><b>Decisão:</b> um botão principal por tela, no cabeçalho.</p></div>
+    <div class="card rev"><span class="tag">H8 · H1</span><h3 style="margin-top:8px">Início abre com promoção</h3><p><b>Observado:</b> carrossel de ofertas e checklist com 5 de 5 etapas, antes das pendências.</p><p><b>Decisão:</b> pendências, saldo e vencimentos primeiro; checklist só se incompleto.</p></div>
+    <div class="card rev"><span class="tag">H2</span><h3 style="margin-top:8px">Número antes do nome</h3><p><b>Observado:</b> a saudação traz um número de documento antes do nome.</p><p><b>Decisão:</b> "Olá, Paulo!".</p></div>
+    <div class="card rev"><span class="tag">H1 · H6</span><h3 style="margin-top:8px">Indicadores sem rótulo</h3><p><b>Observado:</b> marcas vermelhas em vários itens, sem dizer do quê.</p><p><b>Decisão:</b> indicador com texto ("3 cobranças vencidas") e card de atenção com ação.</p></div>
+    <div class="card rev"><span class="tag">H9 · H1</span><h3 style="margin-top:8px">Vazio com tom de erro</h3><p><b>Observado:</b> Extrato vazio pede "tente novamente".</p><p><b>Decisão:</b> "Nenhuma movimentação neste período", com atalho para ampliar.</p></div>
+  </div>
+  <div class="foot"><span>H = heurística de Nielsen · observações de 23/10/2026, conta sem movimentação</span><span class="sim">Simulação</span></div>
+</section>
+
+<!-- 7 DIAGNÓSTICO 2 -->
+<section class="slide" id="s7" data-t="Diagnóstico (2)">
+  <p class="kicker">Diagnóstico do original (2 de 2)</p>
+  <h2>Mais cinco achados, e o que o original já fazia bem</h2>
+  <div class="grid g3">
+    <div class="card rev"><span class="tag">H8</span><h3 style="margin-top:8px">Promoção em telas de trabalho</h3><p><b>Decisão:</b> cartão dispensável e contextual, que não ocupa o lugar da tarefa.</p></div>
+    <div class="card rev"><span class="tag">H8 · H10</span><h3 style="margin-top:8px">Notas fiscais: texto longo</h3><p><b>Observado:</b> cinco linhas antes do botão. <b>Decisão:</b> 4 passos com progresso e "Pular e emitir depois".</p></div>
+    <div class="card rev"><span class="tag">H8</span><h3 style="margin-top:8px">Janelas sobre o conteúdo</h3><p><b>Observado:</b> pesquisa de satisfação e balão de chat. <b>Decisão:</b> um assistente em lugar fixo e dispensável.</p></div>
+    <div class="card rev"><span class="tag">H10 · H6</span><h3 style="margin-top:8px">Pix vazio sem primeiro passo</h3><p><b>Decisão:</b> estado vazio que orienta a primeira ação.</p></div>
+    <div class="card rev"><span class="tag">H7 · H1 · H5</span><h3 style="margin-top:8px">Criar cobrança em 4 etapas</h3><p><b>Fonte:</b> Central de Ajuda (resumo de busca). <b>Decisão:</b> formulário único, cliente primeiro, valor líquido ao lado.</p></div>
+    <div class="card rev" style="border-color:var(--color-success-text)"><span class="tag ok">Mantido</span><h3 style="margin-top:8px">O que já era bom</h3><p>Estados vazios ilustrados com botão claro, rótulo direto "Criar cobrança", assistente de IA pelo WhatsApp e Pix no link da fatura.</p></div>
+  </div>
+  <div class="foot"><span>docs/02-diagnostico-original.md</span><span class="sim">Simulação</span></div>
+</section>
+
+<!-- 8 ANTES DEPOIS NAV -->
+<section class="slide denso" id="s8" data-t="Antes e depois: navegação">
+  <p class="kicker">Antes × depois</p>
+  <h2>Navegação: os mesmos recursos, organizados pela tarefa</h2>
+  <div class="cols">
+    <div class="antes rev"><h3>Antes · 17 itens no primeiro nível</h3>
+      <div class="chips"><span class="chip">Início</span><span class="chip">Meus Clientes</span><span class="chip">Cobranças (8)</span><span class="chip">Vendas físicas</span><span class="chip">Pix (6)</span><span class="chip">Links de Pagamento</span><span class="chip">Cartão Asaas</span><span class="chip">Consulta Serasa</span><span class="chip">Meu Dinheiro (3)</span><span class="chip">Pague Contas</span><span class="chip">Antecipações (3)</span><span class="chip">Notas Fiscais (2)</span><span class="chip">Open Finance</span><span class="chip">Negativação</span><span class="chip">Seguros</span><span class="chip">Indicar Amigo</span><span class="chip">Meus benefícios</span></div>
+      <p class="mut" style="margin-top:10px">Entre parênteses, os subitens. Sem agrupamento.</p></div>
+    <div class="depois rev"><h3>Depois · grupos por tarefa</h3>
+      <div class="chips" style="margin-bottom:8px"><span class="chip">Início</span></div>
+      <div class="gg"><div class="grp"><h4>Recebimentos</h4><div class="chips"><span class="chip">Cobranças (6)</span><span class="chip">Links de pagamento</span><span class="chip">Vendas físicas</span></div></div>
+      <div class="grp"><h4>Clientes</h4><div class="chips"><span class="chip">Clientes</span><span class="chip">Consulta Serasa</span><span class="chip">Negativação</span></div></div>
+      <div class="grp"><h4>Dinheiro</h4><div class="chips"><span class="chip">Meu dinheiro</span><span class="chip">Pix</span><span class="chip">Pague contas</span><span class="chip">Cartão Asaas</span><span class="chip">Antecipações</span></div></div>
+      <div class="grp"><h4>Fiscal</h4><div class="chips"><span class="chip">Notas fiscais</span></div></div>
+      <div class="grp"><h4>Ferramentas</h4><div class="chips"><span class="chip">Simulador de vendas</span><span class="chip">Open Finance</span><span class="chip">Seguros</span><span class="chip">Personalizar notificações</span></div></div>
+      <div class="grp"><h4>Mais</h4><div class="chips"><span class="chip">Indicar amigo</span><span class="chip">Meus benefícios</span></div></div>
+    </div>
+    </div>
+  </div>
+  <p class="lead" style="font-size:15px"><b>Por quê:</b> reconhecer é mais fácil que lembrar (H6) e a mesma lógica vale em todo o menu (H4). Os dois itens que não eram cobranças saíram do submenu de Cobranças, que ficou com 6.</p>
+  <div class="foot"><span>docs/05-jornada-antes-depois.md</span><span class="sim">Simulação</span></div>
+</section>
+
+<!-- 9 ANTES DEPOIS COBRANÇA -->
+<section class="slide denso" id="s9" data-t="Antes e depois: criar cobrança">
+  <p class="kicker">Antes × depois</p>
+  <h2>Criar a primeira cobrança: de quatro etapas para uma tela</h2>
+  <div class="cols">
+    <div class="antes rev"><h3>Antes · Central de Ajuda do Asaas</h3>
+      <div class="fluxo">
+        <div class="etapa"><b>Início</b><span>botão azul no menu e botão verde no cartão</span></div><div class="seta">↓</div>
+        <div class="etapa"><b>Etapa 1 · Dados da cobrança</b><span>valor, descrição, formas de pagamento, antecipação, anexos</span></div><div class="seta">↓</div>
+        <div class="etapa"><b>Etapa 2 · Juros e multa</b><span>opcional</span></div><div class="seta">↓</div>
+        <div class="etapa"><b>Etapa 3 · Dados do cliente</b><span>forma de envio e cliente</span></div><div class="seta">↓</div>
+        <div class="etapa"><b>Etapa 4 · Resumo</b><span>revisar, com botão Voltar</span></div><div class="seta">↓</div>
+        <div class="etapa"><b>Finalizar → página da cobrança</b></div>
+      </div></div>
+    <div class="depois rev"><h3>Depois · protótipo</h3>
+      <div class="fluxo">
+        <div class="etapa"><b>Início</b><span>um botão principal: Criar cobrança</span></div><div class="seta">↓</div>
+        <div class="etapa forte"><b>Criar cobrança · uma tela</b><span>os quatro blocos visíveis ao mesmo tempo, com resumo e valor líquido ao lado</span>
+          <div class="blocos"><div><b>1</b>Cliente</div><div><b>2</b>Valor e vencimento</div><div><b>3</b>Forma (Pix já marcado)</div><div><b>4</b>Descrição (opcional)</div></div></div><div class="seta">↓ <span class="mut">erro? aparece no campo e no topo</span></div>
+        <div class="etapa forte"><b>Confirmação</b><span>link, QR Code, copiar, e-mail, PDF e andamento em 3 etapas</span></div>
+      </div></div>
+  </div>
+  <div class="grid g3 mini">
+    <div class="card"><h3>Cliente primeiro</h3><p>Busca e cadastro no próprio campo. Antes, ele aparecia na 3ª etapa.</p></div>
+    <div class="card"><h3>3 campos obrigatórios</h3><p>Cliente, valor e vencimento (+1 se o cliente é novo). A Cora documenta 8.</p></div>
+    <div class="card"><h3>Valor líquido à vista</h3><p>A pessoa vê quanto recebe antes de criar (H1, H5).</p></div>
+  </div>
+  <div class="foot"><span>Contagem de etapas e telas; não medimos tempo nem erros</span><span class="sim">Simulação</span></div>
+</section>
+
+<!-- 10 PEQUENAS DECISÕES -->
+<section class="slide" id="s10" data-t="Antes e depois: detalhes">
+  <p class="kicker">Antes × depois</p>
+  <h2>Três decisões pequenas que mudam a primeira impressão</h2>
+  <div class="grid g3">
+    <div class="card rev"><h3>Primeira tela</h3>
+      <div class="antes" style="margin-bottom:8px;padding:12px"><b style="font-size:12px">ANTES</b><p>Saudação com número → carrossel de promoções → cartão "conta aprovada" (5 de 5) → cobranças.</p></div>
+      <div class="depois" style="padding:12px"><b style="font-size:12px">DEPOIS</b><p>Saudação pelo nome → saldo, a receber, vencidas, recebido → "Precisa da sua atenção" com ação → vencimentos.</p></div></div>
+    <div class="card rev"><h3>Extrato vazio</h3>
+      <div class="antes" style="margin-bottom:8px;padding:12px"><b style="font-size:12px">ANTES</b><p>"Nenhuma transação encontrada. Por favor, tente novamente." Parece erro, e não há o que tentar de novo.</p></div>
+      <div class="depois" style="padding:12px"><b style="font-size:12px">DEPOIS</b><p>"Nenhuma movimentação neste período", com o atalho "Ver últimos 15 dias".</p></div></div>
+    <div class="card rev"><h3>Notas fiscais</h3>
+      <div class="antes" style="margin-bottom:8px;padding:12px"><b style="font-size:12px">ANTES</b><p>Texto de cinco linhas e um botão "Iniciar a configuração".</p></div>
+      <div class="depois" style="padding:12px"><b style="font-size:12px">DEPOIS</b><p>4 passos com progresso e a saída "Pular e emitir depois", com aviso para retomar.</p></div></div>
+  </div>
+  <div class="foot"><span>H1 · H8 · H9 · H10</span><span class="sim">Simulação</span></div>
+</section>
+
+<!-- 11 CONCORRENTES -->
+<section class="slide" id="s11" data-t="Concorrentes">
+  <p class="kicker">Mercado</p>
+  <h2>Criar uma cobrança em cinco produtos, pelas páginas oficiais de ajuda</h2>
+  <div class="rol rev"><table>
+    <thead><tr><th></th><th>Asaas (original)</th><th>Cora</th><th>Inter Empresas</th><th>iugu</th><th>Mercado Pago</th><th class="dest">Redesenho</th></tr></thead>
+    <tbody>
+      <tr><th>Estrutura</th><td>4 etapas em sequência</td><td>14 a 15 passos no app</td><td>5 passos de caminho</td><td>Faturas com itens e rascunho</td><td>Link com título, valor, foto</td><td class="dest"><b>1 formulário · 4 blocos</b></td></tr>
+      <tr><th>Cliente</th><td>3ª etapa</td><td>No início, mais nome, tipo de pessoa e documento</td><td>Selecionar ou cadastrar pagadores</td><td>Cadastrado antes, em outra área*</td><td>Sem cliente cadastrado</td><td class="dest"><b>1º bloco, com cadastro no campo</b></td></tr>
+      <tr><th>Campos obrigatórios</th><td>Não detalhados</td><td>8</td><td>Não detalhados (valor de R$ 2,50 a R$ 1.000.000,00)</td><td>Boleto registrado pede nome, CPF/CNPJ e endereço*</td><td>Não detalhados</td><td class="dest"><b>3 (+1 se cliente novo)</b></td></tr>
+      <tr><th>Pix na cobrança</th><td>Opção Boleto/Pix</td><td>Boleto com QR Code Pix</td><td>QR Code se há chave Pix</td><td>Boleto, cartão ou Pix*</td><td>Pix e cartão*</td><td class="dest"><b>Pix como padrão</b></td></tr>
+    </tbody></table></div>
+  <p class="mut">* resumo de busca; a página oficial não abriu (erro 403). Comparamos o fluxo <b>descrito na ajuda</b>, não a qualidade geral dos produtos, e não usamos as contas internas dos concorrentes. "Passos" não são comparáveis diretamente (a Cora conta cada campo).</p>
+  <div class="foot"><span>docs/03-concorrentes.md</span><span class="sim">Simulação</span></div>
+</section>
+
+<!-- 12 APRENDIZADOS -->
+<section class="slide" id="s12" data-t="O que aprendemos">
+  <p class="kicker">Mercado</p>
+  <h2>O que cada um faz bem, e o que levamos para o redesenho</h2>
+  <div class="grid g2">
+    <div class="card rev"><h3>Cora</h3><p><b>Bom:</b> boleto com QR Code Pix num fluxo só; régua por e-mail, SMS e WhatsApp. <b>Limite documentado:</b> 14 a 15 passos e 8 campos.</p><p><b>Levamos:</b> Pix como forma padrão.</p></div>
+    <div class="card rev"><h3>Inter Empresas</h3><p><b>Bom:</b> caminho curto e limites de valor explícitos. <b>Limite:</b> dois rótulos em sequência para o mesmo caminho.</p><p><b>Levamos:</b> o valor mínimo na mensagem de erro do campo.</p></div>
+    <div class="card rev"><h3>iugu</h3><p><b>Bom:</b> itens detalhados, rascunho e escolha dos meios de pagamento. <b>Limite:</b> o cliente precisa existir antes.</p><p><b>Deixamos para o futuro:</b> rascunho de cobrança.</p></div>
+    <div class="card rev"><h3>Mercado Pago</h3><p><b>Bom:</b> link rápido, parcelamento, prazo e link fixo reutilizável. <b>Atenção:</b> fontes são blog.</p><p><b>Deixamos para o futuro:</b> link reutilizável.</p></div>
+  </div>
+  <div class="foot"><span>Aprender com o mercado não é copiar: marcas, textos e artes não entram no produto</span><span class="sim">Simulação</span></div>
+</section>
+
+<!-- 13 VOZ DO USUÁRIO -->
+<section class="slide" id="s13" data-t="Voz do usuário">
+  <p class="kicker">Voz do usuário · Reclame Aqui, 01/04 a 30/09/2026</p>
+  <h2>O retrato geral é positivo; o que sobra mostra onde o desenho pode ajudar</h2>
+  <div class="grid g4">
+    <div class="card rev"><div class="big">RA1000</div><p>Reputação máxima da plataforma. Nota média 8,4 de 10.</p></div>
+    <div class="card rev"><div class="big">100%</div><p>Das 1.851 reclamações recebidas foram respondidas.</p></div>
+    <div class="card rev"><div class="big">90%</div><p>Resolvidas. 76% voltariam a fazer negócio.</p></div>
+    <div class="card rev"><div class="big">4,4</div><p>Nota na App Store, cerca de 1,7 mil avaliações.</p></div>
+  </div>
+  <div class="card rev"><h3>Principais problemas comentados (reclamações de até 3 anos)</h3>
+    <div class="barra"><span>Cobrança indevida</span><i style="width:100%"></i><b>1.514</b></div>
+    <div class="barra"><span>Estorno do valor pago</span><i style="width:36%"></i><b>539</b></div>
+    <div class="barra"><span>Demora na execução</span><i style="width:35%"></i><b>525</b></div>
+    <div class="barra"><span>Mau atendimento</span><i style="width:34%"></i><b>518</b></div>
+    <div class="barra ui"><span>Login e senha</span><i style="width:15%"></i><b>230</b></div>
+    <div class="barra ui"><span>Pagamento não localizado</span><i style="width:11%"></i><b>168</b></div>
+    <div class="barra ui"><span>Dificuldade de cadastro</span><i style="width:10%"></i><b>145</b></div>
+    <div class="barra ui"><span>Não consigo cancelar</span><i style="width:8%"></i><b>125</b></div>
+    <p class="mut" style="margin-top:8px">Barras azuis: temas que a equipe lê como ligados ao desenho (leitura nossa). "Cobrança indevida" pode vir de quem <b>paga</b> uma cobrança, não de quem usa o painel. A classificação do site é ruidosa; use a ordem de grandeza.</p></div>
+  <div class="foot"><span>Fonte: Reclame Aqui (aberta em 23/10/2026) e App Store (aberta); Google Play: ~4,1, resumo de busca</span><span class="sim">Simulação</span></div>
+</section>
+
+<!-- 14 RESPONDE / NÃO RESPONDE -->
+<section class="slide" id="s14" data-t="O que responde e o que não">
+  <p class="kicker">Voz do usuário</p>
+  <h2>O que o redesenho responde, e o que fica de fora</h2>
+  <div class="cols">
+    <div class="depois rev"><h3>Responde (no desenho)</h3><ul>
+      <li>Divergência de valores e "não recebi o boleto": valor líquido, confirmação do que foi emitido e linha do tempo da cobrança.</li>
+      <li>Pagamento não localizado: status com ponto, texto e cor, e histórico.</li>
+      <li>App pior que a web: um layout responsivo para desktop, tablet e celular.</li></ul></div>
+    <div class="antes rev"><h3>Fica de fora (oportunidade)</h3><ul>
+      <li><b>Login e recuperação de acesso:</b> não há tela de login no protótipo.</li>
+      <li><b>Abertura real de conta:</b> a landing só simula o cadastro.</li>
+      <li><b>Cancelar conta ou plano:</b> só cancelar cobrança foi desenhado.</li>
+      <li><b>Atendimento humano:</b> uma interface sozinha não resolve.</li></ul></div>
+  </div>
+  <div class="foot"><span>docs/04-voz-do-usuario.md</span><span class="sim">Simulação</span></div>
+</section>
+
+<!-- 15 DESIGN SYSTEM -->
+<section class="slide" id="s15" data-t="Design system">
+  <p class="kicker">Design system</p>
+  <h2>Baseado nas cores da marca, organizado em papéis e com modo escuro</h2>
+  <div class="grid g2">
+    <div class="card rev"><h3>Cores (papéis, não só tons)</h3>
+      <p class="mut">Os quadrados abaixo usam os tokens ao vivo e mudam com o tema.</p>
+      <div class="sw" style="margin-top:8px"><i style="background:var(--color-brand-primary)" title="brand-primary"></i><i style="background:var(--color-brand-support)" title="brand-support"></i><i style="background:var(--color-brand-tint)" title="brand-tint"></i><i style="background:var(--color-action-cta)" title="action-cta"></i><i style="background:var(--color-nav-bg)" title="nav-bg"></i><i style="background:var(--color-bg-ground)" title="bg-ground"></i><i style="background:var(--color-bg-surface)" title="bg-surface"></i></div>
+      <div class="sw" style="margin-top:8px"><i style="background:var(--color-success-bg)"></i><i style="background:var(--color-warning-bg)"></i><i style="background:var(--color-danger-bg)"></i><i style="background:var(--color-info-bg)"></i></div>
+      <p style="margin-top:10px">Onde uma cor original não alcança 4,5:1 para texto, o token de texto usa um tom mais escuro, e a cor original fica para gráficos e preenchimentos.</p></div>
+    <div class="card rev"><h3>Tipografia e espaço</h3>
+      <p style="font:var(--text-display);letter-spacing:-.02em">Olá, Paulo!</p>
+      <p style="font:var(--text-h2);color:var(--color-text-primary)">Precisa da sua atenção</p>
+      <p style="font:var(--text-metric);color:var(--color-text-primary)">R$ 12.480,35</p>
+      <p style="font:var(--text-body)">Plus Jakarta Sans, sete níveis. Espaço em base 4, raios de 10 a 28 px.</p>
+      <p class="mut" style="margin-top:6px">Valores de exemplo, fictícios.</p></div>
+    <div class="card rev"><h3>Contraste calculado</h3><p><b>26 de 26</b> pares de texto passam de 4,5:1 (critério 1.4.3, nível AA). O menor, no modo claro, é <b>4,76:1</b> (status recebida).</p><p class="mut">Calculado por script a partir de <code>tokens.css</code>. Não verificamos contraste de bordas e ícones.</p></div>
+    <div class="card rev"><h3>Status: ponto, texto e cor</h3><div class="acoes"><span class="status s1">Aguardando</span><span class="status s2">Vencida</span><span class="status s3">Recebida</span><span class="status s4">Chargeback</span></div><p style="margin-top:10px">A cor reforça, mas não carrega sozinha o significado.</p><p style="margin-top:8px"><a href="../design-system/">Abrir o design system completo →</a></p></div>
+  </div>
+  <div class="foot"><span>docs/06-design-system.md</span><span class="sim">Simulação</span></div>
+</section>
+
+<!-- 16 ACESSIBILIDADE E SEMIÓTICA -->
+<section class="slide" id="s16" data-t="Acessibilidade e semiótica">
+  <p class="kicker">Acessibilidade e leitura semiótica</p>
+  <h2>Como os sinais da interface são lidos, e por que não dependem só da cor</h2>
+  <div class="grid g3">
+    <div class="card rev"><span class="tag in">Índice</span><h3 style="margin-top:8px">O número no menu</h3><p>Indica que <b>existe</b> pendência. No original, não dizia o quê. No redesenho vem com texto ("3 cobranças vencidas") e leva ao item.</p></div>
+    <div class="card rev"><span class="tag in">Símbolo</span><h3 style="margin-top:8px">Vermelho e verde</h3><p>Significam por convenção cultural. Por isso o status tem também ponto e texto, e funciona para quem não distingue cores.</p></div>
+    <div class="card rev"><span class="tag in">Ícone</span><h3 style="margin-top:8px">Documento, relógio, carteira</h3><p>Significam por semelhança. No menu recolhido, cada ícone mantém nome acessível.</p></div>
+  </div>
+  <div class="grid g3">
+    <div class="card rev"><h3>Alvos de 44 px</h3><p>Corresponde ao critério 2.5.5 do WCAG, que é nível <b>AAA</b>.</p></div>
+    <div class="card rev"><h3>Foco e teclado</h3><p>Anel de foco de 3 px, Esc fecha, o foco volta ao gatilho. Movimento reduzido respeitado.</p></div>
+    <div class="card rev"><h3>Limite</h3><p>Desenhado e implementado, mas <b>sem auditoria</b> com leitor de tela nem teste com pessoas com deficiência.</p></div>
+  </div>
+  <div class="foot"><span>Peirce (ícone, índice, símbolo) via Stanford Encyclopedia of Philosophy; leitura analítica da equipe</span><span class="sim">Simulação</span></div>
+</section>
+
+<!-- 17 MERCADO MATRIZ -->
+<section class="slide" id="s17" data-t="Visão de futuro: o mercado">
+  <p class="kicker">Visão de futuro · o mercado</p>
+  <h2>O que o mercado oferece hoje, nas páginas consultadas</h2>
+  <div class="rol rev"><table class="m">
+    <thead><tr><th>Capacidade</th><th>Asaas</th><th>Cora</th><th>Inter</th><th>Mercado Pago</th><th>Stone</th><th>Efí</th><th>iugu</th></tr></thead>
+    <tbody>
+      <tr><td>Link de pagamento</td><td class="v">✔</td><td class="v">✔</td><td class="n">—</td><td class="a">⚠</td><td class="a">⚠</td><td class="a">⚠</td><td class="n">—</td></tr>
+      <tr><td>Cobrança recorrente</td><td class="v">✔</td><td class="v">✔</td><td class="a">⚠</td><td class="n">—</td><td class="a">⚠</td><td class="a">⚠</td><td class="a">⚠</td></tr>
+      <tr><td>Pix Automático</td><td class="v">✔</td><td class="n">—</td><td class="a">⚠</td><td class="n">—</td><td class="n">—</td><td class="a">⚠</td><td class="a">⚠</td></tr>
+      <tr><td>Nota fiscal de serviço</td><td class="v">✔</td><td class="v">✔</td><td class="n">—</td><td class="n">—</td><td class="n">—</td><td class="n">—</td><td class="n">—</td></tr>
+      <tr><td>Antecipação de recebíveis</td><td class="v">✔</td><td class="a">⚠</td><td class="n">—</td><td class="a">⚠</td><td class="n">—</td><td class="n">—</td><td class="n">—</td></tr>
+      <tr><td>Celular como maquininha</td><td class="v">✔</td><td class="n">—</td><td class="a">⚠</td><td class="a">⚠</td><td class="a">⚠</td><td class="n">—</td><td class="n">—</td></tr>
+      <tr><td>Régua de cobrança multicanal</td><td class="v">✔</td><td class="v">✔</td><td class="n">—</td><td class="n">—</td><td class="n">—</td><td class="n">—</td><td class="a">⚠</td></tr>
+      <tr><td>Fluxo de caixa</td><td class="n">—</td><td class="v">✔</td><td class="n">—</td><td class="a">⚠</td><td class="a">⚠</td><td class="n">—</td><td class="n">—</td></tr>
+      <tr><td>Acesso para contador</td><td class="n">—</td><td class="v">✔</td><td class="n">—</td><td class="n">—</td><td class="n">—</td><td class="n">—</td><td class="n">—</td></tr>
+      <tr><td>Assistente de IA</td><td class="v">✔</td><td class="n">—</td><td class="n">—</td><td class="n">—</td><td class="n">—</td><td class="n">—</td><td class="n">—</td></tr>
+    </tbody></table></div>
+  <p class="mut"><b class="v">✔</b> consta em página oficial lida · <b class="a">⚠</b> só em resumo de busca ou fontes divergem · <b>—</b> não consta nas páginas consultadas (<b>não prova que não exista</b>; cada concorrente foi pesquisado só em cobrança e gestão). O Asaas aparece forte em cobrança, notas, antecipação e API (matriz completa em docs/07).</p>
+  <div class="foot"><span>docs/07-visao-de-futuro.md</span><span class="sim">Simulação</span></div>
+</section>
+
+<!-- 18 OPORTUNIDADES -->
+<section class="slide" id="s18" data-t="Visão de futuro: oportunidades">
+  <p class="kicker">Visão de futuro · o que ainda podemos oferecer</p>
+  <h2>Doze oportunidades, cada uma com evidência e forma de validar</h2>
+  <div class="grid g3">
+    <div class="card hz rev"><span class="tag">Agora</span>
+      <div class="op"><b>Recuperação de acesso</b>Login e senha: 230 relatos; relato de perda de acesso ao trocar de número.</div>
+      <div class="op"><b>Transparência de valores em toda ação financeira</b>Simular antes de confirmar (Pix, antecipação, estorno).</div></div>
+    <div class="card hz p rev"><span class="tag in">Próximo</span>
+      <div class="op"><b>Abertura de conta guiada</b>Dificuldade de cadastro: 145 relatos.</div>
+      <div class="op"><b>Cancelar ou mudar de plano</b>"Não consigo cancelar": 125 relatos.</div>
+      <div class="op"><b>Previsão de caixa no Início</b>A Cora oferece fluxo de caixa.</div>
+      <div class="op"><b>Régua de cobrança visual</b>Canais e status de entrega.</div>
+      <div class="op"><b>Pix Automático com tela de autorizações</b></div></div>
+    <div class="card hz d rev"><span class="tag av">Depois</span>
+      <div class="op"><b>Assistente único (painel e WhatsApp)</b>Com confirmação em ações com dinheiro.</div>
+      <div class="op"><b>Acesso para contador e equipe</b></div>
+      <div class="op"><b>Exportação agendada para a contabilidade</b></div>
+      <div class="op"><b>Rascunho e link reutilizável</b></div>
+      <div class="op"><b>Paridade entre app e web</b></div></div>
+  </div>
+  <p class="mut">O horizonte é uma <b>proposta</b>, por evidência e risco de bloqueio da pessoa. Não considera esforço de engenharia, que não avaliamos. São hipóteses, não promessas.</p>
+  <div class="foot"><span>docs/07-visao-de-futuro.md</span><span class="sim">Simulação</span></div>
+</section>
+
+<!-- 19 RISCOS -->
+<section class="slide" id="s19" data-t="Riscos">
+  <p class="kicker">Visão de futuro</p>
+  <h2>O que precisa de cuidado antes de qualquer evolução</h2>
+  <div class="grid g2">
+    <div class="card rev"><h3>IA e dinheiro</h3><p>Nenhuma ação irreversível sem confirmação explícita, repetindo valor e destinatário, e com trilha de auditoria.</p></div>
+    <div class="card rev"><h3>Regras do Banco Central</h3><p>Pix, Pix Automático e Open Finance seguem a norma. Conferir na fonte, não nesta análise.</p></div>
+    <div class="card rev"><h3>Aprender sem copiar</h3><p>Marcas, textos e artes de concorrentes não entram no produto.</p></div>
+    <div class="card rev"><h3>Dados e privacidade</h3><p>Recursos com dados pessoais (como acesso do contador) exigem consentimento e registro de quem acessou.</p></div>
+  </div>
+  <div class="foot"><span>docs/07-visao-de-futuro.md</span><span class="sim">Simulação</span></div>
+</section>
+
+<!-- 20 VALIDAÇÃO -->
+<section class="slide" id="s20" data-t="Validação">
+  <p class="kicker">O que falta</p>
+  <h2>Como vamos saber se funcionou: teste com 5 a 8 pessoas</h2>
+  <div class="grid g4">
+    <div class="card rev"><h3>Tarefa 1</h3><p>Criar a primeira cobrança de R$ 1.200,00 para um cliente novo, por Pix.</p></div>
+    <div class="card rev"><h3>Tarefa 2</h3><p>Descobrir quantas cobranças estão vencidas e reenviar uma.</p></div>
+    <div class="card rev"><h3>Tarefa 3</h3><p>Cancelar uma cobrança.</p></div>
+    <div class="card rev"><h3>Tarefa 4</h3><p>Transferir R$ 780,00 por Pix.</p></div>
+  </div>
+  <div class="card rev"><h3>O que medir</h3><p>Conclusão sem ajuda (sim ou não), tempo até concluir, número de erros e de voltas ao menu, e facilidade percebida numa escala de 1 a 7. Comparar duas versões com o mesmo roteiro. <span class="mut">(Valores em reais do roteiro são fictícios.)</span></p></div>
+  <div class="foot"><span>docs/01-metodo-e-evidencias.md</span><span class="sim">Simulação</span></div>
+</section>
+
+<!-- 21 LIMITES E FONTES -->
+<section class="slide" id="s21" data-t="Limites e fontes">
+  <p class="kicker">Transparência</p>
+  <h2>Limites e fontes</h2>
+  <div class="grid g2">
+    <div class="card rev"><h3>Limites</h3><ul>
+      <li>O protótipo é uma simulação; valores, nomes, datas e taxas são fictícios.</li>
+      <li>O original foi visto numa conta vazia; a sessão expirou antes de abrirmos o formulário de criar cobrança.</li>
+      <li>Concorrentes avaliados só pela ajuda oficial, sem acesso às contas.</li>
+      <li>Não há teste com usuários; nenhum ganho de tempo foi medido.</li></ul></div>
+    <div class="card rev"><h3>Fontes (consulta em 23/10/2026)</h3><ul>
+      <li>Nielsen Norman Group, 10 heurísticas de usabilidade (rev. 30/01/2024)</li>
+      <li>Stanford Encyclopedia of Philosophy, Peirce's Theory of Signs (rev. 2022)</li>
+      <li>W3C, WCAG 2.2: critérios 1.4.3 e 2.5.5</li>
+      <li>Ajuda oficial da Cora e do Inter; suporte da iugu e blog do Mercado Pago (resumos)</li>
+      <li>Reclame Aqui e App Store (abertas); Google Play (resumo de busca)</li></ul></div>
+  </div>
+  <div class="foot"><span>Links completos em docs/ no repositório</span><span class="sim">Simulação</span></div>
+</section>
+
+<!-- 22 ENCERRAMENTO -->
+<section class="slide" id="s22" data-t="Encerramento">
+  <p class="kicker">Para levar</p>
+  <h2>Do que vimos ao que construímos, e ao que ainda vamos testar</h2>
+  <p class="lead">Observamos o painel, medimos contra critérios conhecidos, comparamos com o mercado, ouvimos relatos públicos e só então desenhamos. O próximo passo é colocar o protótipo na frente de pessoas.</p>
+  <div class="acoes"><a class="cta" href="../painel/">Protótipo do painel</a><a class="cta sec" href="../">Landing page</a><a class="cta sec" href="../design-system/">Design system</a><a class="cta sec" href="https://github.com/cbitran/asaas/tree/main/docs">Documentos no GitHub</a></div>
+  <p><span class="sim">Simulação · conceito de design sem relação oficial com o Asaas</span></p>
+</section>
+
+</main>
+
+<script>
+(function(){
+  var slides=[].slice.call(document.querySelectorAll('.slide'));
+  var cont=document.getElementById('cont'), prog=document.getElementById('prog'), idx=document.getElementById('idx');
+  var atual=0, N=slides.length;
+  // índice
+  idx.innerHTML=slides.map(function(s,i){return '<a href="#'+s.id+'" data-i="'+i+'"><i>'+(i+1)+'</i>'+s.getAttribute('data-t')+'</a>';}).join('');
+  function marcar(i){atual=i;cont.textContent=(i+1)+' / '+N;prog.style.width=((i+1)/N*100)+'%';
+    try{history.replaceState(null,'','#'+slides[i].id);}catch(e){} }
+  function ir(i){i=Math.max(0,Math.min(N-1,i));slides[i].scrollIntoView();slides[i].setAttribute('tabindex','-1');slides[i].focus({preventScroll:true});marcar(i);}
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('vis');var i=slides.indexOf(e.target);if(e.intersectionRatio>=0.5)marcar(i);}});},{threshold:[0.15,0.5]});
+  slides.forEach(function(s){io.observe(s);});
+  document.getElementById('ant').onclick=function(){ir(atual-1);};
+  document.getElementById('prox').onclick=function(){ir(atual+1);};
+  var idxb=document.getElementById('idxb');
+  idxb.onclick=function(){var a=idx.hidden;idx.hidden=!a;idxb.setAttribute('aria-expanded',a?'true':'false');};
+  idx.addEventListener('click',function(e){var a=e.target.closest('a');if(a){e.preventDefault();ir(+a.getAttribute('data-i'));idx.hidden=true;idxb.setAttribute('aria-expanded','false');}});
+  document.addEventListener('keydown',function(e){
+    var t=e.target.tagName; if(/INPUT|SELECT|TEXTAREA/.test(t)||e.metaKey||e.ctrlKey||e.altKey)return;
+    var k=e.key;
+    if(k==='ArrowRight'||k==='PageDown'||(k===' '&&t!=='BUTTON'&&t!=='A')){e.preventDefault();ir(atual+1);}
+    else if(k==='ArrowLeft'||k==='PageUp'){e.preventDefault();ir(atual-1);}
+    else if(k==='Home'){e.preventDefault();ir(0);}
+    else if(k==='End'){e.preventDefault();ir(N-1);}
+    else if(k==='Escape'){idx.hidden=true;idxb.setAttribute('aria-expanded','false');}
+    else if(k==='f'||k==='F'){toggleTela();}
+    else if(k==='t'||k==='T'){toggleTema();}
+  });
+  var h=document.documentElement, tb=document.getElementById('tema');
+  function aplicarTema(t){h.setAttribute('data-theme',t);h.style.colorScheme=t;tb.setAttribute('aria-pressed',t==='dark'?'true':'false');tb.textContent=t==='dark'?'Claro':'Escuro';}
+  function toggleTema(){var n=h.getAttribute('data-theme')==='light'?'dark':'light';aplicarTema(n);try{localStorage.setItem('asaas-defesa-tema',n);}catch(e){}}
+  tb.onclick=toggleTema;
+  try{var salvo=localStorage.getItem('asaas-defesa-tema');if(salvo==='dark'||salvo==='light')aplicarTema(salvo);}catch(e){}
+  var fb=document.getElementById('tela');
+  function toggleTela(){try{if(!document.fullscreenElement){document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();}else{document.exitFullscreen();}}catch(e){}}
+  fb.onclick=toggleTela;
+  document.addEventListener('fullscreenchange',function(){fb.setAttribute('aria-pressed',document.fullscreenElement?'true':'false');fb.textContent=document.fullscreenElement?'Sair da tela cheia':'Tela cheia';});
+  // abre no slide do endereço (#s5)
+  var alvo=location.hash&&document.querySelector(location.hash+'.slide');
+  if(alvo){setTimeout(function(){ir(slides.indexOf(alvo));},50);}else{marcar(0);}
+  slides[0].classList.add('vis');
+})();
+</script>
+</body>
+</html>

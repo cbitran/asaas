@@ -30,7 +30,7 @@ flowchart LR
 | 6 | [Design system](06-design-system.md) | Tokens, componentes, contraste calculado e regras de acessibilidade |
 | 7 | [Visão de futuro](07-visao-de-futuro.md) | O que o produto oferece, o que o mercado oferece e onde há espaço para evoluir |
 
-A versão visual do design system fica em `design-system/index.html` (publicada junto com o site).
+A versão visual do design system fica em `design-system/index.html` e a **apresentação da defesa**, em slides, em `defesa/index.html`. As duas são publicadas junto com o site, em `/design-system/` e `/defesa/`.
 
 ## Resumo do que mudou
 
