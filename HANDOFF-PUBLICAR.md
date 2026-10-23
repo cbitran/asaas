@@ -1,55 +1,58 @@
 # Handoff · Publicar no GitHub Pages (para o Claude Code)
 
-## Objetivo
-Publicar este projeto (landing page + painel do conceito Asaas) no **GitHub Pages** da conta do Bitran, num repositório **público** chamado `asaas-redesenho`, com deploy automático a cada push na `main`.
+> **Atualizado em 23/10/2026.** A primeira versão deste arquivo mandava criar o repositório `asaas-redesenho`. **Isso já foi feito de outra forma:** o site está publicado em `cbitran/asaas`. Não crie outro repositório.
 
-Resultado esperado:
-- Site (landing): `https://<usuario>.github.io/asaas-redesenho/`
-- Painel: `https://<usuario>.github.io/asaas-redesenho/painel/`
+## Estado atual (já publicado)
 
-## O que já está pronto (não refazer)
-- **Estrutura multipágina (Vite):** `index.html` = landing · `painel/index.html` = painel. Entradas em `vite.config.ts` (`build.rollupOptions.input`).
-- **Base path:** `vite.config.ts` usa `base: process.env.BASE_PATH || '/'`. O workflow define `BASE_PATH=/<nome-do-repo>/`.
-- **Workflow:** `.github/workflows/pages.yml` (Node 20 → `npm ci` → `npm run build` → `upload-pages-artifact` → `deploy-pages`).
-- **Script:** `publicar.sh` faz tudo (cria repo, liga o Pages, faz push). `Publicar no GitHub.command` só chama o script.
-- **Build já validado** com `BASE_PATH=/asaas-redesenho/`: sem 404, imagens em `/asaas-redesenho/img/…`, voz em `/asaas-redesenho/voz/…`.
-- `.gitignore`: `node_modules`, `dist`, `.env`, `.tts-cache`, `.DS_Store`.
+| Item | Valor |
+|---|---|
+| Repositório | https://github.com/cbitran/asaas (público), branch `main` |
+| Pages | Ligado em modo **GitHub Actions** (`.github/workflows/pages.yml`) |
+| Landing | https://cbitran.github.io/asaas/ |
+| Painel (protótipo) | https://cbitran.github.io/asaas/painel/ |
+| Design system | https://cbitran.github.io/asaas/design-system/ |
+| Defesa (slides do estudo) | https://cbitran.github.io/asaas/defesa/ |
+| Documentos do estudo | `docs/` (visíveis no GitHub) |
+| Remoto | `origin` já aponta para `https://github.com/cbitran/asaas.git` |
+| Identidade do git (local) | E-mail "noreply" do GitHub; não mude |
 
-## Passos
-1. `cd "/Volumes/SSD Dock/Projetos Claude/Asaas/asaas-redesenho"`
-2. Conferir o GitHub CLI: `gh auth status`. Se não estiver logado, pedir ao Bitran para rodar `gh auth login --web` (não digitar tokens).
-3. Validar o build local antes de publicar:
+O workflow roda a cada push na `main`: `npm ci` → `npm run build` com `BASE_PATH=/<nome-do-repositório>/` → publica `dist`. Como o repositório se chama `asaas`, o caminho base é `/asaas/` e **não precisa de ajuste manual**.
+
+**Não use** `publicar.sh` nem `Publicar no GitHub.command`: eles servem para publicar do zero e criariam o repositório `asaas-redesenho`. Ficam no projeto só como legado.
+
+## Tarefa atual: unir e subir o que está pendente
+
+Há trabalho de outra sessão que ainda **não foi commitado** (17 itens): `README.md`, `index.html` e `vite.config.ts` modificados; pastas novas `blog/`, `carreiras/`, `criar-conta/`, `precos/`, `segunda-via/`, `sobre-nos/`, `solucoes/`, `estilos/`; 4 imagens em `public/img/`; `referencia/solucoes-original.json`; `scripts/gerar-paginas.py`. Este arquivo também aparece como modificado.
+
+1. `cd "/Volumes/SSD Dock/Projetos Claude/Asaas/asaas-redesenho"` e `git status`.
+2. Confirme que **`.env` e `.tts-cache/` não aparecem** (estão no `.gitignore`) e que nenhum arquivo traz chave de API.
+3. Valide o build como o GitHub fará:
    ```bash
-   npm ci && BASE_PATH=/asaas-redesenho/ npm run build
+   npm ci && BASE_PATH=/asaas/ npm run build
    ```
-   Deve gerar `dist/index.html`, `dist/painel/index.html`, `dist/img/*.webp`, `dist/voz/*.mp3`.
-4. Publicar: `./publicar.sh` (ou `./publicar.sh outro-nome` se `asaas-redesenho` já existir com outro conteúdo).
-   O script, nesta ordem:
-   - `git init -b main` (se preciso) → `git add -A` → commit;
-   - `gh repo create asaas-redesenho --public` (se não existir) e `origin`;
-   - liga o Pages em modo Actions: `gh api -X POST repos/<owner>/<repo>/pages -f build_type=workflow`;
-   - `git push -u origin main`.
-5. Acompanhar o deploy: `gh run watch` (ou `gh run list --workflow pages.yml`). Leva ~1 min.
-6. Verificar no navegador:
-   - Landing abre com fotos, órbitas animadas e FAQ (uma dúvida aberta por vez).
-   - "Acessar minha conta" e "Criar conta grátis" (com e-mail válido) levam a `/painel/`.
-   - No painel: Paulo Souza › **Sair** volta para a landing.
-   - A voz do assistente toca só no painel (não na landing).
-7. Responder ao Bitran com os dois links finais.
-
-## Antes do commit, confira
-- `git status` **não** pode listar `.env` nem `.tts-cache/` (a chave da ElevenLabs fica só local).
-- A pasta vazia `site/` e o arquivo `../asaas-src.tgz` (fora do projeto) são sobras de teste: podem ser apagados.
+   Deve gerar `dist/index.html`, `dist/painel/`, `dist/design-system/`, `dist/defesa/`, `dist/voz/*.mp3` (29 áudios) e as páginas novas. O `vite.config.ts` da árvore de trabalho já lista `design-system` e `defesa`.
+4. Commit em português com esses arquivos e `git push origin main`.
+5. Acompanhe: `gh run watch` (ou `gh run list --workflow pages.yml`). Leva cerca de 1 minuto.
+6. Confira com `curl -s -o /dev/null -w '%{http_code}'` que respondem **200**: `/asaas/`, `/asaas/painel/`, `/asaas/design-system/`, `/asaas/defesa/` e as páginas novas.
+7. No navegador: a landing abre com as imagens; o cadastro com e-mail válido leva a `/painel/`; no painel, Conta › **Sair** volta para a landing; a voz do assistente toca só no painel.
+8. Responda com os links finais.
 
 ## Se algo falhar
+
 | Sintoma | Causa provável | Correção |
 |---|---|---|
-| Workflow falha em `configure-pages`/`deploy-pages` com "Pages not enabled" | Pages não ligado em modo Actions | `gh api -X POST repos/<owner>/<repo>/pages -f build_type=workflow` (ou PUT se já existir) e `gh workflow run pages.yml` |
-| Site abre sem CSS / 404 em `/assets` | `BASE_PATH` errado | Nome do repo diferente de `asaas-redesenho`: o workflow já usa o nome real; conferir se o build rodou pelo Actions |
-| `npm ci` falha no Actions | `package-lock.json` fora de sincronia | `npm install` local, commit do lock, push |
-| Push recusado (repo já existe com histórico) | Repositório com outro conteúdo | Publicar com outro nome: `./publicar.sh asaas-redesenho-conceito` |
+| Workflow falha com "Pages not enabled" | Pages desligado | `gh api -X PUT repos/cbitran/asaas/pages -f build_type=workflow` e `gh workflow run pages.yml` |
+| Site sem CSS ou 404 em `/assets` | `BASE_PATH` errado | O workflow já usa o nome real do repositório; confirme que o build rodou pelo Actions |
+| `npm ci` falha no Actions | `package-lock.json` fora de sincronia | `npm install` local, commit do lock e novo push |
+| Página nova dá 404 | Pasta não listada nas entradas do `vite.config.ts` | Incluir a pasta na lista de páginas e refazer o build |
+| Push recusado | Alguém empurrou antes | `git pull --rebase origin main`, resolver, novo push |
 
 ## Não fazer
-- Não commitar `.env`, `.tts-cache`, `dist` ou `node_modules`.
-- Não alterar textos, layout ou regras do protótipo; esta tarefa é só publicação.
-- Não usar domínio real do Asaas em links (já está assim).
+
+- **Não criar outro repositório** (`asaas-redesenho` ou qualquer outro) nem rodar `publicar.sh`.
+- Não commitar `.env`, `.tts-cache`, `dist` nem `node_modules`.
+- Não alterar textos, layout ou regras do protótipo: esta tarefa é só publicação.
+- Não apagar a pasta `site/` (vazia) nem o arquivo `../asaas-src.tgz` sem perguntar.
+- Não versionar a pasta `../demo-reel/` (vídeo em produção; fica fora do repositório).
+- Não usar domínio real do Asaas em links.
+- O protótipo é **simulação**: valores, nomes e datas são fictícios.

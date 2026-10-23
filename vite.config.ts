@@ -2,7 +2,7 @@ import { defineConfig, loadEnv, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
 import { createHash } from 'node:crypto';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 
@@ -97,18 +97,55 @@ function ttsProxy(mode: string): Plugin {
 }
 
 // GitHub Pages publica em /<repositório>/ — o workflow define BASE_PATH; localmente fica '/'.
+/** Todas as páginas do site: landing, painel, soluções, preços, sobre nós, 2ª via e criar conta. */
+function paginas(): Record<string, string> {
+  const entradas: Record<string, string> = {
+    site: path.resolve(__dirname, 'index.html'),
+    painel: path.resolve(__dirname, 'painel/index.html')
+  };
+  for (const pasta of ['precos', 'sobre-nos', 'segunda-via', 'criar-conta', 'blog', 'carreiras', 'design-system', 'defesa']) {
+    const f = path.resolve(__dirname, pasta, 'index.html');
+    if (existsSync(f)) entradas[pasta] = f;
+  }
+  const sol = path.resolve(__dirname, 'solucoes');
+  if (existsSync(sol)) for (const s of readdirSync(sol)) {
+    const f = path.join(sol, s, 'index.html');
+    if (existsSync(f)) entradas['solucoes-' + s] = f;
+  }
+  return entradas;
+}
+
+/** Só no dev: recebe o conteúdo extraído das páginas originais e grava em referencia/solucoes-original.json */
+function salvarReferencia(): Plugin {
+  return {
+    name: 'asaas-salvar-referencia',
+    configureServer(server) {
+      server.middlewares.use('/api/referencia', async (req, res) => {
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        if (req.method !== 'POST') { res.statusCode = 204; return res.end(); }
+        let raw = '';
+        for await (const chunk of req) raw += chunk;
+        await writeFile(path.resolve('referencia/solucoes-original.json'), raw);
+        res.end('ok');
+      });
+    }
+  };
+}
+
 export default defineConfig(({ mode }) => ({
   base: process.env.BASE_PATH || '/',
-  plugins: [react(), ttsProxy(mode)],
-  server: { port: 5173, host: '127.0.0.1' },
-  build: {
-    rollupOptions: {
-      input: {
-        site: path.resolve(__dirname, 'index.html'),
-        painel: path.resolve(__dirname, 'painel/index.html'),
-        designSystem: path.resolve(__dirname, 'design-system/index.html'),
-        defesa: path.resolve(__dirname, 'defesa/index.html')
-      }
+  plugins: [react(), ttsProxy(mode), salvarReferencia()],
+  server: {
+    port: 5173,
+    host: '127.0.0.1',
+    // só no dev: lê as páginas originais do asaas.com para extrair o conteúdo de referência
+    proxy: {
+      '/_orig': { target: 'https://www.asaas.com', changeOrigin: true, rewrite: (p) => p.replace(/^\/_orig/, '') },
+      '/_blog': { target: 'https://blog.asaas.com', changeOrigin: true, followRedirects: true, rewrite: (p) => p.replace(/^\/_blog/, '') },
+      '/_carreiras': { target: 'https://carreiras.asaas.com', changeOrigin: true, followRedirects: true, rewrite: (p) => p.replace(/^\/_carreiras/, '') }
     }
+  },
+  build: {
+    rollupOptions: { input: paginas() }
   }
 }));

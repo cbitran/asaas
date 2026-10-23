@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
 <title>Asaas · Conta digital PJ completa e sem mensalidade</title>
 <meta name="description" content="Conta digital PJ completa e sem mensalidade." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -107,14 +108,27 @@ h1,h2,h3,p{margin:0}
 .burger{display:none}
 
 /* mega menu Soluções */
-.mega{position:absolute;top:calc(var(--header-h) + 10px);left:50%;width:min(760px,calc(100vw - 32px));transform:translateX(-50%);background:var(--color-bg-surface);border-radius:var(--radius-card);box-shadow:var(--shadow-overlay),inset 0 0 0 1px var(--color-card-border);padding:20px;display:none;grid-template-columns:1fr 1fr 1fr;gap:4px;pointer-events:auto}
+.mega{position:absolute;top:calc(var(--header-h) + 10px);left:50%;width:min(840px,calc(100vw - 32px));transform:translateX(-50%);background:var(--color-bg-surface);border-radius:var(--radius-card);box-shadow:var(--shadow-overlay),inset 0 0 0 1px var(--color-card-border);padding:16px;display:none;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:64px;gap:4px;pointer-events:auto}
+/* dropdown "Sobre nós" */
+.dd{position:relative}
+.dd-menu{position:absolute;top:calc(100% + 18px);left:-8px;width:300px;display:none;flex-direction:column;gap:4px;padding:10px;border-radius:var(--radius-card);background:var(--color-bg-surface);box-shadow:var(--shadow-overlay),inset 0 0 0 1px var(--color-card-border)}
+.dd-menu.open{display:flex;animation:ddIn 220ms var(--ease-out) both;transform-origin:top left}
+@keyframes ddIn{from{opacity:0;transform:translateY(-8px) scale(.98)}to{opacity:1;transform:none}}
+.dd-menu a{display:flex !important;align-items:center;gap:12px;height:60px;padding:0 10px !important;border-radius:var(--radius-md) !important;text-decoration:none;color:var(--color-text-primary) !important;font:700 14px/18px var(--font-family) !important}
+.dd-menu a:hover{background:var(--color-bg-subtle) !important}
+.dd-menu a .tone{width:40px;height:40px;border-radius:12px;flex:none}
+.dd-menu small{display:block;font:500 12px/16px var(--font-family);color:var(--color-text-muted);margin-top:2px}
+.nav button.nl[aria-current]{color:var(--color-brand-text)}
 .mega.open{display:grid;animation:popIn 220ms var(--ease-out) both;transform-origin:top center}
 @keyframes popIn{from{opacity:0;transform:translateX(-50%) translateY(-8px) scale(.98)}to{opacity:1;transform:translateX(-50%) translateY(0) scale(1)}}
-.mega a{display:flex;align-items:center;gap:12px;padding:10px;border-radius:var(--radius-md);text-decoration:none;color:var(--color-text-primary);font:700 14px/18px var(--font-family);transition:background-color var(--dur-fast) ease}
+.mega a{display:flex;align-items:center;gap:12px;padding:0 12px;height:64px;min-width:0;border-radius:var(--radius-md);text-decoration:none;color:var(--color-text-primary);font:700 14px/18px var(--font-family);transition:background-color var(--dur-fast) ease}
 .mega a:hover{background:var(--color-bg-subtle)}
 .mega a .tone{width:40px;height:40px;border-radius:12px;transition:transform var(--dur-fast) ease}
 .mega a:hover .tone{transform:scale(1.08)}
 .mega small{display:block;font:500 12px/16px var(--font-family);color:var(--color-text-muted);margin-top:2px}
+.mega a>span:last-child{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mega a>span:last-child small{overflow:hidden;text-overflow:ellipsis}
+.mega a .tone{flex:none}
 
 /* ---------- HERO ---------- */
 .hero{position:relative;padding:calc(var(--header-h) + 88px) 0 96px;background:var(--sky);overflow:hidden;isolation:isolate}
@@ -441,7 +455,7 @@ footer{padding:80px 0 40px}
 .f-contact b{display:block;font:800 18px/24px var(--font-family);margin-top:12px}
 .f-contact small{display:block;font:var(--text-caption);color:var(--color-text-muted)}
 .f-legal{margin-top:56px;padding-top:24px;border-top:1px solid var(--color-border);display:flex;flex-direction:column;gap:6px;font:var(--text-caption);color:var(--color-text-muted)}
-.f-legal .concept{display:inline-flex;align-self:flex-start;margin-top:8px;padding:4px 10px;border-radius:999px;background:var(--color-warning-bg);color:var(--color-warning-text);font:var(--text-label)}
+.f-legal .concept{display:inline-flex;align-self:flex-start;margin-top:8px;padding:4px 10px;border-radius:999px;background:var(--color-warning-bg);color:var(--color-warning-text);font:var(--text-label)}.sim-aviso{position:fixed;left:0;right:0;bottom:0;z-index:60;background:var(--color-warning-bg);color:var(--color-warning-text);font:var(--text-caption);padding:8px 16px;text-align:center;line-height:1.4;border-top:1px solid var(--color-border);box-shadow:0 -6px 18px rgba(0,0,0,.08)}.sim-aviso b{font-weight:800}.sim-aviso.form{position:static;border:0;box-shadow:none;border-radius:12px;text-align:left;padding:10px 14px}body{padding-bottom:42px}@media(max-width:640px){body{padding-bottom:58px}}.f-legal .f-estudo a{color:inherit;text-decoration:underline}
 
 /* ---------- toast e bottom sheet (do painel) ---------- */
 .toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,calc(100% + 48px));visibility:hidden;z-index:80;display:flex;align-items:center;gap:10px;padding:14px 20px;border-radius:var(--radius-pill);background:#1D2125;color:#fff;font:700 14px/20px var(--font-family);box-shadow:var(--shadow-toast);transition:transform .45s var(--ease-out)}
@@ -550,6 +564,7 @@ footer{padding:80px 0 40px}
 </style>
 </head>
 <body>
+<div class="sim-aviso" role="note"><b>Conceito de design · simulação.</b> Não é o site do Asaas, sem relação oficial. Dados fictícios: não digite dados reais.</div>
 <div class="progress" aria-hidden="true"></div>
 
 <!-- ================= TOPO ================= -->
@@ -558,15 +573,21 @@ footer{padding:80px 0 40px}
     <a class="brand" href="#inicio" aria-label="Asaas, ir para o início"><span class="logo"><svg width="112" height="19" viewBox="0 0 100 17" fill="none" aria-hidden="true"><path d="M67.0144 10.2322L71.1732 2.8531L75.291 10.2116C74.1232 9.6817 72.6687 9.41646 71.0912 9.41646C69.6159 9.41646 68.2023 9.68169 67.0144 10.2316M45.6871 10.2322L49.8459 2.8531L53.9638 10.2116C52.796 9.6817 51.3414 9.41646 49.764 9.41646C48.2887 9.41646 46.8751 9.68169 45.6871 10.2316M5.98205 10.2322L10.1409 2.69007L14.2997 10.2122C13.1319 9.68231 11.6566 9.41707 10.0791 9.41707C8.60379 9.41707 7.17003 9.6823 5.98144 10.2322M99.9988 12.067C99.9988 15.1653 97.1508 17 92.0498 17C88.4034 17 85.3096 16.3272 82.1339 14.3294L83.1788 12.4746C86.1497 14.3501 88.6901 15.0022 92.0296 15.0022C95.7378 15.0022 97.684 13.9218 97.684 12.0262C97.684 10.4975 96.2704 9.86542 93.4842 9.5801L88.5672 9.091C84.9819 8.74425 82.7081 7.37853 82.7081 4.87157C82.7081 1.89558 85.9247 0 91.0257 0C94.2014 0 96.721 0.61138 99.2412 2.18089L98.2171 4.11723C96.2092 2.79227 93.8535 2.07869 90.7597 2.07869C87.1542 2.07869 85.0235 3.21993 85.0235 4.79005C85.0235 6.27805 86.56 6.84867 88.7934 7.07314L93.8131 7.56225C97.8491 7.94976 100 9.397 100 12.067M81.3758 16.6332L72.2181 0.386904H70.1491L61.0115 16.6332H63.47L64.4739 14.7784C65.6417 12.6175 67.6698 11.4763 71.0912 11.4763C74.5127 11.4763 76.6637 12.5975 77.8522 14.799L78.8354 16.6338H81.3758V16.6332ZM60.0486 16.6332L50.8908 0.386904H48.8218L39.6843 16.6332H42.1428L43.1467 14.7784C44.3145 12.6175 46.3425 11.4763 49.764 11.4763C53.1854 11.4763 55.3364 12.5975 56.525 14.799L57.5081 16.6338H60.0486V16.6332ZM38.9873 12.067C38.9873 15.1653 36.1393 17 31.0383 17C27.3918 17 24.2981 16.3272 21.1224 14.3294L22.1673 12.4746C25.1382 14.3501 27.6786 15.0022 31.0181 15.0022C34.7263 15.0022 36.6725 13.9218 36.6725 12.0262C36.6725 10.4975 35.2589 9.86542 32.4727 9.5801L27.5557 9.091C23.9704 8.74425 21.6966 7.37853 21.6966 4.87157C21.6966 1.89558 24.9132 0 30.0142 0C33.1898 0 35.7095 0.61138 38.2297 2.18089L37.2056 4.11723C35.1977 2.79227 32.842 2.07869 29.7482 2.07869C26.1427 2.07869 24.012 3.21993 24.012 4.79005C24.012 6.27805 25.5484 6.84867 27.7819 7.07314L32.8016 7.56225C36.8375 7.94976 38.9885 9.397 38.9885 12.067M8.05167 2.30256L0 16.6326H2.45848L3.46243 14.7777C4.63023 12.6376 6.6381 11.4757 10.0797 11.4757C13.5214 11.4757 15.6729 12.6376 16.8407 14.7984L17.8239 16.6332H20.3643L11.8009 1.42655C11.3912 0.692898 10.8177 0.386904 9.87491 0.386904H2.97085L4.02493 1.45879C4.66691 2.09755 5.1707 2.30256 6.0652 2.30256H8.05167Z" fill="currentColor"/></svg></span></a>
     <nav class="nav" aria-label="Principal">
       <button class="nl" type="button" id="solBtn" aria-expanded="false" aria-controls="mega">Soluções <i data-i="chevD" data-s="16" class="chev"></i></button>
-      <a href="#precos">Preços</a>
-      <a href="#seguranca">Sobre nós</a>
-      <a href="#api">Desenvolvedores</a>
-      <a href="#faq">2ª Via</a>
+      <a href="precos/">Preços</a>
+      <div class="dd"><button class="nl" type="button" data-drop aria-expanded="false" aria-controls="ddSobre">Sobre nós <i data-i="chevD" data-s="16" class="chev"></i></button>
+        <div class="dd-menu" id="ddSobre" role="menu" aria-label="Sobre nós">
+          <a role="menuitem" href="sobre-nos/"><span class="tone"><i data-i="users" data-s="20"></i></span><span>Quem somos<small>Nossa história e valores</small></span></a>
+          <a role="menuitem" href="blog/"><span class="tone"><i data-i="file" data-s="20"></i></span><span>Blog<small>Gestão, finanças e negócios</small></span></a>
+          <a role="menuitem" href="carreiras/"><span class="tone"><i data-i="spark" data-s="20"></i></span><span>Carreiras<small>Vagas e benefícios</small></span></a>
+        </div>
+      </div>
+      <a href="solucoes/api-de-pagamentos/">Desenvolvedores</a>
+      <a href="segunda-via/">2ª Via</a>
     </nav>
     <div class="top-actions">
       <button class="icon-btn" type="button" id="themeBtn" aria-label="Usar tema escuro"></button>
       <a class="btn btn-ghost btn-sm hide-m" href="painel/">Acessar minha conta</a>
-      <a class="btn btn-cta btn-sm hide-t" href="#cadastro">Criar conta grátis</a>
+      <a class="btn btn-cta btn-sm hide-t" href="criar-conta/">Criar conta grátis</a>
       <button class="icon-btn burger" type="button" id="burger" aria-label="Abrir menu" aria-expanded="false" aria-controls="sheet"><i data-i="menu" data-s="22"></i></button>
     </div>
   </div>
@@ -641,7 +662,7 @@ footer{padding:80px 0 40px}
         <button type="button" role="tab" aria-selected="false" data-v="com">Com o Asaas</button>
       </div>
       <ul class="vs-list rv" id="vsList" style="--d:160ms" aria-live="polite"></ul>
-      <a class="btn btn-cta rv" href="#cadastro" style="align-self:flex-start;--d:220ms">Criar conta grátis <i data-i="arrowR" data-s="18"></i></a>
+      <a class="btn btn-cta rv" href="criar-conta/" style="align-self:flex-start;--d:220ms">Criar conta grátis <i data-i="arrowR" data-s="18"></i></a>
     </div>
     <div class="diagram rv" id="diagram" style="--d:120ms" role="img" aria-label="Diagrama: sem o Asaas a gestão é manual, cara e dependente de bancos; com o Asaas tudo se conecta em um só lugar.">
       <svg class="lines" viewBox="0 0 600 500" preserveAspectRatio="none" aria-hidden="true">
@@ -774,7 +795,7 @@ footer{padding:80px 0 40px}
             <div class="mini rv" style="--d:160ms"><span class="tone warn"><i data-i="barcode" data-s="20"></i></span><b>Pagamentos e transferências</b><p>Seu fornecedor não aceita pagamento por Pix? No Asaas, você também pode pagar boletos, impostos e contas de consumo, além de fazer transferências. As 30 primeiras transações são de graça!</p></div>
           </div>
           <p class="foot rv">* Válido em pagamentos por QR code dinâmico.</p>
-          <a class="btn btn-primary rv" href="#cadastro" style="align-self:flex-start">Criar Conta Asaas <i data-i="arrowR" data-s="18"></i></a>
+          <a class="btn btn-primary rv" href="criar-conta/" style="align-self:flex-start">Criar Conta Asaas <i data-i="arrowR" data-s="18"></i></a>
         </article>
       </div>
 
@@ -869,7 +890,7 @@ footer{padding:80px 0 40px}
       <div class="marquee"><div class="track" id="inv"></div></div>
       <div style="margin-top:12px"><h3>Alguns clientes</h3></div>
       <div class="marquee rev"><div class="track" id="cli"></div></div>
-      <a class="btn btn-cta rv" href="#cadastro" style="align-self:center;margin-top:12px">Começar agora <i data-i="arrowR" data-s="18"></i></a>
+      <a class="btn btn-cta rv" href="criar-conta/" style="align-self:center;margin-top:12px">Começar agora <i data-i="arrowR" data-s="18"></i></a>
     </div>
   </div>
 </section>
@@ -900,8 +921,8 @@ footer{padding:80px 0 40px}
       <h2 class="h2 rv" id="h-faq">Alguma dúvida?</h2>
       <p class="lead rv">Você tem alguma dúvida que não foi respondida aqui? Acesse nossa <a href="#">Central de Ajuda</a></p>
       <div class="contact rv">
-        <a href="tel:08000090037"><span class="tone"><i data-i="phone" data-s="20"></i></span><span><b>0800 009 0037</b><small>Somente Pessoa Jurídica</small></span></a>
-        <a href="mailto:contato@asaas.com.br"><span class="tone"><i data-i="mail" data-s="20"></i></span><span><b>contato@asaas.com.br</b><small>Canais de atendimento</small></span></a>
+        <a href="tel:08000000000"><span class="tone"><i data-i="phone" data-s="20"></i></span><span><b>0800 000 0000</b><small>Somente Pessoa Jurídica</small></span></a>
+        <a href="mailto:contato@exemplo.com.br"><span class="tone"><i data-i="mail" data-s="20"></i></span><span><b>contato@exemplo.com.br</b><small>Canais de atendimento</small></span></a>
       </div>
     </div>
     <div class="acc" id="acc"></div>
@@ -934,19 +955,21 @@ footer{padding:80px 0 40px}
       <div class="f-col f-contact">
         <a class="brand" href="#inicio" aria-label="Asaas, voltar ao topo"><span class="logo"><svg width="112" height="19" viewBox="0 0 100 17" fill="none" aria-hidden="true"><path d="M67.0144 10.2322L71.1732 2.8531L75.291 10.2116C74.1232 9.6817 72.6687 9.41646 71.0912 9.41646C69.6159 9.41646 68.2023 9.68169 67.0144 10.2316M45.6871 10.2322L49.8459 2.8531L53.9638 10.2116C52.796 9.6817 51.3414 9.41646 49.764 9.41646C48.2887 9.41646 46.8751 9.68169 45.6871 10.2316M5.98205 10.2322L10.1409 2.69007L14.2997 10.2122C13.1319 9.68231 11.6566 9.41707 10.0791 9.41707C8.60379 9.41707 7.17003 9.6823 5.98144 10.2322M99.9988 12.067C99.9988 15.1653 97.1508 17 92.0498 17C88.4034 17 85.3096 16.3272 82.1339 14.3294L83.1788 12.4746C86.1497 14.3501 88.6901 15.0022 92.0296 15.0022C95.7378 15.0022 97.684 13.9218 97.684 12.0262C97.684 10.4975 96.2704 9.86542 93.4842 9.5801L88.5672 9.091C84.9819 8.74425 82.7081 7.37853 82.7081 4.87157C82.7081 1.89558 85.9247 0 91.0257 0C94.2014 0 96.721 0.61138 99.2412 2.18089L98.2171 4.11723C96.2092 2.79227 93.8535 2.07869 90.7597 2.07869C87.1542 2.07869 85.0235 3.21993 85.0235 4.79005C85.0235 6.27805 86.56 6.84867 88.7934 7.07314L93.8131 7.56225C97.8491 7.94976 100 9.397 100 12.067M81.3758 16.6332L72.2181 0.386904H70.1491L61.0115 16.6332H63.47L64.4739 14.7784C65.6417 12.6175 67.6698 11.4763 71.0912 11.4763C74.5127 11.4763 76.6637 12.5975 77.8522 14.799L78.8354 16.6338H81.3758V16.6332ZM60.0486 16.6332L50.8908 0.386904H48.8218L39.6843 16.6332H42.1428L43.1467 14.7784C44.3145 12.6175 46.3425 11.4763 49.764 11.4763C53.1854 11.4763 55.3364 12.5975 56.525 14.799L57.5081 16.6338H60.0486V16.6332ZM38.9873 12.067C38.9873 15.1653 36.1393 17 31.0383 17C27.3918 17 24.2981 16.3272 21.1224 14.3294L22.1673 12.4746C25.1382 14.3501 27.6786 15.0022 31.0181 15.0022C34.7263 15.0022 36.6725 13.9218 36.6725 12.0262C36.6725 10.4975 35.2589 9.86542 32.4727 9.5801L27.5557 9.091C23.9704 8.74425 21.6966 7.37853 21.6966 4.87157C21.6966 1.89558 24.9132 0 30.0142 0C33.1898 0 35.7095 0.61138 38.2297 2.18089L37.2056 4.11723C35.1977 2.79227 32.842 2.07869 29.7482 2.07869C26.1427 2.07869 24.012 3.21993 24.012 4.79005C24.012 6.27805 25.5484 6.84867 27.7819 7.07314L32.8016 7.56225C36.8375 7.94976 38.9885 9.397 38.9885 12.067M8.05167 2.30256L0 16.6326H2.45848L3.46243 14.7777C4.63023 12.6376 6.6381 11.4757 10.0797 11.4757C13.5214 11.4757 15.6729 12.6376 16.8407 14.7984L17.8239 16.6332H20.3643L11.8009 1.42655C11.3912 0.692898 10.8177 0.386904 9.87491 0.386904H2.97085L4.02493 1.45879C4.66691 2.09755 5.1707 2.30256 6.0652 2.30256H8.05167Z" fill="currentColor"/></svg></span></a>
         <h3 style="margin-top:20px">Canais de atendimento</h3>
-        <b>0800 009 0037</b><small>(somente Pessoa Jurídica)</small>
-        <b>0800 009 0037</b><small>(somente mensagens)</small>
-        <b style="font-size:15px">contato@asaas.com.br</b>
+        <b>0800 000 0000</b><small>(somente Pessoa Jurídica)</small>
+        <b>0800 000 0000</b><small>(somente mensagens)</small>
+        <b style="font-size:15px">contato@exemplo.com.br</b>
       </div>
       <div class="f-col"><h3>Ajuda</h3><ul><li><a href="#">Central de ajuda</a></li><li><a href="#">Ouvidoria</a></li><li><a href="#">Alerta de fraude</a></li></ul>
-        <h3 style="margin-top:24px">Imprensa</h3><ul><li><a href="#">imprensa@asaas.com.br</a></li></ul></div>
+        <h3 style="margin-top:24px">Imprensa</h3><ul><li><a href="#">imprensa@exemplo.com.br</a></li></ul></div>
       <div class="f-col"><h3>Soluções</h3><ul id="fSol"></ul></div>
-      <div class="f-col"><h3>Asaas</h3><ul><li><a href="#">Preços e taxas</a></li><li><a href="#">Sobre nós</a></li><li><a href="#">Blog</a></li><li><a href="#">Carreiras</a></li><li><a href="#">2ª Via</a></li><li><a href="#">Seja um parceiro</a></li><li><a href="#">Flapp Store</a></li></ul></div>
+      <div class="f-col"><h3>Asaas</h3><ul><li><a href="precos/">Preços e taxas</a></li><li><a href="sobre-nos/">Sobre nós</a></li><li><a href="blog/">Blog</a></li><li><a href="carreiras/">Carreiras</a></li><li><a href="segunda-via/">2ª Via</a></li><li><a href="#">Seja um parceiro</a></li><li><a href="#">Flapp Store</a></li></ul></div>
       <div class="f-col"><h3>Transparência</h3><ul><li><a href="#">Termos de uso</a></li><li><a href="#">Política de privacidade</a></li><li><a href="#">Políticas de segurança</a></li><li><a href="#">Documentos</a></li><li><a href="#">Canal de denúncias</a></li><li><a href="#">Reportar Vulnerabilidade</a></li></ul></div>
     </div>
     <div class="f-legal">
-      <span>© Copyright 2026 ASAAS Gestão Financeira Instituição de Pagamento S.A. CNPJ: 19.540.550/0001-21 | Todos os direitos reservados.</span>
-      <span>Av. Rolf Wiest, 277, Sl. 820 - Bom Retiro, Joinville - SC, 89223-005. Caixa Postal: 6543 - CEP: 89227-971</span>
+      <span>© 2026 Conceito de design para estudo. Todos os nomes, valores, contatos e endereços desta página são fictícios.</span>
+      <span>Este não é o site do Asaas e não tem relação oficial com a empresa. Os textos de exemplo foram adaptados de páginas públicas do Asaas, só para um estudo de design.</span>
+      <span class="concept">Simulação · não digite dados reais</span>
+      <span class="f-estudo">Estudo de caso: <a href="defesa/">apresentação da defesa</a> · <a href="design-system/">design system</a> · <a href="painel/">protótipo do painel</a> · <a href="https://github.com/cbitran/asaas/tree/main/docs">documentos no GitHub</a></span>
     </div>
   </div>
 </footer>
@@ -957,10 +980,12 @@ footer{padding:80px 0 40px}
   <div class="grab" aria-hidden="true"></div>
   <div class="sh-head"><span aria-label="Asaas"><svg width="96" height="16" viewBox="0 0 100 17" fill="none" aria-hidden="true"><path d="M67.0144 10.2322L71.1732 2.8531L75.291 10.2116C74.1232 9.6817 72.6687 9.41646 71.0912 9.41646C69.6159 9.41646 68.2023 9.68169 67.0144 10.2316M45.6871 10.2322L49.8459 2.8531L53.9638 10.2116C52.796 9.6817 51.3414 9.41646 49.764 9.41646C48.2887 9.41646 46.8751 9.68169 45.6871 10.2316M5.98205 10.2322L10.1409 2.69007L14.2997 10.2122C13.1319 9.68231 11.6566 9.41707 10.0791 9.41707C8.60379 9.41707 7.17003 9.6823 5.98144 10.2322M99.9988 12.067C99.9988 15.1653 97.1508 17 92.0498 17C88.4034 17 85.3096 16.3272 82.1339 14.3294L83.1788 12.4746C86.1497 14.3501 88.6901 15.0022 92.0296 15.0022C95.7378 15.0022 97.684 13.9218 97.684 12.0262C97.684 10.4975 96.2704 9.86542 93.4842 9.5801L88.5672 9.091C84.9819 8.74425 82.7081 7.37853 82.7081 4.87157C82.7081 1.89558 85.9247 0 91.0257 0C94.2014 0 96.721 0.61138 99.2412 2.18089L98.2171 4.11723C96.2092 2.79227 93.8535 2.07869 90.7597 2.07869C87.1542 2.07869 85.0235 3.21993 85.0235 4.79005C85.0235 6.27805 86.56 6.84867 88.7934 7.07314L93.8131 7.56225C97.8491 7.94976 100 9.397 100 12.067M81.3758 16.6332L72.2181 0.386904H70.1491L61.0115 16.6332H63.47L64.4739 14.7784C65.6417 12.6175 67.6698 11.4763 71.0912 11.4763C74.5127 11.4763 76.6637 12.5975 77.8522 14.799L78.8354 16.6338H81.3758V16.6332ZM60.0486 16.6332L50.8908 0.386904H48.8218L39.6843 16.6332H42.1428L43.1467 14.7784C44.3145 12.6175 46.3425 11.4763 49.764 11.4763C53.1854 11.4763 55.3364 12.5975 56.525 14.799L57.5081 16.6338H60.0486V16.6332ZM38.9873 12.067C38.9873 15.1653 36.1393 17 31.0383 17C27.3918 17 24.2981 16.3272 21.1224 14.3294L22.1673 12.4746C25.1382 14.3501 27.6786 15.0022 31.0181 15.0022C34.7263 15.0022 36.6725 13.9218 36.6725 12.0262C36.6725 10.4975 35.2589 9.86542 32.4727 9.5801L27.5557 9.091C23.9704 8.74425 21.6966 7.37853 21.6966 4.87157C21.6966 1.89558 24.9132 0 30.0142 0C33.1898 0 35.7095 0.61138 38.2297 2.18089L37.2056 4.11723C35.1977 2.79227 32.842 2.07869 29.7482 2.07869C26.1427 2.07869 24.012 3.21993 24.012 4.79005C24.012 6.27805 25.5484 6.84867 27.7819 7.07314L32.8016 7.56225C36.8375 7.94976 38.9885 9.397 38.9885 12.067M8.05167 2.30256L0 16.6326H2.45848L3.46243 14.7777C4.63023 12.6376 6.6381 11.4757 10.0797 11.4757C13.5214 11.4757 15.6729 12.6376 16.8407 14.7984L17.8239 16.6332H20.3643L11.8009 1.42655C11.3912 0.692898 10.8177 0.386904 9.87491 0.386904H2.97085L4.02493 1.45879C4.66691 2.09755 5.1707 2.30256 6.0652 2.30256H8.05167Z" fill="#fff"/></svg></span><button type="button" id="sheetClose" aria-label="Fechar menu"><i data-i="x" data-s="20"></i></button></div>
   <div class="grp">Menu</div>
-  <a href="#precos">Preços</a><a href="#seguranca">Sobre nós</a><a href="#api">Desenvolvedores</a><a href="#faq">2ª Via</a>
+  <a href="precos/">Preços</a><a href="solucoes/api-de-pagamentos/">Desenvolvedores</a><a href="segunda-via/">2ª Via</a>
+  <div class="grp">Sobre nós</div>
+  <a href="sobre-nos/">Quem somos</a><a href="blog/">Blog</a><a href="carreiras/">Carreiras</a>
   <div class="grp">Soluções</div>
   <div id="sheetSol"></div>
-  <div class="sh-cta"><a class="btn btn-white" href="#cadastro">Criar conta grátis</a><a class="btn" style="background:rgba(255,255,255,.14);color:#fff" href="painel/">Acessar minha conta</a></div>
+  <div class="sh-cta"><a class="btn btn-white" href="criar-conta/">Criar conta grátis</a><a class="btn" style="background:rgba(255,255,255,.14);color:#fff" href="painel/">Acessar minha conta</a></div>
 </div>
 
 <div class="toast" id="toast" role="status" aria-live="polite"><i data-i="check" data-s="18"></i><span></span></div>
@@ -1031,10 +1056,10 @@ footer{padding:80px 0 40px}
 
   /* ---------- dados do site original ---------- */
   var SOL = [
-    ['pix','Pix','Receba em até 10 segundos'],['barcode','Boleto bancário','Cobranças registradas'],['card','Cobrança por cartão','Crédito e débito'],
-    ['pos','Asaas Tap','Venda presencial'],['link','Link de pagamento','Venda de qualquer lugar'],['file','Nota fiscal','Emissão automática'],
-    ['wallet','Conta digital','Banco 461, sem mensalidade'],['bell','Régua de Cobrança','Lembretes automáticos'],['trend','Antecipação de recebíveis','Mais liquidez'],
-    ['grid','ERP','Sem limite de usuários'],['code','API de pagamentos','REST, webhooks e split'],['cash','Meios de pagamento','5 em 1']
+    ['pix','Pix','Receba em até 10 segundos','pix-asaas'],['barcode','Boleto bancário','Cobranças registradas','boleto-bancario'],['card','Cobrança por cartão','Crédito e débito','cobranca-cartao'],
+    ['pos','Asaas Tap','Venda presencial','asaas-tap'],['link','Link de pagamento','Venda de qualquer lugar','link-pagamento'],['file','Nota fiscal','Emissão automática','nota-fiscal'],
+    ['wallet','Conta digital','Banco 461, sem mensalidade','conta-digital'],['bell','Régua de Cobrança','Lembretes automáticos','regua-de-cobranca'],['trend','Antecipação de recebíveis','Mais liquidez','antecipacao-de-recebiveis'],
+    ['grid','ERP','Sem limite de usuários','erp'],['code','API de pagamentos','REST, webhooks e split','api-de-pagamentos'],['cash','Meios de pagamento','5 em 1','meios-de-pagamento']
   ];
   var INV = ['23S','Parallax','Cventures','Spectra','Escala Capital','Quartzo Capital','Bond','SoftBank','Inovabra','Endeavor'];
   var CLI = ['Würth','Cometa','Sebrae','Magazord','Next Fit','Tecnofit','Minerva Foods','Nuvemshop','Shopify','Rodobens','Mahle','Hostgator'];
@@ -1052,9 +1077,9 @@ footer{padding:80px 0 40px}
   };
 
   /* ---------- montagem ---------- */
-  $('#mega').innerHTML = SOL.map(function(s){return '<a role="menuitem" href="#"><span class="tone">'+ic(s[0],20)+'</span><span>'+s[1]+'<small>'+s[2]+'</small></span></a>';}).join('');
-  $('#sheetSol').innerHTML = SOL.map(function(s){return '<a href="#">'+ic(s[0],20)+s[1]+'</a>';}).join('');
-  $('#fSol').innerHTML = SOL.map(function(s){return '<li><a href="#">'+s[1]+'</a></li>';}).join('');
+  $('#mega').innerHTML = SOL.map(function(s){return '<a role="menuitem" href="solucoes/'+s[3]+'/"><span class="tone">'+ic(s[0],20)+'</span><span>'+s[1]+'<small>'+s[2]+'</small></span></a>';}).join('');
+  $('#sheetSol').innerHTML = SOL.map(function(s){return '<a href="solucoes/'+s[3]+'/">'+ic(s[0],20)+s[1]+'</a>';}).join('');
+  $('#fSol').innerHTML = SOL.map(function(s){return '<li><a href="solucoes/'+s[3]+'/">'+s[1]+'</a></li>';}).join('');
   function pills(list,icon){var h=list.map(function(n){return '<span class="logo-pill">'+ic(icon,18)+n+'</span>';}).join('');return h+h;}
   $('#inv').innerHTML = pills(INV,'trend');
   $('#cli').innerHTML = pills(CLI,'spark');
@@ -1106,15 +1131,20 @@ footer{padding:80px 0 40px}
     f.addEventListener('submit',function(e){
       e.preventDefault();
       if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(inp.value.trim())){bad(true);inp.focus();return;}
-      toast('Tudo certo! Abrindo o painel de demonstração…');
-      setTimeout(function(){location.href='painel/';},1400);
+      try{sessionStorage.setItem('asaas-cadastro-email',inp.value.trim());}catch(e){}
+      location.href='criar-conta/';
     });
   });
 
   /* ---------- menu Soluções ---------- */
   var solBtn=$('#solBtn'),mega=$('#mega');
   function setMega(o){mega.classList.toggle('open',o);solBtn.setAttribute('aria-expanded',o);}
-  solBtn.addEventListener('click',function(e){e.stopPropagation();setMega(!mega.classList.contains('open'));});
+  solBtn.addEventListener('click',function(e){e.stopPropagation();$$('.dd-menu.open').forEach(function(m){m.classList.remove('open');});setMega(!mega.classList.contains('open'));});
+  $$('[data-drop]').forEach(function(b){var m=document.getElementById(b.getAttribute('aria-controls'));
+    function set(o){m.classList.toggle('open',o);b.setAttribute('aria-expanded',o);}
+    b.addEventListener('click',function(e){e.stopPropagation();setMega(false);set(!m.classList.contains('open'));});
+    document.addEventListener('click',function(e){if(!m.contains(e.target))set(false);});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape'&&m.classList.contains('open')){set(false);b.focus();}});});
   document.addEventListener('click',function(e){if(!mega.contains(e.target))setMega(false);});
   document.addEventListener('keydown',function(e){if(e.key==='Escape'){if(mega.classList.contains('open')){setMega(false);solBtn.focus();}closeSheet();}});
 
