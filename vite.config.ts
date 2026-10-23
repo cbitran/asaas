@@ -105,7 +105,8 @@ export default defineConfig(({ mode }) => ({
     rollupOptions: {
       input: {
         site: path.resolve(__dirname, 'index.html'),
-        painel: path.resolve(__dirname, 'painel/index.html')
+        painel: path.resolve(__dirname, 'painel/index.html'),
+        designSystem: path.resolve(__dirname, 'design-system/index.html')
       }
     }
   }
