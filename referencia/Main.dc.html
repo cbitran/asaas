@@ -1552,7 +1552,7 @@ class Component extends DCLogic {
       { label: 'Mais', items: [
         { id: 'indicar', label: 'Indicar amigo', icon: I.gift },
         { id: 'beneficios', label: 'Meus benefícios', icon: I.star }
-      ].concat(mobile ? [{ id: 'personalizar', label: 'Personalizar início', icon: I.grid, action: () => goPersonalizar() }] : []) }
+      ].concat(mobile ? [{ id: 'personalizar', label: 'Personalizar início', icon: I.grid, action: () => goPersonalizar() }, { id: 'sair', label: 'Sair', icon: I.power, action: () => sairDoPainel() }] : []) }
     ];
     const curItem = (tela === 'criar' || tela === 'confirmacao') ? 'cobrancas' : tela === 'criarLink' ? 'links' : tela === 'outro' ? s.outro : tela;
     const openId = has('open') ? s.open : curItem;
@@ -1655,6 +1655,7 @@ class Component extends DCLogic {
 
     /* ---------- cabeçalho por tela ---------- */
     const nfConfigured = dados || !!s.nfDone;
+    const sairDoPainel = () => { set({ contaOpen: false, menu: false }); this.calar(); this._pend = null; this.toast('Sessão encerrada. Voltando ao site…'); setTimeout(() => { window.location.href = ((window.asaasVoz && window.asaasVoz.base) || '/'); }, 700); };
     const goPersonalizar = () => { set(Object.assign({ tela: 'inicio' }, reset, { editMode: true })); if (!dados) this.toast('A personalização fica disponível quando a conta tiver movimento'); };
     const toggleEdit = () => set({ editMode: !s.editMode });
     const nfSkip = !!pick('nfSkip', 'nfSkip', false);
@@ -2364,7 +2365,7 @@ class Component extends DCLogic {
       return {
         label: x[0], icon: x[1], badge: x[2], fg: sair ? T.danger : T.ink, iconFg: sair ? T.danger : T.text2,
         sep: sair ? '1px solid ' + T.border : '0',
-        go: sair ? () => { set({ contaOpen: false }); this.calar(); this._pend = null; this.toast('Sessão encerrada. Voltando ao site…'); setTimeout(() => { window.location.href = ((window.asaasVoz && window.asaasVoz.base) || '/'); }, 700); }
+        go: sair ? sairDoPainel
           : x[0] === 'Personalizar início' ? goPersonalizar
           : x[0] === 'Meus benefícios' ? go('outro', { outro: 'beneficios', outroLabel: 'Meus benefícios', outroSub: null })
           : go('outro', { outro: 'conta', outroLabel: x[0], outroSub: null })
