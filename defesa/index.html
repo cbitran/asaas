@@ -161,6 +161,9 @@ td.dest,th.dest{background:var(--color-brand-tint);color:var(--color-text-primar
 .tcap{font:var(--text-caption);color:var(--color-text-muted)}
 @media(max-width:640px){.rail{flex-wrap:nowrap;overflow-x:auto;padding:2px 2px 8px;scrollbar-width:thin}.rail li,.rail button{flex:none;white-space:nowrap}}
 .tpanel button:disabled{opacity:.4;cursor:default}
+.prox{border-radius:var(--radius-card);padding:16px 20px;background:var(--color-brand-tint);color:var(--color-text-primary);border:1px solid var(--color-card-border)}
+.prox b{color:var(--color-brand-text)}
+.prox p{font-size:15px;line-height:1.55;color:var(--color-text-primary)}
 </style>
 </head>
 <body>
@@ -276,6 +279,54 @@ td.dest,th.dest{background:var(--color-brand-tint);color:var(--color-text-primar
     <p class="tcap">Prints do protótipo com dados fictícios. Clique nos marcadores, nas telas da faixa ou use as setas ← → do teclado dentro do passeio. As observações do original vêm do diagnóstico (conta nova, 23/10/2026). H = heurística de Nielsen.</p>
   </div>
   <div class="foot"><span>docs/02-diagnostico-original.md · docs/03-concorrentes.md</span><span class="sim">Simulação</span></div>
+</section>
+
+<!-- 5c LANDING -->
+<section class="slide" id="landing" data-t="Landing page">
+  <p class="kicker">Landing page · objetivo e premissas</p>
+  <h2>Landing page: uma navegação mais fluida e moderna, com a informação que já existia, melhor distribuída</h2>
+  <div class="grid g3">
+    <div class="card rev"><span class="tag">Objetivo</span><h3 style="margin-top:10px">Navegar com mais fluidez</h3><p>Uma entrada moderna para o produto, em que a pessoa encontra o que precisa sem se perder em páginas soltas.</p></div>
+    <div class="card rev"><span class="tag">Conceito visual</span><h3 style="margin-top:10px">Modernizar com intenção</h3><p>Imagens, peso visual dado por elementos, componentes e fontes, e uma distribuição melhor da paleta de cores. As escolhas de cor, fonte e componente estão no <a href="../design-system/">design system</a>.</p></div>
+    <div class="card rev"><span class="tag ok">Origem do conteúdo</span><h3 style="margin-top:10px">O que já existe no site da marca</h3><p>Todo o conteúdo parte do que está publicado no site da marca: verificamos as informações e as redistribuímos de forma mais eficiente.</p></div>
+  </div>
+  <div class="cols">
+    <div class="depois rev"><h3>O que esperamos <span class="tag av" style="margin-left:6px">Hipótese</span></h3>
+      <p>Que uma navegação mais fluida e um visual mais atual passem mais <b>status</b>, <b>confiabilidade</b> e <b>conforto</b> a quem chega ao site.</p>
+      <p class="mut" style="margin-top:8px">É uma expectativa de design, e não um resultado medido.</p></div>
+    <div class="antes rev"><h3>Limites <span class="tag risco" style="margin-left:6px">Sem validação</span></h3>
+      <ul>
+        <li>Não houve teste com pessoas nem medição de conversão, tempo ou abandono.</li>
+        <li>Contatos, valores, endereços e dados da landing são fictícios.</li>
+        <li>O texto das páginas internas foi adaptado de páginas públicas, só para este estudo; preços e condições <b>não</b> são oficiais.</li>
+        <li>A origem e a licença das imagens ainda não foram verificadas.</li></ul></div>
+  </div>
+  <div class="prox rev"><p><b>Para ir além:</b> uma análise mais aprofundada pede <b>pesquisa em profundidade</b>, conversando com as pessoas que usam o produto para entender suas dores, suas necessidades e o que gostariam que a ferramenta oferecesse de forma mais efetiva.</p></div>
+  <div class="acoes rev"><a class="cta" href="../">Ver a landing</a><a class="cta sec" href="../design-system/">Ver o design system</a></div>
+  <div class="foot"><span>Objetivo e premissas definidos pela equipe do projeto</span><span class="sim">Simulação</span></div>
+</section>
+
+<!-- 5d PAINEL -->
+<section class="slide" id="painel" data-t="O painel: três frentes">
+  <p class="kicker">Painel · o que mais exigiu trabalho</p>
+  <h2>O painel foi onde mais olhamos a usabilidade, e onde criamos a liberdade e a antecipação</h2>
+  <div class="grid g3">
+    <div class="card rev"><span class="tag in">1 · Análise de usabilidade</span><h3 style="margin-top:10px">Heurística, semiótica e mercado</h3><p>Avaliamos o painel original pelas 10 heurísticas de Nielsen e por uma leitura semiótica (Peirce), e comparamos o fluxo de criar cobrança em cinco produtos: o que fazem de bom e o que ainda não fazemos.</p><p class="mut" style="margin-top:8px">Detalhes nos slides de Diagnóstico, Concorrentes e "Da evidência à decisão".</p></div>
+    <div class="card rev"><span class="tag in">2 · Liberdade</span><h3 style="margin-top:10px">Cada pessoa monta a sua home</h3><p>O usuário escolhe quais blocos ver, a ordem e a largura de cada um, e adiciona outros pela biblioteca, de acordo com a sua necessidade.</p><p class="mut" style="margin-top:8px">Hipótese: quem prioriza o que usa chega mais rápido ao que importa. Ainda não testada.</p></div>
+    <div class="card rev"><span class="tag in">3 · Antecipação</span><h3 style="margin-top:10px">Um assistente que fala com você</h3><p>Ele traz as informações importantes para a pessoa não precisar procurar o dado: já avisa, e só age depois da confirmação dela.</p><p class="mut" style="margin-top:8px">Simulado: respostas pré-escritas e voz gravada, sem dados reais.</p></div>
+  </div>
+  <div class="cols">
+    <div class="depois rev"><h3>Onde ver no passeio</h3><ul>
+      <li><b>Telas 1 a 6:</b> o que mudou em cada tela, com a heurística por trás.</li>
+      <li><b>Tela 7 · Personalizar:</b> blocos, larguras, biblioteca e restaurar padrão.</li>
+      <li><b>Tela 8 · Assistente:</b> aviso proativo, ação com confirmação, voz opcional.</li></ul></div>
+    <div class="antes rev"><h3>Limites <span class="tag risco" style="margin-left:6px">Sem validação</span></h3><ul>
+      <li>Sem teste com pessoas: não medimos tempo, erros nem uso real.</li>
+      <li>A personalização fica salva só no navegador de quem a fez.</li>
+      <li>O assistente é uma demonstração do conceito, não uma IA conectada à conta.</li></ul></div>
+  </div>
+  <div class="prox rev"><p><b>Para ir além:</b> uma análise mais aprofundada pede <b>pesquisa em profundidade</b>, conversando com os usuários para entender suas dores, suas necessidades e o que gostariam que a ferramenta oferecesse de forma mais efetiva. O roteiro de teste está em <code>docs/01-metodo-e-evidencias.md</code>.</p></div>
+  <div class="foot"><span>Objetivos e premissas definidos pela equipe do projeto</span><span class="sim">Simulação</span></div>
 </section>
 
 <!-- 6 DIAGNÓSTICO 1 -->
@@ -691,6 +742,18 @@ td.dest,th.dest{background:var(--color-brand-tint);color:var(--color-text-primar
     {r:[27.9,37,66.1,8.3],t:'Quatro passos com progresso',tag:'H8 · H1',a:'Um texto de cinco linhas antes do botão "Iniciar a configuração".',d:'"Passo 1 de 4", barra de progresso e os quatro passos nomeados.',p:'H8 · menos texto antes da ação. H1 · progresso visível.'},
     {r:[27.9,64,18.2,2.2],t:'Ajuda no ponto de uso',tag:'H10',a:'Não observado no original: ele abria com um texto de cinco linhas antes do botão.',d:'"Está no alvará ou no portal da prefeitura", logo abaixo da Inscrição municipal.',p:'H10 · ajuda e documentação no momento da dúvida.'},
     {r:[27.9,70.8,12.7,3.2],t:'Uma saída',tag:'H3',a:'Não observado no original.',d:'"Pular e emitir depois", com aviso para retomar.',p:'H3 · controle e liberdade do usuário.'}]}
+   ,{n:'Personalizar',url:'protótipo · Conta › Personalizar início',img:B+'07-personalizar.jpg',alt:'Início em modo personalizar, com faixa de instruções, botões Adicionar widget, Restaurar padrão e Concluir, e barras de edição sobre cada bloco.',pins:[
+    {r:[25.7,20.3,70.5,8.9],t:'Você monta o seu Início',tag:'H7',a:'Não observado no original.',d:'Um modo personalizar, com instruções na tela e o botão Concluir para sair.',p:'H7 · flexibilidade e eficiência de uso: cada pessoa prioriza o que usa. É uma hipótese de design, ainda sem teste com usuários.'},
+    {r:[25.6,31.7,70.6,5.2],t:'Arrastar, mover ou ocultar',tag:'H3',a:'Não observado no original.',d:'Cada bloco ganha alça para arrastar, setas para mover antes ou depois e um botão para ocultar.',p:'H3 · controle e liberdade: o que se oculta pode voltar pela biblioteca.'},
+    {r:[73,32.1,11.7,4.4],t:'Largura de cada bloco',tag:'H7',a:'Não observado no original.',d:'1/3, 1/2, 2/3 ou inteira. O layout se reorganiza sozinho em qualquer tamanho de tela.',p:'H7. A mesma escolha vale no desktop, no tablet e no celular.'},
+    {r:[62.9,22.5,12.4,4.4],t:'Biblioteca de blocos',tag:'H7 · H6',a:'Não observado no original.',d:'"Adicionar widget" abre a biblioteca, com a descrição de cada bloco. Entram também Atalhos rápidos, Últimos lançamentos, Quem mais pagou e Links de pagamento.',p:'H6 · reconhecer em vez de lembrar: a pessoa vê o que pode colocar na tela.'},
+    {r:[76,22.4,10.8,4.4],t:'Uma saída segura',tag:'H3',a:'Não observado no original.',d:'"Restaurar padrão" volta ao Início original. O layout fica salvo neste navegador.',p:'H3. Limite: salvo só neste navegador, sem sincronizar entre aparelhos.'}]}
+  ,{n:'Assistente',url:'protótipo · Início · Assistente',img:B+'08-assistente.jpg',alt:'Painel do assistente aberto sobre o Início, com a mensagem sobre três cobranças vencidas, botões de ação, perguntas prontas e campo de texto.',pins:[
+    {r:[69.5,61.7,24.1,10.9],t:'Avisa antes de você procurar',tag:'H1 · H7',a:'Um balão de chat flutuante, e um assistente de IA pelo WhatsApp anunciado na tela de login.',d:'No desktop, o painel abre sozinho ao entrar na tela, com a pendência do momento: "3 cobranças venceram sem pagamento, somando R$ 1.340,00".',p:'H1 · o status chega até a pessoa. H7 · ela não precisa procurar o dado. No celular, o painel não abre sozinho: o botão pulsa.'},
+    {r:[69.5,73.4,17.8,4.1],t:'Só age depois do seu sim',tag:'H3 · H5',a:'Não se aplica.',d:'A mensagem termina em pergunta ("Quer que eu reenvie?"). A ação só acontece ao clicar, e o assistente responde o que fez.',p:'H3 · controle do usuário. H5 · confirmação antes de agir.'},
+    {r:[69.3,80,28,9.7],t:'Perguntas prontas e campo livre',tag:'H7 · H10',a:'Não observado no original.',d:'Atalhos para perguntas comuns e um campo para escrever, sempre sobre a tela em que a pessoa está.',p:'H10 · ajuda no ponto de uso. H7 · atalhos.'},
+    {r:[89.1,32.6,3.5,4.5],t:'Voz opcional',tag:'H3',a:'Não se aplica.',d:'Um botão liga ou desliga a voz. O áudio é gravado e fala as frases do assistente.',p:'H3 · quem não quer áudio desliga com um toque.'},
+    {r:[68.2,30.9,29.8,7.7],t:'Deixa claro que é simulação',tag:'Limite',a:'Não se aplica.',d:'"Simulação · respostas de exemplo": as respostas são pré-escritas e as ações apenas mostram o resultado, sem tocar em dados reais.',p:'Um assistente de verdade depende de integração com a conta e de teste com pessoas.'}]}
   ];
   var tour=document.getElementById('tour'); if(!tour) return;
   var rail=document.getElementById('rail'), img=document.getElementById('tImg'), hl=document.getElementById('tHl'), shot=document.getElementById('shot'), arrow=document.getElementById('tArrow');

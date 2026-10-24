@@ -179,6 +179,9 @@ nav[aria-label='Menu principal']{scrollbar-width:none}nav[aria-label='Menu princ
 </div>
 </sc-if>
 </div>
+<button type="button" class="hv" onClick="{{toggleOcultar}}" aria-pressed="{{ocultar}}" aria-label="{{ocAria}}" title="{{ocAria}}" style="width: 44px; height: 44px; border-radius: 14px; border: 1px solid {{t.border}}; background: {{t.surface}}; color: {{t.ink}}; display: flex; align-items: center; justify-content: center; cursor: pointer">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ocIcon}}"></path></svg>
+</button>
 <button type="button" class="hv" aria-label="Ajuda e atendimento" style="width: 44px; height: 44px; border-radius: 14px; border: 1px solid {{t.border}}; background: {{t.surface}}; color: {{t.ink}}; display: flex; align-items: center; justify-content: center; cursor: pointer">
 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{i.help}}"></path></svg>
 </button>
@@ -223,6 +226,9 @@ nav[aria-label='Menu principal']{scrollbar-width:none}nav[aria-label='Menu princ
 <div style="display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: {{t.ground}}; position: sticky; top: 0; z-index: 20">
 <span style="font-size: 18px; font-weight: 800; letter-spacing: -0.01em; color: {{t.ink}}">Asaas</span>
 <div style="flex: 1"></div>
+<button type="button" onClick="{{toggleOcultar}}" aria-pressed="{{ocultar}}" aria-label="{{ocAria}}" title="{{ocAria}}" style="width: 44px; height: 44px; border-radius: 14px; border: 1px solid {{t.border}}; background: {{t.surface}}; color: {{t.ink}}; display: flex; align-items: center; justify-content: center; cursor: pointer">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ocIcon}}"></path></svg>
+</button>
 <button type="button" onClick="{{toggleTheme}}" aria-label="{{themeToggleAria}}" style="width: 44px; height: 44px; border-radius: 14px; border: 1px solid {{t.border}}; background: {{t.surface}}; color: {{t.ink}}; display: flex; align-items: center; justify-content: center; cursor: pointer">
 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{themeToggleIcon}}"></path></svg>
 </button>
@@ -387,7 +393,7 @@ nav[aria-label='Menu principal']{scrollbar-width:none}nav[aria-label='Menu princ
 <section aria-labelledby="h-formas" style="background: {{t.surface}}; border-radius: 24px; padding: 24px; box-shadow: {{t.shadow}}; border: 1px solid {{t.cardBorder}}; display: flex; flex-direction: column; gap: 16px">
 <div style="display: flex; flex-direction: column; gap: 2px">
 <h2 id="h-formas" style="margin: 0; font-size: 18px; font-weight: 800">Recebido em outubro</h2>
-<span style="font-size: 13px; color: {{t.text2}}">R$ 4.900,00 por forma de pagamento</span>
+<span style="font-size: 13px; color: {{t.text2}}">{{formasSub}}</span>
 </div>
 <sc-for list="{{rings}}" as="r">
 <div style="display: flex; align-items: center; gap: 14px">
@@ -1273,7 +1279,7 @@ nav[aria-label='Menu principal']{scrollbar-width:none}nav[aria-label='Menu princ
 <div style="flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 4px">
 <span style="display: {{L.bnEyebrow}}; font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase">Convite · antecipação</span>
 <h2 id="h-convite" style="margin: 0; font-size: {{L.bnTitle}}; line-height: 1.25; font-weight: 800">Receba antes as vendas no cartão</h2>
-<p style="margin: 0; font-size: {{L.bnText}}; line-height: 1.5">Você tem R$ 3.394,86 aguardando repasse. A taxa aparece antes de você confirmar.</p>
+<p style="margin: 0; font-size: {{L.bnText}}; line-height: 1.5">{{bnTexto}}</p>
 </div>
 <div style="flex: none; display: flex; align-items: center; gap: 8px">
 <button type="button" class="hv" onClick="{{goAntecipacao}}" style="flex: 1 1 auto; min-height: 48px; padding: 0 20px; border-radius: 14px; border: 0; background: #1D2125; color: #FFFFFF; font-size: 14px; font-weight: 700; cursor: pointer">Simular antecipação</button>
@@ -1294,6 +1300,7 @@ nav[aria-label='Menu principal']{scrollbar-width:none}nav[aria-label='Menu princ
 class Component extends DCLogic {
   componentDidMount() {
     if (this.props.estatico) return;
+    try { if (window.localStorage.getItem('asaas-ocultar-valores') === '1') this.setState({ ocultar: true }); } catch (e) {}
     try { const raw = window.localStorage.getItem('asaas-inicio-layout'); if (raw) { const wl = JSON.parse(raw); if (Array.isArray(wl)) this.setState({ wl }); } } catch (e) {}
     this._lastNk = this._nk();
     this._lm = setTimeout(() => this.setState({ launcherMini: true }), 6000);
@@ -1307,7 +1314,7 @@ class Component extends DCLogic {
     this._rs();
     window.addEventListener('resize', this._rs);
     // se o navegador bloquear a fala automática, ela sai no primeiro toque ou tecla
-    this._gest = () => { if (this._pend) { const t = this._pend; this._pend = null; this.fala(t); } };
+    this._gest = () => { if (this._pend) { const t = this._pend; this._pend = null; this.fala(t, true, true); } };
     window.addEventListener('pointerdown', this._gest);
     window.addEventListener('keydown', this._gest);
   }
@@ -1358,8 +1365,18 @@ class Component extends DCLogic {
       bc.onmessage = (e) => { if (e && e.data === 'calar') { this.calar(); this._pend = null; } };
     } catch (e) {}
   }
-  async fala(text) {
+  /* regra da voz: só fala (a) na primeira visita ao site, (b) quando a pessoa abre o assistente por conta própria, (c) ao ligar a voz.
+     Aberturas automáticas depois da primeira visita ficam em silêncio. `forca` ignora a regra (casos a e c). */
+  async fala(text, forca, repetir) {
     if ((this.state || {}).voz === false || !text) return;
+    if (!forca && !this._vozOk) return;
+    // cada frase é falada uma única vez (guardado no navegador): reabrir o assistente não repete o que já foi ouvido
+    if (!repetir) {
+      if (!this._ouv) { try { this._ouv = JSON.parse(window.localStorage.getItem('asaas-voz-ouvidas') || '[]'); } catch (e) { this._ouv = []; } }
+      if (this._ouv.indexOf(text) >= 0) return;
+      this._ouv.push(text);
+      try { window.localStorage.setItem('asaas-voz-ouvidas', JSON.stringify(this._ouv.slice(-80))); } catch (e) {}
+    }
     this.vozGuarda();
     if (document.hidden) return;
     this.calar();
@@ -1410,6 +1427,11 @@ class Component extends DCLogic {
       const ii = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
       return (neg ? '− ' : '') + 'R$ ' + ii + ',' + parts[1];
     };
+    /* olhinho: com os valores ocultos, saldos e listas mostram R$ •••• (formulários e confirmações continuam mostrando o valor real) */
+    const oc = !!s.ocultar;
+    const MASK = 'R$ ••••';
+    const fmtP = (n) => (oc ? MASK : fmt(n));
+    const mk = (t) => (oc && t ? String(t).replace(/R\$ ?\d[\d.]*,\d{2}/g, MASK) : t);
     const num = (str) => { const v = parseFloat(String(str || '').replace(/\./g, '').replace(',', '.')); return isNaN(v) ? 0 : v; };
     const dmy = (iso) => { if (!iso) return '—'; const x = iso.split('-'); return x[2] + '/' + x[1] + '/' + x[0]; };
     const ini = (n) => n.split(' ').filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
@@ -1474,6 +1496,7 @@ class Component extends DCLogic {
       power: 'M12 2v10M18.4 6.6a9 9 0 1 1-12.8 0',
       grid: 'M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z',
       grip: 'M9 5h.01M9 12h.01M9 19h.01M15 5h.01M15 12h.01M15 19h.01',
+      eye: 'M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8zM15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0z',
       eyeOff: 'M3 3l18 18M10.6 10.6a2 2 0 0 0 2.8 2.8M9.9 4.2A10 10 0 0 1 12 4c5 0 9 5 10 8a13 13 0 0 1-3 4.2M6.1 6.1A13 13 0 0 0 2 12c1 3 5 8 10 8a10 10 0 0 0 4-.8',
       spark: 'M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9zM19 15l.9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9z',
       volume: 'M11 5 6 9H2v6h4l5 4zM15.5 8.5a5 5 0 0 1 0 7M19 5a9 9 0 0 1 0 14',
@@ -1688,31 +1711,31 @@ class Component extends DCLogic {
 
     /* ---------- início ---------- */
     const metrics = dados ? [
-      { label: 'Saldo disponível', value: fmt(12480.35), foot: 'Atualizado às 09:42', icon: I.wallet, iconBg: T.primaryTint, iconFg: T.primaryText, valueFg: T.ink, footFg: T.text2, border: T.cardBorder },
-      { label: 'A receber', value: fmt(2180), foot: '2 cobranças em aberto', icon: I.clock, iconBg: T.infoBg, iconFg: T.info, valueFg: T.ink, footFg: T.text2, border: T.cardBorder },
-      { label: 'Vencidas', value: fmt(1340), foot: '3 cobranças · ação necessária', icon: I.alert, iconBg: T.dangerBg, iconFg: T.danger, valueFg: T.danger, footFg: T.danger, border: T.danger },
-      { label: 'Recebido em outubro', value: fmt(4900), foot: '3 cobranças pagas', icon: I.check, iconBg: T.successBg, iconFg: T.success, valueFg: T.ink, footFg: T.text2, border: T.cardBorder }
+      { label: 'Saldo disponível', value: fmtP(12480.35), foot: 'Atualizado às 09:42', icon: I.wallet, iconBg: T.primaryTint, iconFg: T.primaryText, valueFg: T.ink, footFg: T.text2, border: T.cardBorder },
+      { label: 'A receber', value: fmtP(2180), foot: '2 cobranças em aberto', icon: I.clock, iconBg: T.infoBg, iconFg: T.info, valueFg: T.ink, footFg: T.text2, border: T.cardBorder },
+      { label: 'Vencidas', value: fmtP(1340), foot: '3 cobranças · ação necessária', icon: I.alert, iconBg: T.dangerBg, iconFg: T.danger, valueFg: T.danger, footFg: T.danger, border: T.danger },
+      { label: 'Recebido em outubro', value: fmtP(4900), foot: '3 cobranças pagas', icon: I.check, iconBg: T.successBg, iconFg: T.success, valueFg: T.ink, footFg: T.text2, border: T.cardBorder }
     ] : [
-      { label: 'Saldo disponível', value: fmt(0), foot: 'Sem movimentação ainda', icon: I.wallet, iconBg: T.primaryTint, iconFg: T.primaryText, valueFg: T.ink, footFg: T.text2, border: T.cardBorder },
-      { label: 'A receber', value: fmt(0), foot: 'Nenhuma cobrança em aberto', icon: I.clock, iconBg: T.infoBg, iconFg: T.info, valueFg: T.ink, footFg: T.text2, border: T.cardBorder },
-      { label: 'Vencidas', value: fmt(0), foot: 'Nenhuma cobrança vencida', icon: I.alert, iconBg: T.sunken, iconFg: T.text2, valueFg: T.ink, footFg: T.text2, border: T.cardBorder },
-      { label: 'Recebido em outubro', value: fmt(0), foot: 'Sem recebimentos', icon: I.check, iconBg: T.successBg, iconFg: T.success, valueFg: T.ink, footFg: T.text2, border: T.cardBorder }
+      { label: 'Saldo disponível', value: fmtP(0), foot: 'Sem movimentação ainda', icon: I.wallet, iconBg: T.primaryTint, iconFg: T.primaryText, valueFg: T.ink, footFg: T.text2, border: T.cardBorder },
+      { label: 'A receber', value: fmtP(0), foot: 'Nenhuma cobrança em aberto', icon: I.clock, iconBg: T.infoBg, iconFg: T.info, valueFg: T.ink, footFg: T.text2, border: T.cardBorder },
+      { label: 'Vencidas', value: fmtP(0), foot: 'Nenhuma cobrança vencida', icon: I.alert, iconBg: T.sunken, iconFg: T.text2, valueFg: T.ink, footFg: T.text2, border: T.cardBorder },
+      { label: 'Recebido em outubro', value: fmtP(0), foot: 'Sem recebimentos', icon: I.check, iconBg: T.successBg, iconFg: T.success, valueFg: T.ink, footFg: T.text2, border: T.cardBorder }
     ];
     const atencao = [
-      { icon: I.alert, bg: T.dangerBg, fg: T.danger, title: '3 cobranças vencidas', desc: 'R$ 1.340,00 · a mais antiga venceu em 12/10/2026', action: 'Ver vencidas', go: go('cobrancas', { filtro: 'vencida', cobTab: 'Todas' }) },
-      { icon: I.shield, bg: T.warnBg, fg: T.warn, title: 'Chargeback em disputa', desc: 'Studio Pilar ME · R$ 150,00 · defesa até 30/10/2026', action: 'Responder', go: go('cobrancas', { cobTab: 'Chargeback', filtro: 'todas' }) },
+      { icon: I.alert, bg: T.dangerBg, fg: T.danger, title: '3 cobranças vencidas', desc: mk('R$ 1.340,00 · a mais antiga venceu em 12/10/2026'), action: 'Ver vencidas', go: go('cobrancas', { filtro: 'vencida', cobTab: 'Todas' }) },
+      { icon: I.shield, bg: T.warnBg, fg: T.warn, title: 'Chargeback em disputa', desc: mk('Studio Pilar ME · R$ 150,00 · defesa até 30/10/2026'), action: 'Responder', go: go('cobrancas', { cobTab: 'Chargeback', filtro: 'todas' }) },
       { icon: I.file, bg: T.warnBg, fg: T.warn, title: 'Nota fiscal com erro', desc: 'NF 000125 · Rafael Mendes · código de serviço inválido', action: 'Corrigir', go: go('notas', { nfTab: 'Todas' }) }
     ];
     const week = [['Sex', '23'], ['Sáb', '24'], ['Dom', '25'], ['Seg', '26'], ['Ter', '27'], ['Qua', '28'], ['Qui', '29']].map((w, k) => ({ d: w[0], n: w[1], bg: k === 0 ? T.primary : 'transparent', fg: k === 0 ? '#FFFFFF' : T.ink, dot: w[1] === '28' ? T.primary : 'transparent' }));
     const upcoming = [
-      { date: 'Qua, 28/10', cli: 'Café Grão Norte Ltda.', desc: 'Boleto · parcela 3 de 3', valor: fmt(1200) },
-      { date: 'Qui, 05/11', cli: 'Oficina Boa Obra', desc: 'Boleto · projeto de fachada', valor: fmt(980) }
+      { date: 'Qua, 28/10', cli: 'Café Grão Norte Ltda.', desc: 'Boleto · parcela 3 de 3', valor: fmtP(1200) },
+      { date: 'Qui, 05/11', cli: 'Oficina Boa Obra', desc: 'Boleto · projeto de fachada', valor: fmtP(980) }
     ];
     const C = 2 * Math.PI * 34;
     const rings = [
-      { label: 'Cartão', pctN: 71, valor: fmt(3500), sub: '1 cobrança · repasse em 19/11', color: '#006FF0', labelFg: T.info },
-      { label: 'Pix', pctN: 25, valor: fmt(1200), sub: '1 cobrança · na hora', color: escuro ? '#8DB4FF' : '#0038E5', labelFg: T.primaryText },
-      { label: 'Boleto', pctN: 4, valor: fmt(200), sub: '1 cobrança · compensado', color: '#91C651', labelFg: T.success }
+      { label: 'Cartão', pctN: 71, valor: fmtP(3500), sub: '1 cobrança · repasse em 19/11', color: '#006FF0', labelFg: T.info },
+      { label: 'Pix', pctN: 25, valor: fmtP(1200), sub: '1 cobrança · na hora', color: escuro ? '#8DB4FF' : '#0038E5', labelFg: T.primaryText },
+      { label: 'Boleto', pctN: 4, valor: fmtP(200), sub: '1 cobrança · compensado', color: '#91C651', labelFg: T.success }
     ].map((r) => Object.assign(r, { pct: r.pctN + '%', dash: (C * r.pctN / 100).toFixed(1) + ' 999' }));
     const checklist = [
       { label: 'Dados da empresa', sub: 'Concluído', done: true },
@@ -1751,10 +1774,10 @@ class Component extends DCLogic {
       const m = ST[c.st];
       const venc = c.st === 'vencida' ? 'Venceu em ' + c.venc : c.venc;
       return Object.assign({}, c, {
-        valor: fmt(c.v), ini: ini(c.cli), formaLabel: FORMA[c.forma], stLabel: m.label, stBg: m.bg, stFg: m.fg,
+        valor: fmtP(c.v), ini: ini(c.cli), formaLabel: FORMA[c.forma], stLabel: m.label, stBg: m.bg, stFg: m.fg,
         venc, vencMobile: (c.st === 'vencida' ? 'Venceu em ' : 'Vence em ') + c.venc + ' · ' + FORMA[c.forma],
         vencFg: c.st === 'vencida' ? T.danger : T.text2, vencFw: c.st === 'vencida' ? '700' : '500',
-        aria: 'Abrir cobrança de ' + c.cli + ', ' + fmt(c.v) + ', ' + m.label,
+        aria: 'Abrir cobrança de ' + c.cli + ', ' + fmtP(c.v) + ', ' + m.label,
         open: () => set({ overlay: 'cobranca', sel: c.id })
       });
     });
@@ -1879,7 +1902,7 @@ class Component extends DCLogic {
       { title: 'Recebido de Bruno Teixeira', sub: '11/10/2026 · chave e-mail', v: 250 }
     ] : [];
     const usado = 780 + pixNovas.reduce((a, b) => a + Math.abs(b.v), 0);
-    const pixItems = pixNovas.concat(pixBase).map((x) => ({ title: x.title, sub: x.sub, valor: x.v < 0 ? fmt(x.v) : '+ ' + fmt(x.v), fg: x.v < 0 ? T.ink : T.success, icon: x.v < 0 ? I.up : I.down, iconBg: x.v < 0 ? T.sunken : T.successBg, iconFg: x.v < 0 ? T.text2 : T.success }));
+    const pixItems = pixNovas.concat(pixBase).map((x) => ({ title: x.title, sub: x.sub, valor: oc ? MASK : (x.v < 0 ? fmt(x.v) : '+ ' + fmt(x.v)), fg: x.v < 0 ? T.ink : T.success, icon: x.v < 0 ? I.up : I.down, iconBg: x.v < 0 ? T.sunken : T.successBg, iconFg: x.v < 0 ? T.text2 : T.success }));
     const limUsado = dados ? Math.min(100, Math.round(usado / 50)) : 0;
     const pix = {
       tab: pixTab, isTransf: pixTab === 'Transferências', isOther: pixTab !== 'Transferências',
@@ -1894,7 +1917,7 @@ class Component extends DCLogic {
     const pixF = {
       chaveLabel: pixModo === 'chave' ? 'Chave Pix' : 'Código Pix Copia e Cola',
       chavePh: pixModo === 'chave' ? 'CPF/CNPJ, e-mail, celular ou chave aleatória' : 'Cole o código aqui',
-      chave: pixChave, valor: pixValor, saldo: fmt(SALDO),
+      chave: pixChave, valor: pixValor, saldo: fmtP(SALDO),
       onChave: (e) => set({ pixChave: e.target.value, pixErr: Object.assign({}, pixErr, { chave: null }) }),
       onValor: (e) => set({ pixValor: e.target.value.replace(/[^\d.,]/g, ''), pixErr: Object.assign({}, pixErr, { valor: null }) }),
       errChave: pixErr.chave || '', errValor: pixErr.valor || '',
@@ -1922,12 +1945,12 @@ class Component extends DCLogic {
       { date: 'Quinta, 08/10/2026', ago: 15, saldo: 12102.24, items: [{ title: 'Cobrança recebida · Júlia Castro', sub: 'Boleto · aula particular', v: 200 }, { title: 'Taxa do boleto', sub: 'Cobrança de Júlia Castro', v: -1.99 }] }
     ];
     const lim = periodo === 'hoje' ? 0 : periodo === '7' ? 7 : periodo === '15' ? 15 : 999;
-    const groups = (dados ? EXT : []).filter((g) => g.ago <= lim).map((g) => ({ date: g.date, saldo: fmt(g.saldo), items: g.items.map((x) => ({ title: x.title, sub: x.sub, valor: x.v < 0 ? fmt(x.v) : '+ ' + fmt(x.v), fg: x.v < 0 ? T.ink : T.success, icon: x.v < 0 ? I.up : I.down, iconBg: x.v < 0 ? T.sunken : T.successBg, iconFg: x.v < 0 ? T.text2 : T.success })) }));
+    const groups = (dados ? EXT : []).filter((g) => g.ago <= lim).map((g) => ({ date: g.date, saldo: fmtP(g.saldo), items: g.items.map((x) => ({ title: x.title, sub: x.sub, valor: oc ? MASK : (x.v < 0 ? fmt(x.v) : '+ ' + fmt(x.v)), fg: x.v < 0 ? T.ink : T.success, icon: x.v < 0 ? I.up : I.down, iconBg: x.v < 0 ? T.sunken : T.successBg, iconFg: x.v < 0 ? T.text2 : T.success })) }));
     const ext = {
       cards: [
-        { label: 'Saldo atual', value: fmt(SALDO), foot: dados ? 'Disponível para transferir' : 'Sem movimentação ainda', bg: T.primary, fg: '#FFFFFF', labelFg: '#FFFFFF', border: T.primary },
-        { label: 'Cobranças aguardando pagamento', value: fmt(dados ? 3520 : 0), foot: dados ? '5 cobranças · inclui 3 vencidas' : 'Nenhuma cobrança em aberto', bg: T.surface, fg: T.ink, labelFg: T.text2, border: T.cardBorder },
-        { label: 'Cobranças aguardando repasse', value: fmt(dados ? 3394.86 : 0), foot: dados ? 'Cartão · previsto para 19/11/2026' : 'Nada a receber de cartão', bg: T.surface, fg: T.ink, labelFg: T.text2, border: T.cardBorder }
+        { label: 'Saldo atual', value: fmtP(SALDO), foot: dados ? 'Disponível para transferir' : 'Sem movimentação ainda', bg: T.primary, fg: '#FFFFFF', labelFg: '#FFFFFF', border: T.primary },
+        { label: 'Cobranças aguardando pagamento', value: fmtP(dados ? 3520 : 0), foot: dados ? '5 cobranças · inclui 3 vencidas' : 'Nenhuma cobrança em aberto', bg: T.surface, fg: T.ink, labelFg: T.text2, border: T.cardBorder },
+        { label: 'Cobranças aguardando repasse', value: fmtP(dados ? 3394.86 : 0), foot: dados ? 'Cartão · previsto para 19/11/2026' : 'Nada a receber de cartão', bg: T.surface, fg: T.ink, labelFg: T.text2, border: T.cardBorder }
       ],
       periodos: [['hoje', 'Hoje'], ['7', '7 dias'], ['15', '15 dias'], ['custom', 'Personalizado']].map((x) => ({ label: x[1], on: periodo === x[0], bg: periodo === x[0] ? T.surface : 'transparent', fg: periodo === x[0] ? T.ink : T.text2, shadow: periodo === x[0] ? T.shadow : 'none', go: () => set({ periodo: x[0] }) })),
       groups, hasItems: groups.length > 0, empty: groups.length === 0,
@@ -1979,11 +2002,11 @@ class Component extends DCLogic {
       skip: () => { set({ nfSkip: true }); this.toast('Você pode retomar quando quiser'); },
       resume: () => set({ nfSkip: false, nfTab: 'Todas', nfDone: false }),
       items: [
-        { num: 'NF 000125', cli: 'Rafael Mendes', sub: 'Erro: código de serviço inválido · 15/10/2026', subFg: T.danger, valor: fmt(690), st: 'Erro', stBg: T.dangerBg, stFg: T.danger, action: 'Corrigir', go: () => this.toast('Abrindo correção (simulação)') },
-        { num: 'NF 000128', cli: 'Café Grão Norte Ltda.', sub: 'Emitida em 15/10/2026', subFg: T.text2, valor: fmt(1200), st: 'Emitida', stBg: T.successBg, stFg: T.success, action: 'Baixar PDF', go: () => this.toast('Download do PDF iniciado (simulação)') },
-        { num: 'NF 000127', cli: 'Studio Pilar ME', sub: 'Emitida em 20/10/2026', subFg: T.text2, valor: fmt(3500), st: 'Emitida', stBg: T.successBg, stFg: T.success, action: 'Baixar PDF', go: () => this.toast('Download do PDF iniciado (simulação)') },
-        { num: 'NF 000126', cli: 'Júlia Castro', sub: 'Emitida em 08/10/2026', subFg: T.text2, valor: fmt(200), st: 'Emitida', stBg: T.successBg, stFg: T.success, action: '', go: null },
-        { num: 'Agendada', cli: 'Café Grão Norte Ltda.', sub: 'Emite quando a parcela 3 de 3 for paga', subFg: T.text2, valor: fmt(1200), st: 'Agendada', stBg: T.infoBg, stFg: T.info, action: '', go: null }
+        { num: 'NF 000125', cli: 'Rafael Mendes', sub: 'Erro: código de serviço inválido · 15/10/2026', subFg: T.danger, valor: fmtP(690), st: 'Erro', stBg: T.dangerBg, stFg: T.danger, action: 'Corrigir', go: () => this.toast('Abrindo correção (simulação)') },
+        { num: 'NF 000128', cli: 'Café Grão Norte Ltda.', sub: 'Emitida em 15/10/2026', subFg: T.text2, valor: fmtP(1200), st: 'Emitida', stBg: T.successBg, stFg: T.success, action: 'Baixar PDF', go: () => this.toast('Download do PDF iniciado (simulação)') },
+        { num: 'NF 000127', cli: 'Studio Pilar ME', sub: 'Emitida em 20/10/2026', subFg: T.text2, valor: fmtP(3500), st: 'Emitida', stBg: T.successBg, stFg: T.success, action: 'Baixar PDF', go: () => this.toast('Download do PDF iniciado (simulação)') },
+        { num: 'NF 000126', cli: 'Júlia Castro', sub: 'Emitida em 08/10/2026', subFg: T.text2, valor: fmtP(200), st: 'Emitida', stBg: T.successBg, stFg: T.success, action: '', go: null },
+        { num: 'Agendada', cli: 'Café Grão Norte Ltda.', sub: 'Emite quando a parcela 3 de 3 for paga', subFg: T.text2, valor: fmtP(1200), st: 'Agendada', stBg: T.infoBg, stFg: T.info, action: '', go: null }
       ]
     };
     const nfTabs = ['Todas', 'Configurações'].map((tb) => Object.assign({ label: tb, go: () => set({ nfTab: tb }) }, pill(nfTab === tb)));
@@ -2198,8 +2221,8 @@ class Component extends DCLogic {
       { label: 'Criar link de pagamento', icon: I.link, go: go('links', { lkOpen: true, lk: LK0, lkStep: 1 }) },
       { label: 'Ver extrato', icon: I.list, go: go('extrato') }
     ];
-    const extMini = EXT.reduce((a, g) => a.concat(g.items.map((x) => ({ x, date: g.date }))), []).slice(0, 4).map((o) => ({ title: o.x.title, date: o.date, valor: o.x.v < 0 ? fmt(o.x.v) : '+ ' + fmt(o.x.v), fg: o.x.v < 0 ? T.ink : T.success, icon: o.x.v < 0 ? I.up : I.down, iconBg: o.x.v < 0 ? T.sunken : T.successBg, iconFg: o.x.v < 0 ? T.text2 : T.success }));
-    const cliTop = [['Studio Pilar ME', 3500], ['Café Grão Norte Ltda.', 1200], ['Júlia Castro', 200]].map((c) => ({ nome: c[0], valor: fmt(c[1]), w: Math.max(4, Math.round(c[1] / 35)) + '%' }));
+    const extMini = EXT.reduce((a, g) => a.concat(g.items.map((x) => ({ x, date: g.date }))), []).slice(0, 4).map((o) => ({ title: o.x.title, date: o.date, valor: oc ? MASK : (o.x.v < 0 ? fmt(o.x.v) : '+ ' + fmt(o.x.v)), fg: o.x.v < 0 ? T.ink : T.success, icon: o.x.v < 0 ? I.up : I.down, iconBg: o.x.v < 0 ? T.sunken : T.successBg, iconFg: o.x.v < 0 ? T.text2 : T.success }));
+    const cliTop = [['Studio Pilar ME', 3500], ['Café Grão Norte Ltda.', 1200], ['Júlia Castro', 200]].map((c) => ({ nome: c[0], valor: fmtP(c[1]), w: Math.max(4, Math.round(c[1] / 35)) + '%' }));
 
     /* ---------- assistente (simulação) ---------- */
     const agGo = (t, extra) => () => set(Object.assign({ tela: t }, reset, extra || {}, mobile ? { agentOpen: false } : {}));
@@ -2276,7 +2299,7 @@ class Component extends DCLogic {
     const nOff = s.nudgeOff || {};
     const nAct = (label, fn, primary) => ({ label, primary: !!primary, go: () => { const cur = (self.state && self.state.nudgeOff) || {}; const o = Object.assign({}, cur); o[nkKey] = true; self.setState({ nudgeOff: o, agentOpen: !mobile }); fn(); } });
     const sayBot = (text) => { const cur = (self.state && self.state.agentMsgs) || []; self.setState({ agentMsgs: cur.concat([{ from: 'bot', text }]) }); self.fala(text); };
-    const openAsk = (q, k) => () => { self.setState({ agentOpen: true }); ask(q, k); };
+    const openAsk = (q, k) => () => { self._vozOk = true; self.setState({ agentOpen: true }); ask(q, k); };
     let N = null;
     if (tela === 'inicio' && dados) N = { text: '3 cobranças venceram sem pagamento, somando R$ 1.340,00. Quer que eu reenvie agora com um lembrete para os 3 clientes?', acts: [nAct('Reenviar as 3', () => { this.toast('Lembretes reenviados para 3 clientes (simulação)'); sayBot('Pronto: reenviei as 3 cobranças vencidas por e-mail. Aviso aqui assim que alguém pagar.'); }, true), nAct('Ver vencidas', ACT.vencidas.go)] };
     if (tela === 'inicio' && !dados) N = { text: 'Você está a um passo de começar a receber. Quer criar a primeira cobrança comigo agora? Leva cerca de 1 minuto.', acts: [nAct('Vamos lá', ACT.criar.go, true), nAct('Como funciona?', openAsk('Como criar uma cobrança por Pix?', 'pix'))] };
@@ -2300,23 +2323,28 @@ class Component extends DCLogic {
     const greet = { from: 'bot', text: dados ? 'Oi, Paulo! Sou o assistente do painel. Posso explicar o que aparece aqui e levar você direto à tela certa. Esta é uma simulação com respostas de exemplo.' : 'Oi, Paulo! Sua conta está quase pronta. Posso explicar como criar a primeira cobrança, configurar notas fiscais ou usar o Pix. Esta é uma simulação.', actions: [] };
     const greet2 = N ? { from: 'bot', text: 'Oi, Paulo! ' + N.text, actsObj: N.acts } : greet;
     // ao entrar na página, o assistente abre sozinho (desktop/tablet) e já fala
-    if (!estatico && nudgePending && !mobile && !self._falouEntrada) { self._falouEntrada = true; setTimeout(() => self.fala(greet2.text), 300); }
+    if (!estatico && nudgePending && !mobile && !self._falouEntrada) {
+      self._falouEntrada = true;
+      let primeira = true;
+      try { primeira = !window.localStorage.getItem('asaas-voz-visto'); window.localStorage.setItem('asaas-voz-visto', '1'); } catch (e) {}
+      if (primeira) setTimeout(() => self.fala(greet2.text, true), 300);
+    }
     const agMsgs = [greet2].concat(s.agentMsgs || []);
     const agSugs = QS.slice().sort((a, b) => (b.tela.indexOf(tela) >= 0 ? 1 : 0) - (a.tela.indexOf(tela) >= 0 ? 1 : 0));
     const ag = {
       show: !estatico, open: agentOpen, typing: !!s.agentTyping,
-      toggle: () => { if (agentOpen) { self.calar(); const o = Object.assign({}, nOff); o[nkKey] = true; set({ agentOpen: false, nudgeOff: o }); } else { set({ agentOpen: true }); self.fala(greet2.text); } },
+      toggle: () => { if (agentOpen) { self._vozOk = false; self.calar(); const o = Object.assign({}, nOff); o[nkKey] = true; set({ agentOpen: false, nudgeOff: o }); } else { self._vozOk = true; set({ agentOpen: true }); self.fala(greet2.text); } },
       vozOn: s.voz !== false,
       vozIcon: s.voz !== false ? I.volume : I.volumeOff,
       vozAria: s.voz !== false ? 'Desativar a voz do assistente' : 'Ativar a voz do assistente',
-      vozToggle: () => { const on = s.voz === false; if (!on) self.calar(); self.setState({ voz: on }); if (on) self.fala('Voz ativada.'); },
+      vozToggle: () => { const on = s.voz === false; if (!on) self.calar(); self.setState({ voz: on }); if (on) self.fala('Voz ativada.', true, true); },
       right: mobile ? '12px' : '24px', left: mobile ? '12px' : 'auto', bottom: mobile ? '88px' : '24px',
       w: mobile ? '100%' : '384px', h: mobile ? '72vh' : '600px',
       launchPad: mobile || agentOpen ? '0 16px' : '0 22px 0 18px',
       launchLabel: mobile || agentOpen ? '' : 'Pergunte ao assistente',
       launchIcon: agentOpen ? I.x : I.spark, launchBg: agentOpen ? '#1D2125' : T.primary,
       launchAria: agentOpen ? 'Fechar assistente' : 'Abrir assistente virtual',
-      msgs: agMsgs.map((m) => { const u = m.from === 'user'; const acts = (m.actsObj || []).concat((m.actions || []).map((a) => ACT[a]).filter(Boolean)); return { text: m.text, align: u ? 'flex-end' : 'flex-start', bg: u ? T.primary : T.surface, fg: u ? '#FFFFFF' : T.ink, border: u ? T.primary : T.border, radius: u ? '18px 18px 6px 18px' : '18px 18px 18px 6px', actions: acts, hasActions: acts.length > 0 }; }).reverse(),
+      msgs: agMsgs.map((m) => { const u = m.from === 'user'; const acts = (m.actsObj || []).concat((m.actions || []).map((a) => ACT[a]).filter(Boolean)); return { text: mk(m.text), align: u ? 'flex-end' : 'flex-start', bg: u ? T.primary : T.surface, fg: u ? '#FFFFFF' : T.ink, border: u ? T.primary : T.border, radius: u ? '18px 18px 6px 18px' : '18px 18px 18px 6px', actions: acts, hasActions: acts.length > 0 }; }).reverse(),
       sugs: agSugs.map((x) => ({ label: x.q, go: () => ask(x.q, x.k) })),
       q: s.agentQ || '',
       onQ: (e) => set({ agentQ: e.target.value }),
@@ -2327,7 +2355,7 @@ class Component extends DCLogic {
     const notifOpen = !!s.notifOpen && desk;
     const readN = s.readN || {};
     const ntFiltro = s.ntFiltro || 'todas';
-    const NTS = dados ? [
+    const NTS0 = dados ? [
       { id: 'n1', icon: I.alert, tone: 'danger', title: 'Cobrança vencida', desc: 'Júlia Castro · R$ 200,00 · venceu em 18/10/2026', time: 'Há 5 dias', nav: ACT.vencidas.go },
       { id: 'n2', icon: I.shield, tone: 'warn', title: 'Chargeback aberto', desc: 'Studio Pilar ME · R$ 150,00 · defesa até 30/10/2026', time: 'Há 5 dias', nav: ACT.chargeback.go },
       { id: 'n5', icon: I.file, tone: 'danger', title: 'Nota fiscal com erro', desc: 'NF 000125 · Rafael Mendes · código de serviço inválido', time: 'Há 8 dias', nav: ACT.notas.go },
@@ -2338,6 +2366,7 @@ class Component extends DCLogic {
       { id: 'c3', icon: I.spark, tone: 'info', title: 'Sua primeira cobrança', desc: 'Crie em cerca de 1 minuto e compartilhe por link ou QR Code.', time: 'Agora', nav: ACT.criar.go },
       { id: 'c2', icon: I.pix, tone: 'neutral', title: 'Chave Pix cadastrada', desc: 'Seu e-mail agora é uma chave Pix.', time: 'Há 2 dias', read0: true, nav: ACT.pix.go }
     ];
+    const NTS = NTS0.map((n) => Object.assign({}, n, { desc: mk(n.desc) }));
     const TONE = { danger: [T.dangerBg, T.danger], warn: [T.warnBg, T.warn], success: [T.successBg, T.success], info: [T.infoBg, T.info], neutral: [T.sunken, T.text2] };
     const isUnread = (n) => !n.read0 && !readN[n.id];
     const unreadN = NTS.filter(isUnread).length;
@@ -2396,6 +2425,9 @@ class Component extends DCLogic {
       showAcctName: !tablet, demoLabel: tablet ? 'Demo' : 'Demo do protótipo',
       showScenario: false, showDemo: !estatico && desk, scenarios, themes,
       toggleTheme: () => set({ tema: escuro ? 'claro' : 'escuro' }),
+      ocAria: oc ? 'Mostrar valores' : 'Ocultar valores', ocIcon: oc ? I.eyeOff : I.eye, ocultar: oc,
+      toggleOcultar: () => { const on = !s.ocultar; set({ ocultar: on }); try { window.localStorage.setItem('asaas-ocultar-valores', on ? '1' : '0'); } catch (e) {} this.toast(on ? 'Valores ocultos' : 'Valores visíveis'); },
+      formasSub: mk('R$ 4.900,00 por forma de pagamento'), bnTexto: mk('Você tem R$ 3.394,86 aguardando repasse. A taxa aparece antes de você confirmar.'),
       themeToggleAria: escuro ? 'Usar tema claro' : 'Usar tema escuro', themeToggleIcon: escuro ? I.sun : I.moon,
       bellAria: nt.unreadN ? 'Notificações: ' + nt.unreadN + ' não lidas' : 'Notificações',
       metrics, atencao, week, upcoming, rings, showInvite: bannerOn, checklist, passos,
