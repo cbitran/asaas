@@ -20,7 +20,7 @@ Redesenho visual, de organização e de jornada. **Nenhuma regra de negócio mud
 - **Mobile:** o menu vira **bottom sheet**, sobe de baixo (`sheetUp`, 380 ms), largura total, até 86% da altura, raio só em cima, alça no topo e fundo escurecido. Fecha no X ou tocando no fundo. A barra inferior fixa tem Início, Cobranças, Pix, Extrato e Menu (56 px). O grupo "Mais" ganha o item "Personalizar início".
 
 ### Topo (desktop/tablet)
-Busca global (placeholder "Buscar cobranças, clientes ou telas", atalho ⌘K) · espaço · **Notificações** · **Ajuda** · **Tema** (só ícone: lua no claro, sol no escuro) · **Conta** (avatar PS + "Paulo Souza / Ateliê Souza"; no tablet só o avatar).
+Busca global (placeholder "Buscar cobranças, clientes ou telas", atalho ⌘K) · espaço · **Notificações** · **Ajuda** · **Tema** (só ícone: lua no claro, sol no escuro) · **Conta** (avatar PA + "Paulo Augusto / Ateliê Souza"; no tablet só o avatar).
 
 - **Popover de notificações** (400 px, `popIn`):
   - Cabeçalho "Notificações" + "Marcar todas como lidas".
