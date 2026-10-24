@@ -74,6 +74,7 @@ nav[aria-label='Menu principal']{scrollbar-width:none}nav[aria-label='Menu princ
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(0,56,229,0.45),0 12px 32px rgba(0,56,229,0.35)}70%{box-shadow:0 0 0 14px rgba(0,56,229,0),0 12px 32px rgba(0,56,229,0.35)}100%{box-shadow:0 0 0 0 rgba(0,56,229,0),0 12px 32px rgba(0,56,229,0.35)}}
 .pulse{animation:pulse 1.8s infinite}
 .wg{transition:opacity 160ms ease,outline-color 160ms ease}
+.wg>*:not(.pop-in){flex:1 1 auto;min-height:0}
 @media (prefers-reduced-motion: reduce){.pulse,.agent-in,.msg-in,.tdot,.step-in{animation:none}}
 @keyframes popIn{from{opacity:0;transform:translateY(-8px) scale(0.97)}to{opacity:1;transform:translateY(0) scale(1)}}
 .pop-in{animation:popIn 220ms cubic-bezier(.16,1,.3,1) both;transform-origin:top right}
@@ -193,7 +194,7 @@ nav[aria-label='Menu principal']{scrollbar-width:none}nav[aria-label='Menu princ
 <sc-if value="{{contaOpen}}" hint-placeholder-val="{{false}}">
 <div id="menu-conta" role="menu" aria-label="Menu da conta" class="pop-in" style="position: absolute; right: 0; top: 100%; margin-top: 10px; z-index: 40; width: 320px; background: {{t.surface}}; color: {{t.ink}}; border: 1px solid {{t.border}}; border-radius: 20px; box-shadow: {{t.shadowLg}}; overflow: hidden">
 <div style="display: flex; flex-direction: column; gap: 8px; padding: 18px 18px 16px; border-bottom: 1px solid {{t.border}}">
-<span style="font-size: 15px; font-weight: 800">marina@ateliesouza.exemplo</span>
+<span style="font-size: 15px; font-weight: 800">paulo.forattini@minhaloja.com</span>
 <div style="display: flex; align-items: center; gap: 12px">
 <div style="flex: 1; display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: {{t.text2}}">
 <span>Banco: 461 · Asaas I.P. S.A.</span>
@@ -304,7 +305,7 @@ nav[aria-label='Menu principal']{scrollbar-width:none}nav[aria-label='Menu princ
 </section>
 </sc-if>
 </sc-if>
-<div style="display: grid; grid-template-columns: {{L.wgCols}}; gap: 16px; align-items: start; grid-auto-flow: row dense">
+<div style="display: grid; grid-template-columns: {{L.wgCols}}; gap: 16px; align-items: stretch; grid-auto-flow: row dense">
 <sc-for list="{{widgets}}" as="w" hint-placeholder-count="5">
 <div class="wg" draggable="{{editMode}}" onDragStart="{{w.dragStart}}" onDragOver="{{w.dragOver}}" onDrop="{{w.drop}}" onDragEnd="{{dragEnd}}" style="grid-column: span {{w.span}}; min-width: 0; display: flex; flex-direction: column; gap: 8px; border-radius: 26px; outline: {{w.outline}}; outline-offset: 6px; opacity: {{w.op}}; cursor: {{wCursor}}">
 <sc-if value="{{editMode}}" hint-placeholder-val="{{false}}">
@@ -401,16 +402,6 @@ nav[aria-label='Menu principal']{scrollbar-width:none}nav[aria-label='Menu princ
 </div>
 </div>
 </sc-for>
-</section>
-</sc-if>
-<sc-if value="{{w.isConvite}}" hint-placeholder-val="{{false}}">
-<section aria-labelledby="h-convite" style="position: relative; background: {{t.primary}}; color: #FFFFFF; border-radius: 28px; padding: 28px 24px 24px; display: flex; flex-direction: column; gap: 14px; overflow: hidden">
-<svg width="160" height="160" viewBox="0 0 160 160" aria-hidden="true" style="position: absolute; right: -36px; top: -36px; opacity: 0.18"><circle cx="80" cy="80" r="70" fill="none" stroke="#FFFFFF" stroke-width="2"></circle><circle cx="80" cy="80" r="46" fill="none" stroke="#FFFFFF" stroke-width="2"></circle><circle cx="80" cy="80" r="22" fill="#FFFFFF"></circle></svg>
-<button type="button" onClick="{{dismissInvite}}" aria-label="Dispensar convite de antecipação" style="position: absolute; right: 12px; top: 12px; width: 44px; height: 44px; border-radius: 14px; border: 0; background: rgba(255,255,255,0.16); color: #FFFFFF; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="{{i.x}}"></path></svg></button>
-<span style="font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase">Convite · antecipação</span>
-<h2 id="h-convite" style="margin: 0; font-size: 22px; line-height: 1.25; font-weight: 800; max-width: 260px">Receba antes as vendas no cartão</h2>
-<p style="margin: 0; font-size: 14px; line-height: 1.5">Você tem R$ 3.394,86 aguardando repasse. A taxa aparece antes de você confirmar.</p>
-<button type="button" class="hv" onClick="{{goAntecipacao}}" style="align-self: flex-start; min-height: 48px; padding: 0 20px; border-radius: 14px; border: 0; background: #1D2125; color: #FFFFFF; font-size: 14px; font-weight: 700; cursor: pointer">Simular antecipação</button>
 </section>
 </sc-if>
 <sc-if value="{{w.isAtalhos}}" hint-placeholder-val="{{false}}">
@@ -1276,6 +1267,22 @@ nav[aria-label='Menu principal']{scrollbar-width:none}nav[aria-label='Menu princ
 </div>
 </sc-if>
 
+<sc-if value="{{showInvite}}" hint-placeholder-val="{{false}}">
+<div style="position: {{L.fix}}; left: {{L.bnLeft}}; right: {{L.bnRight}}; bottom: {{L.bnBottom}}; z-index: 40; pointer-events: none">
+<section role="region" aria-labelledby="h-convite" class="pop-in" style="pointer-events: auto; max-width: 1240px; margin: 0 auto; box-sizing: border-box; background: {{t.primary}}; color: #FFFFFF; border-radius: 22px; padding: {{L.bnPad}}; display: flex; flex-direction: {{L.bnDir}}; align-items: {{L.bnAlign}}; gap: 14px 20px; box-shadow: 0 16px 40px rgba(29,33,37,0.28)">
+<div style="flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+<span style="display: {{L.bnEyebrow}}; font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase">Convite · antecipação</span>
+<h2 id="h-convite" style="margin: 0; font-size: {{L.bnTitle}}; line-height: 1.25; font-weight: 800">Receba antes as vendas no cartão</h2>
+<p style="margin: 0; font-size: {{L.bnText}}; line-height: 1.5">Você tem R$ 3.394,86 aguardando repasse. A taxa aparece antes de você confirmar.</p>
+</div>
+<div style="flex: none; display: flex; align-items: center; gap: 8px">
+<button type="button" class="hv" onClick="{{goAntecipacao}}" style="flex: 1 1 auto; min-height: 48px; padding: 0 20px; border-radius: 14px; border: 0; background: #1D2125; color: #FFFFFF; font-size: 14px; font-weight: 700; cursor: pointer">Simular antecipação</button>
+<button type="button" onClick="{{dismissInvite}}" aria-label="Dispensar convite de antecipação" style="flex: none; width: 48px; height: 48px; border-radius: 14px; border: 0; background: rgba(255,255,255,0.16); color: #FFFFFF; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="{{i.x}}"></path></svg></button>
+</div>
+</section>
+</div>
+</sc-if>
+
 <div aria-live="polite" role="status" style="position: {{L.fix}}; left: 50%; bottom: {{L.toastBottom}}; transform: translateX(-50%); z-index: 70; pointer-events: none">
 <sc-if value="{{toast}}" hint-placeholder-val="{{false}}">
 <div style="display: flex; align-items: center; gap: 10px; padding: 14px 18px; border-radius: 16px; background: #1D2125; color: #FFFFFF; box-shadow: 0 16px 40px rgba(29,33,37,0.35); font-size: 14px; font-weight: 600; white-space: nowrap"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A6D86E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{i.check}}"></path></svg>{{toast}}</div>
@@ -1605,6 +1612,7 @@ class Component extends DCLogic {
     }));
 
     /* ---------- layout ---------- */
+    const bannerOn = !!dados && !s.inviteOff && tela === 'inicio' && !s.editMode && !estatico;
     const L = {
       rootMinH: estatico ? (mobile ? '812px' : '1000px') : '100vh',
       rootOverflow: estatico ? 'hidden' : 'visible',
@@ -1626,7 +1634,8 @@ class Component extends DCLogic {
       badgePos: showLabels ? 'static' : 'absolute', badgeSize: showLabels ? '20px' : '18px', badgeFont: showLabels ? '11px' : '10px',
       itemJustify: showLabels ? 'flex-start' : 'center',
       colGap: mobile ? '0px' : '8px',
-      mainPad: mobile ? (estatico ? '8px 16px 24px' : '8px 16px 160px') : (estatico ? '16px 32px 40px' : '16px 32px 104px'),
+      mainPad: mobile ? (estatico ? '8px 16px 24px' : '8px 16px ' + (bannerOn ? 300 : 160) + 'px') : (estatico ? '16px 32px 40px' : '16px 32px ' + (bannerOn ? 210 : 104) + 'px'),
+      bnLeft: mobile ? '12px' : (recolhido ? 84 : 264) + 64 + 'px', bnRight: mobile ? '12px' : '48px', bnBottom: mobile ? '152px' : '84px', bnDir: mobile ? 'column' : 'row', bnAlign: mobile ? 'stretch' : 'center', bnEyebrow: mobile ? 'none' : 'block', bnTitle: mobile ? '17px' : '20px', bnText: mobile ? '13px' : '14px', bnPad: mobile ? '14px 14px 14px 16px' : '16px 16px 16px 24px',
       headDir: mobile ? 'column' : 'row',
       headAlign: mobile ? 'stretch' : 'flex-end',
       cols4: mobile || tablet ? 'repeat(2, minmax(0, 1fr))' : 'repeat(4, minmax(0, 1fr))',
@@ -1705,7 +1714,6 @@ class Component extends DCLogic {
       { label: 'Pix', pctN: 25, valor: fmt(1200), sub: '1 cobrança · na hora', color: escuro ? '#8DB4FF' : '#0038E5', labelFg: T.primaryText },
       { label: 'Boleto', pctN: 4, valor: fmt(200), sub: '1 cobrança · compensado', color: '#91C651', labelFg: T.success }
     ].map((r) => Object.assign(r, { pct: r.pctN + '%', dash: (C * r.pctN / 100).toFixed(1) + ' 999' }));
-    const showInvite = dados && !s.inviteOff;
     const checklist = [
       { label: 'Dados da empresa', sub: 'Concluído', done: true },
       { label: 'Documentos enviados', sub: 'Aprovados em 21/10/2026', done: true },
@@ -2120,11 +2128,11 @@ class Component extends DCLogic {
     };
 
     /* ---------- início modular ---------- */
-    const WDEF = [{ id: 'metricas', size: 12 }, { id: 'atencao', size: 8 }, { id: 'formas', size: 4 }, { id: 'venc', size: 8 }, { id: 'convite', size: 4 }];
+    const WDEF = [{ id: 'metricas', size: 12 }, { id: 'atencao', size: 8 }, { id: 'formas', size: 4 }, { id: 'venc', size: 8 }];
     const WT = { atalhos: 'Atalhos rápidos', extratoMini: 'Últimos lançamentos', clientesTop: 'Quem mais pagou', linksTop: 'Links de pagamento', metricas: 'Resumo financeiro', atencao: 'Precisa da sua atenção', formas: 'Recebido por forma', venc: 'Próximos vencimentos', convite: 'Convite de antecipação' };
     const wl = Array.isArray(s.wl) && s.wl.length ? s.wl : WDEF;
     const editMode = !!s.editMode && tela === 'inicio' && dados && !estatico;
-    const okW = (w) => !w.hidden && (w.id !== 'convite' || showInvite);
+    const okW = (w) => !w.hidden && w.id !== 'convite';
     const visW = wl.filter(okW);
     const move = (id, dir) => () => {
       const arr = wl.slice(); const i = arr.findIndex((x) => x.id === id);
@@ -2156,7 +2164,7 @@ class Component extends DCLogic {
         id: w.id, title: WT[w.id], span: mobile ? 1 : tablet ? (size >= 8 ? 12 : 6) : size,
         isAtalhos: w.id === 'atalhos', isExtratoMini: w.id === 'extratoMini', isClientesTop: w.id === 'clientesTop', isLinksTop: w.id === 'linksTop',
         aCols: mobile || size <= 6 ? 'repeat(2, minmax(0, 1fr))' : 'repeat(4, minmax(0, 1fr))',
-        isMetricas: w.id === 'metricas', isAtencao: w.id === 'atencao', isFormas: w.id === 'formas', isVenc: w.id === 'venc', isConvite: w.id === 'convite',
+        isMetricas: w.id === 'metricas', isAtencao: w.id === 'atencao', isFormas: w.id === 'formas', isVenc: w.id === 'venc',
         mCols: mobile || tablet ? 'repeat(2, minmax(0, 1fr))' : size >= 12 ? 'repeat(4, minmax(0, 1fr))' : 'repeat(2, minmax(0, 1fr))',
         outline: over ? '3px dashed ' + T.primary : (editMode ? '2px dashed ' + T.borderStrong : '0px solid transparent'),
         op: dragging ? '0.4' : '1',
@@ -2175,11 +2183,10 @@ class Component extends DCLogic {
     const LIBMETA = {
       metricas: ['Saldo, a receber, vencidas e recebido no mês.', I.wallet], atencao: ['Pendências com ação direta: vencidas, chargeback e notas.', I.alert],
       formas: ['Quanto entrou por Pix, boleto e cartão no mês.', I.card], venc: ['Calendário dos próximos 7 dias e o que vence.', I.calc],
-      convite: ['Convite contextual quando há saldo de cartão a receber.', I.clock],
       atalhos: ['Botões para criar cobrança, Pix, link e extrato.', I.grid, true], extratoMini: ['Os 4 lançamentos mais recentes da conta.', I.list, true],
       clientesTop: ['Ranking de quem mais pagou no mês.', I.users, true], linksTop: ['Seus links ativos com botão de copiar.', I.link, true]
     };
-    const library = Object.keys(LIBMETA).filter((id) => id !== 'convite' || showInvite).map((id) => {
+    const library = Object.keys(LIBMETA).map((id) => {
       const inL = visW.some((w) => w.id === id);
       return { title: WT[id], desc: LIBMETA[id][0], icon: LIBMETA[id][1], isNew: !!LIBMETA[id][2], inL, label: inL ? 'Já está no Início' : 'Adicionar ao Início',
         bg: inL ? T.surface2 : T.surface, border: inL ? T.border : T.border, btnBg: inL ? 'transparent' : T.cta, btnFg: inL ? T.text2 : T.onCta, btnBorder: inL ? T.border : T.cta, cur: inL ? 'default' : 'pointer',
@@ -2283,6 +2290,7 @@ class Component extends DCLogic {
     if (tela === 'links') N = { text: 'Quer vender sem cadastrar o cliente antes? Eu monto um link agora com Pix e cartão já marcados.', acts: [nAct('Criar link', ACT.link.go, true), nAct('Agora não', () => {})] };
     const nudgePending = !estatico && !!N && s.nudgeFor === nkKey && !nOff[nkKey];
     if (nudgePending && !mobile) agentOpen = true;
+    if (agentOpen && !mobile) L.bnRight = (24 + 384 + 16) + 'px'; // o convite não fica atrás do painel do assistente
     const ngShow = nudgePending && !agentOpen;
     const ng = {
       show: false, w: mobile ? '100%' : '360px', text: N ? N.text : '',
@@ -2390,7 +2398,7 @@ class Component extends DCLogic {
       toggleTheme: () => set({ tema: escuro ? 'claro' : 'escuro' }),
       themeToggleAria: escuro ? 'Usar tema claro' : 'Usar tema escuro', themeToggleIcon: escuro ? I.sun : I.moon,
       bellAria: nt.unreadN ? 'Notificações: ' + nt.unreadN + ' não lidas' : 'Notificações',
-      metrics, atencao, week, upcoming, rings, showInvite, checklist, passos,
+      metrics, atencao, week, upcoming, rings, showInvite: bannerOn, checklist, passos,
       dismissInvite: () => { set({ inviteOff: true }); this.toast('Convite dispensado. Ele volta só se houver novo saldo de cartão.'); },
       goAntecipacao: go('outro', { outro: 'antecipacoes', outroLabel: 'Antecipações · Solicitar antecipação', outroSub: 'Solicitar antecipação', open: 'antecipacoes' }),
       showBanner, dismissBanner: () => set({ bannerOff: true }),

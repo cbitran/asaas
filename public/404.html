@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Página não encontrada · Asaas (conceito)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+:root{--bg:#F4F6F9;--surface:#FFFFFF;--text:#1D2125;--text2:#37474F;--muted:#5F6B7A;--brand:#0038E5;--on-brand:#FFFFFF;--border:#D5DCE4;--ring:#0038E5}
+@media (prefers-color-scheme:dark){:root{--bg:#10151C;--surface:#1A212B;--text:#F1F4F8;--text2:#C9D2DC;--muted:#A3AFBD;--brand:#6F93FF;--on-brand:#0B1220;--border:#2E3846;--ring:#6F93FF}}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{background:var(--bg);color:var(--text);font:400 16px/24px 'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',sans-serif;display:flex;flex-direction:column;min-height:100vh}
+main{flex:1;display:flex;align-items:center;justify-content:center;padding:32px 16px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:20px;max-width:520px;width:100%;padding:40px 32px;text-align:center}
+.codigo{font-weight:800;font-size:64px;line-height:72px;color:var(--brand);margin:0}
+h1{font-weight:800;font-size:28px;line-height:36px;margin:8px 0 12px}
+p{margin:0 0 8px;color:var(--text2)}
+.caminho{color:var(--muted);font-size:13px;line-height:18px;word-break:break-all;margin:12px 0 0}
+.acoes{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:28px}
+a.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 22px;border-radius:12px;font-weight:700;font-size:15px;text-decoration:none;border:2px solid var(--brand)}
+a.primario{background:var(--brand);color:var(--on-brand)}
+a.secundario{background:transparent;color:var(--brand)}
+a.btn:focus-visible{outline:3px solid var(--ring);outline-offset:3px}
+.sim{background:var(--surface);border-top:1px solid var(--border);color:var(--text2);text-align:center;font-size:13px;line-height:18px;padding:12px 16px}
+</style>
+</head>
+<body>
+<main>
+  <section class="card" aria-labelledby="titulo">
+    <p class="codigo" aria-hidden="true">404</p>
+    <h1 id="titulo">Não encontramos esta página</h1>
+    <p>O endereço pode estar digitado errado ou a página não existe neste protótipo.</p>
+    <p class="caminho" id="caminho" hidden></p>
+    <div class="acoes">
+      <a class="btn primario" id="ir-site" href="/asaas/">Voltar ao site</a>
+      <a class="btn secundario" id="ir-painel" href="/asaas/painel/">Abrir o painel</a>
+    </div>
+  </section>
+</main>
+<div class="sim" role="note"><b>Conceito de design · simulação.</b> Não é o site do Asaas, sem relação oficial. Dados fictícios.</div>
+<script>
+// O site roda em /<repositório>/ no GitHub Pages e na raiz em dev: descobre a base pelo endereço.
+(function () {
+  var base = location.pathname.indexOf('/asaas/') === 0 ? '/asaas/' : '/';
+  document.getElementById('ir-site').href = base;
+  document.getElementById('ir-painel').href = base + 'painel/';
+  var c = document.getElementById('caminho');
+  c.textContent = 'Endereço procurado: ' + location.pathname;
+  c.hidden = false;
+})();
+</script>
+</body>
+</html>
