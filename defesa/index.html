@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="../tokens/tokens.css">
 <style>
 *{box-sizing:border-box}
-html{scroll-snap-type:y proximity}
+html{scroll-padding-top:64px}
 @media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
 body{margin:0;background:var(--color-bg-ground);color:var(--color-text-primary);font:var(--text-body);-webkit-font-smoothing:antialiased}
 h1,h2,h3,p,ul,ol{margin:0}
@@ -37,7 +37,9 @@ code{font:600 12px ui-monospace,Menlo,monospace;background:var(--color-bg-subtle
 .idx a i{font-style:normal;color:var(--color-text-muted);min-width:22px}
 
 /* slides */
-.slide{min-height:100vh;scroll-snap-align:start;padding:84px 32px 52px;display:flex;flex-direction:column;justify-content:center;gap:20px;max-width:1240px;margin:0 auto;position:relative}
+.slide{padding:44px 32px 40px;display:flex;flex-direction:column;justify-content:flex-start;gap:16px;max-width:1240px;margin:0 auto;position:relative}
+.slide+.slide{border-top:1px solid var(--color-border)}
+#s1{min-height:calc(100vh - 56px);padding-top:88px;justify-content:center}
 .slide>*{max-width:100%}
 .kicker{font:700 12px var(--font-family);letter-spacing:.1em;text-transform:uppercase;color:var(--color-brand-text)}
 .slide h2{font:800 clamp(26px,3.4vw,40px)/1.1 var(--font-family);letter-spacing:-.02em;max-width:980px}
@@ -50,8 +52,8 @@ code{font:600 12px ui-monospace,Menlo,monospace;background:var(--color-bg-subtle
 .grid{display:grid;gap:16px}
 .g2{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(3,minmax(0,1fr))}.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
 @media(max-width:980px){.g3,.g4{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:640px){.g2,.g3,.g4{grid-template-columns:minmax(0,1fr)}.slide{padding:88px 18px 56px}.bar{padding:8px 12px}.bar b{display:none}}
-.slide.denso{padding:74px 32px 36px;gap:12px}.denso .antes>h3,.denso .depois>h3{margin-bottom:8px}.denso .foot{padding-top:2px}
+@media(max-width:640px){.g2,.g3,.g4{grid-template-columns:minmax(0,1fr)}.slide{padding:36px 18px 32px}#s1{padding-top:88px}.bar{padding:8px 12px}.bar b{display:none}}
+.slide.denso{padding:40px 32px 28px;gap:12px}.denso .antes>h3,.denso .depois>h3{margin-bottom:8px}.denso .foot{padding-top:2px}
 .mini .card{padding:10px 14px}.mini .card h3{font-size:15px;margin-bottom:4px}.mini .card p{font-size:13px;line-height:1.4}
 .tag{display:inline-flex;font:700 11px var(--font-family);padding:3px 9px;border-radius:999px;background:var(--color-brand-tint);color:var(--color-brand-text)}
 .tag.ok{background:var(--color-success-bg);color:var(--color-success-text)}.tag.risco{background:var(--color-danger-bg);color:var(--color-danger)}.tag.av{background:var(--color-warning-bg);color:var(--color-warning-text)}.tag.in{background:var(--color-info-bg);color:var(--color-info-text)}
@@ -187,17 +189,17 @@ td.dest,th.dest{background:var(--color-brand-tint);color:var(--color-text-primar
 
 <!-- 5 PRINCÍPIOS -->
 <section class="slide" id="s5" data-t="Princípios">
-  <p class="kicker">Decisões</p>
-  <h2>Seis princípios guiaram todas as telas</h2>
+  <p class="kicker">Decisões · de onde vêm</p>
+  <h2>Seis princípios, e a evidência por trás de cada um</h2>
   <div class="grid g3">
-    <div class="card rev"><h3>1 · Prioridade antes de promoção</h3><p>O que precisa de atenção vem antes de qualquer oferta.</p></div>
-    <div class="card rev"><h3>2 · Um caminho principal por tela</h3><p>Um botão principal, sempre no mesmo lugar e no mesmo estilo.</p></div>
-    <div class="card rev"><h3>3 · Dizer o que está acontecendo</h3><p>Status visível e valor líquido antes de confirmar.</p></div>
-    <div class="card rev"><h3>4 · Confirmar o que não tem volta</h3><p>Cancelar, estornar e enviar Pix pedem confirmação clara.</p></div>
-    <div class="card rev"><h3>5 · Nada depende só da cor</h3><p>Status com ponto, texto e cor, e alvos de toque de 44 px.</p></div>
-    <div class="card rev"><h3>6 · Nenhuma função removida</h3><p>Reorganizamos e priorizamos. Não tiramos recursos.</p></div>
+    <div class="card rev"><h3>1 · Prioridade antes de promoção</h3><p><span class="tag">Observado</span> O Início abria com carrossel de ofertas e um checklist de 5 de 5 etapas, antes das pendências.</p><p><span class="tag in">Critério</span> H8 (minimalismo) e H1 (status à vista).</p></div>
+    <div class="card rev"><h3>2 · Um caminho principal por tela</h3><p><span class="tag">Observado</span> "Criar cobrança" em azul no menu, em verde no cartão e de novo no estado vazio.</p><p><span class="tag in">Critério</span> H4 (consistência). Semiótica: a cor do botão de destaque é símbolo por convenção, e duas cores a enfraquecem.</p></div>
+    <div class="card rev"><h3>3 · Dizer o que está acontecendo</h3><p><span class="tag">Observado</span> Indicadores vermelhos sem dizer do quê; Extrato vazio com tom de erro.</p><p><span class="tag in">Critério</span> H1 e H9. Semiótica: o número é um índice, mostra que existe pendência, não qual.</p><p><span class="tag av">Voz do usuário</span> "Pagamento não localizado": 168 reclamações, que lemos como ligadas ao desenho.</p></div>
+    <div class="card rev"><h3>4 · Confirmar o que não tem volta</h3><p><span class="tag in">Critério</span> H3 (controle e liberdade) e H5 (prevenção de erros).</p><p><span class="tag av">Decisão de projeto</span> Não foi observado no original: não movimentamos dinheiro nem cancelamos nada.</p></div>
+    <div class="card rev"><h3>5 · Nada depende só da cor</h3><p><span class="tag in">Critério</span> Semiótica: vermelho e verde são símbolos por convenção cultural, e não funcionam para quem não distingue cores. WCAG 1.4.3 (contraste de 4,5:1) e 2.5.5 (alvo de 44 px, nível AAA).</p></div>
+    <div class="card rev"><h3>6 · Nenhuma função removida</h3><p><span class="tag ok">Observado</span> O original já fazia bem: estados vazios ilustrados, rótulo direto, assistente no WhatsApp e Pix no link da fatura.</p><p><span class="tag av">Decisão de projeto</span> Organizar e priorizar, sem substituir o que funcionava.</p></div>
   </div>
-  <div class="foot"><span>docs/02-diagnostico-original.md</span><span class="sim">Simulação</span></div>
+  <div class="foot"><span>docs/02-diagnostico-original.md · H = heurística de Nielsen · "Observado" = painel original, 23/10/2026, conta sem movimentação</span><span class="sim">Simulação</span></div>
 </section>
 
 <!-- 6 DIAGNÓSTICO 1 -->
@@ -286,17 +288,20 @@ td.dest,th.dest{background:var(--color-brand-tint);color:var(--color-text-primar
 <!-- 10 PEQUENAS DECISÕES -->
 <section class="slide" id="s10" data-t="Antes e depois: detalhes">
   <p class="kicker">Antes × depois</p>
-  <h2>Três decisões pequenas que mudam a primeira impressão</h2>
+  <h2>Três decisões pequenas que mudam a primeira impressão, e o critério de cada uma</h2>
   <div class="grid g3">
     <div class="card rev"><h3>Primeira tela</h3>
       <div class="antes" style="margin-bottom:8px;padding:12px"><b style="font-size:12px">ANTES</b><p>Saudação com número → carrossel de promoções → cartão "conta aprovada" (5 de 5) → cobranças.</p></div>
-      <div class="depois" style="padding:12px"><b style="font-size:12px">DEPOIS</b><p>Saudação pelo nome → saldo, a receber, vencidas, recebido → "Precisa da sua atenção" com ação → vencimentos.</p></div></div>
+      <div class="depois" style="padding:12px"><b style="font-size:12px">DEPOIS</b><p>Saudação pelo nome → saldo, a receber, vencidas, recebido → "Precisa da sua atenção" com ação → vencimentos.</p></div>
+      <p style="margin-top:10px"><b>Por quê:</b> H8 e H1 (menos ruído, status primeiro) e H2 (linguagem do usuário: nome, não número).</p></div>
     <div class="card rev"><h3>Extrato vazio</h3>
       <div class="antes" style="margin-bottom:8px;padding:12px"><b style="font-size:12px">ANTES</b><p>"Nenhuma transação encontrada. Por favor, tente novamente." Parece erro, e não há o que tentar de novo.</p></div>
-      <div class="depois" style="padding:12px"><b style="font-size:12px">DEPOIS</b><p>"Nenhuma movimentação neste período", com o atalho "Ver últimos 15 dias".</p></div></div>
+      <div class="depois" style="padding:12px"><b style="font-size:12px">DEPOIS</b><p>"Nenhuma movimentação neste período", com o atalho "Ver últimos 15 dias".</p></div>
+      <p style="margin-top:10px"><b>Por quê:</b> H9 e H1. Não houve falha, então a tela não pede nova tentativa.</p></div>
     <div class="card rev"><h3>Notas fiscais</h3>
       <div class="antes" style="margin-bottom:8px;padding:12px"><b style="font-size:12px">ANTES</b><p>Texto de cinco linhas e um botão "Iniciar a configuração".</p></div>
-      <div class="depois" style="padding:12px"><b style="font-size:12px">DEPOIS</b><p>4 passos com progresso e a saída "Pular e emitir depois", com aviso para retomar.</p></div></div>
+      <div class="depois" style="padding:12px"><b style="font-size:12px">DEPOIS</b><p>4 passos com progresso e a saída "Pular e emitir depois", com aviso para retomar.</p></div>
+      <p style="margin-top:10px"><b>Por quê:</b> H8 e H10 (menos texto antes da ação, ajuda no ponto de uso) e H3 (uma saída para quem não vai emitir agora).</p></div>
   </div>
   <div class="foot"><span>H1 · H8 · H9 · H10</span><span class="sim">Simulação</span></div>
 </section>
@@ -371,10 +376,30 @@ td.dest,th.dest{background:var(--color-brand-tint);color:var(--color-text-primar
   <div class="foot"><span>docs/04-voz-do-usuario.md</span><span class="sim">Simulação</span></div>
 </section>
 
+<!-- 14b MAPA -->
+<section class="slide" id="s14b" data-t="Da evidência à decisão">
+  <p class="kicker">Resumo</p>
+  <h2>Da evidência à decisão: o que sustenta cada mudança</h2>
+  <div class="rol rev"><table>
+    <thead><tr><th>Decisão</th><th>Observado</th><th>Critério</th><th>Benchmark</th><th>Voz do usuário</th></tr></thead>
+    <tbody>
+      <tr><th>Menu em grupos por tarefa</th><td>17 itens soltos; 2 do submenu de Cobranças não são cobranças</td><td>H6, H4</td><td>não comparado</td><td>não medido</td></tr>
+      <tr><th>Um botão principal por tela</th><td>Mesmo comando em azul e em verde</td><td>H4; semiótica (símbolo)</td><td>não comparado</td><td>não medido</td></tr>
+      <tr><th>Início por prioridade</th><td>Promoção e checklist concluído antes das pendências</td><td>H8, H1</td><td>não comparado</td><td>não medido</td></tr>
+      <tr><th>Criar cobrança em uma tela, cliente primeiro</th><td>4 etapas, cliente na 3ª (Central de Ajuda, resumo de busca)</td><td>H7, H1, H5</td><td>Cora documenta o cliente no início, em 14 a 15 passos e 8 campos</td><td>não medido</td></tr>
+      <tr><th>Pix como forma padrão</th><td>Opção Boleto/Pix no original</td><td>decisão de projeto</td><td>Cora (boleto com QR Code Pix) e Inter (QR Code se há chave Pix)</td><td>não medido</td></tr>
+      <tr><th>Status com ponto, texto e cor</th><td>Indicadores sem dizer do quê</td><td>H1; semiótica (índice, símbolo); WCAG</td><td>não comparado</td><td>"Pagamento não localizado": 168 (leitura nossa)</td></tr>
+      <tr><th>Estado vazio sem tom de erro</th><td>Extrato pede "tente novamente"</td><td>H9, H1</td><td>não comparado</td><td>não medido</td></tr>
+    </tbody></table></div>
+  <p class="mut">"Não comparado" e "não medido" significam que não buscamos essa evidência, não que ela seja negativa. Nenhuma decisão foi validada com pessoas: esse é o próximo passo.</p>
+  <div class="foot"><span>docs/02, 03 e 04</span><span class="sim">Simulação</span></div>
+</section>
+
 <!-- 15 DESIGN SYSTEM -->
 <section class="slide" id="s15" data-t="Design system">
   <p class="kicker">Design system</p>
   <h2>Baseado nas cores da marca, organizado em papéis e com modo escuro</h2>
+  <p class="lead" style="font-size:15px"><b>Por quê:</b> uma única fonte de cores e tipografia sustenta a consistência (H4), e o contraste calculado garante que o texto seja legível em vez de depender de um tom escolhido a olho (WCAG 1.4.3).</p>
   <div class="grid g2">
     <div class="card rev"><h3>Cores (papéis, não só tons)</h3>
       <p class="mut">Os quadrados abaixo usam os tokens ao vivo e mudam com o tema.</p>
